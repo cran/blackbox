@@ -80,13 +80,13 @@ rhullByEI <- function(n, tryn=100*n ,vT, object, fixed=NULL, outputVars=blackbox
     slices <- unique(c(seq(0L,tryn,blockSize),tryn))
     slicefn <- function(it) {
       slice <- (slices[it]+1L):slices[it+1L]
-      predict(object, newdata=fulldata[slice,,drop=FALSE], predVar=TRUE)
+      predict(object, newdata=fulldata[slice,,drop=FALSE],variances=list(predVar=TRUE))
     }
     resus <- lapply(seq_len(length(slices)-1L),slicefn)
     trypred <- do.call(rbind,resus)
     trySE <- do.call(c,lapply(resus,attr,which="predVar"))
   } else {
-    trypred <- predict(object, newdata=as.data.frame(trypoints), predVar=TRUE)
+    trypred <- predict(object, newdata=as.data.frame(trypoints), variances=list(predVar=TRUE))
     trySE <- attr(trypred, "predVar")
   }
   trySE[trySE<0] <- 0

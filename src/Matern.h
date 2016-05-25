@@ -17,7 +17,7 @@
 namespace NS_GG {
  extern int a;
  extern covTypedef b;
-};
+}
 
 template <typename Typeforcov>
 Typeforcov gammln(Typeforcov xx) {

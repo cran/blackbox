@@ -15,7 +15,7 @@ calcPredictorOK <- function(FONKgpointls,
   locstring <- paste("  Selection of points for Kriging:", sep="")
   message.redef(locstring)
   unselectedKgpt <- FONKgpointls ## for figures and second selectFn() call
-  ## selectFn -> findReplicates -> (in case incorrect imput is detected) -> canonize
+  ## selectFn -> findReplicates -> (in case incorrect imput is detected) -> canonizeFromKrig
   ##  -> uses getOption("FONKgLow") to build message
   ## => FONKgLow must have been set previously by buildFONKgpointls (and will be reset below)
   blob <- selectFn(FONKgpointls,

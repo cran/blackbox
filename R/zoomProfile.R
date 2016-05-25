@@ -29,7 +29,7 @@ zoomProfile <- function(fixedlist=NA, extrap=F, locchull=NULL,
   }
   ## resu$par is a full-dimensional vector but in locchull space
   vkrig <- tofullKrigingspace(resu$par) ## conversion to full kriging param space
-  canon <- canonize(vkrig)$canonVP ## completion/conversion to canonical
+  canon <- canonizeFromKrig(vkrig)$canonVP ## completion/conversion to canonical
   zut <- resu
   zut <- c(zut, par=canon, cost=cost)
   return(zut) ## zut$par is vector in canonical param space

@@ -34,7 +34,7 @@
 \alias{as.surface}
 \alias{bounds1D}
 \alias{calcKnotsInfoWrapper}
-\alias{canonize}
+\alias{canonizeFromKrig}
 \alias{checklogicalbounds}
 \alias{condaxialS2fromg}
 \alias{constrOptimR}
@@ -80,7 +80,6 @@
 \alias{minimiseGCV}
 \alias{myprettyW}
 \alias{optimWrapper}
-\alias{overcat}
 \alias{overmessage}
 \alias{parse.grid.list}
 \alias{plot.OKrig}
@@ -108,7 +107,7 @@
 \alias{providefullhull}
 \alias{provideHullwFallBack}
 \alias{provideVertices}
-%\alias{prune_by_dist}
+\alias{prune_by_dist}
 \alias{purefn}
 \alias{RAMavail}
 \alias{rawProfiles}

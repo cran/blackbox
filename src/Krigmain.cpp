@@ -10,7 +10,7 @@ int fittedparamnbr=0; // will be better filled later
 namespace NS_GG {
 int a=3;
 covTypedef b; // found no way to make templates here
-};
+}
 
 // [[Rcpp::export]]
 SEXP newCSmooth( // ici la def
@@ -171,7 +171,8 @@ SEXP CcovFocal( // ici la def
 #else
       REprintf(stst.str().c_str());
 #endif
-      Rf_error("Ccovfocal called with index out of allowed range");
+      throw Rcpp::exception("Ccovfocal called with index out of allowed range");
+      //Rf_error("Ccovfocal called with index out of allowed range");
     }
   } else {
     NumericVector xfocal(focal);

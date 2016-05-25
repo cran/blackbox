@@ -96,7 +96,7 @@ calcKnotsInfoWrapper <- function(fitobject,rosglobal,
     knots <- knots[,INFO$fittedNames]
     # lrthreshold unchanged
   }
-  ## knots must now be in sampling space (and scale) for comparison to constraints in LowUpFromKnots -> LowUpfn
+  ## knots must now be in sampling space (and scale) for comparison to constraints in LowUpFromKnots via shrink_knots()
   samplingSpace <- INFO$samplingSpace
   NOTINKGSPACESCALE <- (length(samplingSpace %w/o% INFO$FONKgNames)>0
                         || ! identical(INFO$FONKgScale,
@@ -175,8 +175,9 @@ generateNewPoints <- function(pointnbr=-1, ##   pointnbr is the target size for 
                               verbose=FALSE ## verbosity for development purposes
                               ) {
 #browser()
-  INFO <- blackbox.options()[c("FONKgLow","fittedNames","fittedparamnbr","ParameterNames","FONKgNames","memcheck","barycenterFn","scalefactor",
-                               "parDigits")]
+  INFO <- blackbox.options()[c("FONKgLow","fittedNames","fittedparamnbr","ParameterNames",
+                               "FONKgNames","memcheck","barycenterFn","scalefactor",
+                               "samplingSpace","parDigits")]
   FONKgLow <- INFO$FONKgLow
   fittedNames <- INFO$fittedNames
   fittedparamnbr <- INFO$fittedparamnbr
@@ -221,7 +222,8 @@ generateNewPoints <- function(pointnbr=-1, ##   pointnbr is the target size for 
     } ## else leave knots unchanged
     if (is.null(focalPoint)) { ## then perform an optim to find default focalPoint
       barycenter <- do.call(INFO$barycenterFn, list(vertices=knots))
-      barycenter <- tofullKrigingspace(barycenter) ## as the knots (presumably)
+      ## knots in in sampling scale, optim in sampling scale, return valu in fullKg space
+      # apparent bug : barycenter <- tofullKrigingspace(barycenter) ## as the knots (presumably)
       optr <- optimWrapper( ##purefn,
         initval=barycenter, gr=NULL,
         chullformats=knotsInfo$knotsVH,
@@ -229,6 +231,7 @@ generateNewPoints <- function(pointnbr=-1, ##   pointnbr is the target size for 
           fnscale=-1/INFO$scalefactor, trace=FALSE, maxit=10000))
       ## may fail if optimize on a facet of the hull
       focalPoint <- optr$par
+      focalPoint <- fromFONKtoanyspace(focalPoint,INFO$samplingSpace)
     }
     #}
     #
@@ -273,7 +276,7 @@ generateNewPoints <- function(pointnbr=-1, ##   pointnbr is the target size for 
       ## this samples within vT => does not extrapolate beyond vT
       candidates <- select_ByLogic(candidates,fittedNames=fittedNames,fittedparamnbr=fittedparamnbr)
       nbrfeasibletriedpoints <- nbrfeasibletriedpoints+nrow(candidates)
-      candidates <- toCanonical(candidates, FONKgLow=FONKgLow, othernames=othernames)
+      candidates <- toCanonical(candidates, FONKgLow=FONKgLow)
     }
     #
     if (! is.null(candidates)) {
@@ -315,31 +318,6 @@ generateNewPoints <- function(pointnbr=-1, ##   pointnbr is the target size for 
   return(previous)
 } # end generateNewPoints
 
-## complete points if not full dimentional before calling canonize
-## input has dim. Since 2016/01/05, output always has dim
-toCanonical <- function(candidates, FONKgLow, othernames) {
-  INFO <- list(ParameterNames=blackbox.getOption("ParameterNames"))
-  if (length(othernames)>0) {
-    if (is.data.frame(candidates)) {
-      candidates <- cbind(candidates,t(FONKgLow[othernames])) ## syntax OK for df et matrix et no rownames warning.
-    } else {
-      candidates <- cbind(candidates,FONKgLow[othernames])
-      colnames(candidates)[ncol(candidates)+1L-seq_len(length(othernames))] <- othernames
-    }
-  }
-  ## now this has the dimension of FONKgNames
-  if(nrow(candidates)>1) {
-    candidates <- apply(candidates, 1, function(v) {canonize(v)$canonVP}) ## transposed // expected; except if fittedparamnbr==1...
-    if (length(INFO$ParameterNames)>1L) {
-      candidates <- t(candidates)
-    } else candidates <- matrix(candidates, ncol=1)
-    ## apply loses $canonVP names and instead copies the candidates' names...
-    colnames(candidates) <- INFO$ParameterNames
-  } else {
-    candidates <- t(canonize(candidates)$canonVP) ## t() converts to matrix with the column names
-  }
-  return(candidates)
-}
 
 
 selectByLR <- function(candidates, lrthreshold, othernames, FONKgLow, fittedparamnbr) {
@@ -347,7 +325,7 @@ selectByLR <- function(candidates, lrthreshold, othernames, FONKgLow, fittedpara
   bons <- ( (!is.na(pred)) & (pred> lrthreshold )) ## selection according to predicted likelihood
   if(any(bons)) {
     candidates <- candidates[which(bons), , drop=FALSE]
-    candidates <- toCanonical(candidates=candidates, FONKgLow=FONKgLow, othernames=othernames)
+    candidates <- toCanonical(candidates=candidates, FONKgLow=FONKgLow)
     return(candidates)
   } else return(NULL)
 }
@@ -408,9 +386,11 @@ select_ByHull_ByLogic <- function(candidates, localLow, localUp, fittedparamnbr,
               newLowUp=newLowUp, localLow=localLow, localUp=localUp))
 }
 
-shrink_knots <- function(knots, lower, upper,verbose=FALSE) {
+shrink_knots <- function(knots, ## must be in samplingSpace 
+                         lower, ## samplingSpace
+                         upper,verbose=FALSE) {
   if (verbose) { message.redef(paste("Shrinking the (",paste(dim(knots),collapse="x"),") knots to the bounds..."))  }
-  redundantknots <- apply(knots, 1, fitinbounds, lower=lower, upper=upper) ## tentatively SHRINKING the HULL to new bounds
+  redundantknots <- apply(knots, 1, fitinbounds, lower=lower, upper=upper) ## SHRINKING to new bounds
   if ( ! is.null(redundantknots)) {
     if (is.matrix(redundantknots)) {
       redundantknots <- t(redundantknots) ## classic apply() problem

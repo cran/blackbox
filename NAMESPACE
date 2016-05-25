@@ -15,7 +15,7 @@ importFrom("utils", "memory.size", "object.size","read.csv","dump.frames","captu
 importFrom(geometry,convhulln,delaunayn)
 importFrom(rcdd,d2q,q2d,scdd,lpcdd,qneg,qmatmult,qdq,qmq,addHeq,redundant)
 importFrom(spaMM,corrHLfit,spaMM.colors,volTriangulation,rvolTriangulation,niceLabels,rsimplex,subsimplices.volTriangulation)
-importFrom(spaMM,HLCor,fixef,spaMM.getOption,generateFileName,ULI,locatePointinvT)
+importFrom(spaMM, HLCor, fixef, spaMM.getOption, generateFileName, ULI, locatePointinvT, MaternCorr, overcat)
 importFrom(proxy,dist)
 importFrom(numDeriv,grad,hessian,jacobian)
 importFrom(lattice,wireframe)

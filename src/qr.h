@@ -6,10 +6,10 @@
 #include "RcppEigen.h"
 
 
-/** we use QR decomp to obtain (a part of) the Q matrix Q_2 that is conbined with
-covTypedef arguments to yielf the matrix which eigensystem will be used. That means that
+/** we use QR decomp to obtain (a part of) the Q matrix Q_2 that is combined with
+covTypedef arguments to yield the matrix whose eigensystem will be used. That means that
 QR output should be covTypedef; and the QR method (Householder transformations) is numericallly stable, so it should not
-require an higher precision than covTypedef
+require a higher precision than covTypedef
 
 Thus QRtype = covTypedef should be OK. But it is constrained to be double.
 

@@ -41,7 +41,7 @@ findReplicates <- function(ptls) {
     message.redef("(!) Some parameter point(s) occur more than twice.")
     message.redef("    This typically results from appending twice or more a single likelihood estimate to the pointls file.")
     message.redef("    Look in particular for replicates of the following cordinates in the pointls file:")
-    apply(ptlsx[errorcheck, , drop=FALSE], 1, function(v) {message.redef(canonize(v)$canonVP)})
+    apply(ptlsx[errorcheck, , drop=FALSE], 1, function(v) {message.redef(canonizeFromKrig(v)$canonVP)})
     stop.redef("Exiting as a result of some parameter point(s) occurring more than twice.")
   }
   sorteddoublonsnames <- as.character(sort(as.numeric(c(pifreplnames, pafreplnames)))) ## length is twice the nbr of repls

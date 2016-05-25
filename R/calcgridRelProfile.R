@@ -9,7 +9,8 @@ calcGridRelProfile <- function(fixed, profileMethod="profileBySubHull",
   INFO <- list(fittedNames=blackbox.getOption("fittedNames"),
                fittedparamnbr=blackbox.getOption("fittedparamnbr"),
                FONKgNames=blackbox.getOption("FONKgNames"),
-               profile3passesBool=blackbox.getOption("profile3passesBool"))
+               profile3passesBool=blackbox.getOption("profile3passesBool"),
+               margProfsInfo=blackbox.getOption("margProfsInfo"))
   ## Determines x and y grids if not given in the arguments:
   if (is.na(xGridloc)) {xGrid <- gridfn(fixed[1], gridsteps, margefrac=1/(2*(gridsteps-1)), varnameS=fixed)} else {xGrid <- xGridloc}
   if (length(fixed)>1) {
@@ -44,10 +45,10 @@ calcGridRelProfile <- function(fixed, profileMethod="profileBySubHull",
   ##... When Nb is in fixed, only the 2Nm value of othervals can be used in profiling()
   ##... but current behaviour for case where Nb is in boundvars too is
   ##... (1) not to include 2Nm in othervars, and
-  ##... (2) to include g only in othervaras and profpts.
+  ##... (2) to include g only in othervars and profpts.
   ##... Given this, a bit more adhockery is needed.
   if ("latt2Ns2" %in% fixed && "twoNm" %in% othervars) {othervars <- (othervars %w/o% "twoNm")}
-  ## FR->FR what if 2Nm in fixed and Nb in fittedNames ? does this occur and shouldn't this be handled in a parallel way ?
+  if ("twoNm" %in% fixed && "latt2Ns2" %in% othervars) {othervars <- (othervars %w/o% "latt2Ns2")}
   if ("Nratio" %in% fixed && "twoNmu" %in% othervars) {othervars <- (othervars %w/o% "twoNmu")}
   if ("Nancratio" %in% fixed && "twoNmu" %in% othervars) {othervars <- (othervars %w/o% "twoNmu")}
   if ("NactNfounderratio" %in% fixed && "twoNmu" %in% othervars) {othervars <- (othervars %w/o% "twoNmu")}
@@ -130,7 +131,7 @@ calcGridRelProfile <- function(fixed, profileMethod="profileBySubHull",
               grmf <- do.call(profileMethod,locarglist) ## returns canonical vector
               previousvalue <- profpts[i, j, poslogL]
               ######## change 12/2011 (see additional comments in version < 29/01/2016)
-              ### new code replaces even in new value is out of space and old one was in:
+              ### new code replaces in the grid even in new value is out of space and old one was in:
               if ( ! is.na(grmf$value) && (is.na(previousvalue) || grmf$value>previousvalue)) {
                 profpts[i, j, ] <- c(grmf$par[othervars], grmf$value)
                 inKrigSpace[i, j] <- grmf$inKgspace
@@ -167,7 +168,7 @@ calcGridRelProfile <- function(fixed, profileMethod="profileBySubHull",
     } ## x loop
   } ## end iteration on passes
   if (length(fixed)>1L) {
-    locfn <- function(fixed,MARGIN,Grid,oGrid) {
+    locfn <- function(fixed,MARGIN,Grid,oGrid,INFO) { # to improve 1D profiles
       otherMARGIN <- 3L-MARGIN
       locarglist <- list(fixedlist=list(),otherlist=list())
       whichmaxS <- apply(profpts[,,poslogL,drop=FALSE],MARGIN, function(rowOrCol) {
@@ -180,13 +181,14 @@ calcGridRelProfile <- function(fixed, profileMethod="profileBySubHull",
         rc <- cbind(Seq,whichmaxS)
       } else {rc <- cbind(whichmaxS,Seq)}
       marginKgspace <- inKrigSpace[rc]
+      oldmargProfsInfoMARGIN <- INFO$margProfsInfo[[fixed[MARGIN]]]
+      oldmargprof <- oldmargProfsInfoMARGIN$margprof
       margprof <- profpts[cbind(rc,poslogL)]
-      oldmargprof <- .blackbox.data$options$margProfsInfo[[fixed[MARGIN]]]$margprof
       if (is.null(oldmargprof) || length(oldmargprof)!=length(margprof)) {
         oldmargprof <- rep(-Inf,length(margprof))
         oldinKgspace <- NULL
       } else {
-        oldinKgspace <- .blackbox.data$options$margProfsInfo[[fixed[MARGIN]]]$inKgSpace
+        oldinKgspace <- oldmargProfsInfoMARGIN$inKgSpace
       }
       keepOld <- (margprof <= oldmargprof)
       keepOld[is.na(keepOld)] <- is.na(margprof)[is.na(keepOld)]
@@ -213,8 +215,8 @@ calcGridRelProfile <- function(fixed, profileMethod="profileBySubHull",
                   margprof=margprof,inKgSpace=marginKgspace)
       return(res)
     }
-    margresu1 <- locfn(fixed=fixed,MARGIN=1L,Grid=xGrid,oGrid=yGrid)
-    margresu2 <- locfn(fixed=fixed,MARGIN=2L,Grid=yGrid,oGrid=xGrid)
+    margresu1 <- locfn(fixed=fixed,MARGIN=1L,Grid=xGrid,oGrid=yGrid,INFO=INFO)
+    margresu2 <- locfn(fixed=fixed,MARGIN=2L,Grid=yGrid,oGrid=xGrid,INFO=INFO)
   }
   #resets maximum if a better point has been found
   if ( ! is.null(tempBestfull) ) { ## := a better point has been found in Kg space
@@ -236,6 +238,7 @@ calcGridRelProfile <- function(fixed, profileMethod="profileBySubHull",
   }
   if (length(fixed)>1L) {
     margRelLik1 <- exp(margresu1$margprof-blackbox.getOption("rosglobal")$value)
+    ##  direct access required
     .blackbox.data$options$margProfsInfo[[fixed[1L]]] <- c(margresu1,list(RelLik=margRelLik1))
     margRelLik2 <- exp(margresu2$margprof-blackbox.getOption("rosglobal")$value)
     .blackbox.data$options$margProfsInfo[[fixed[2L]]] <- c(margresu2,list(RelLik=margRelLik2))

@@ -43,7 +43,7 @@ pointsToFONK <- function(pointls,set_options=FALSE) {
     blackbox.options(constantNames=FONKgNames %w/o% fittedNames)
     blackbox.options(fittedparamnbr=length(fittedNames)) ## variables retained in 'ptls <- FONKgpointls[first:last, fittedNames]' in generatePredictor()
   }
-  for (st in FONKgNames) { ## FONKgScale in iterator bc FONKgScale is used by 'canonize'
+  for (st in FONKgNames) { ## FONKgScale in iterator bc FONKgScale is used by 'canonizeFromKrig'
     ## otherwise exp(.) may be returned instead of (.) in (highest lik, new points...) for constant parameters specified as logscale
     if(islogscale(st)) {FONKgpointls[, st] <- log(FONKgpointls[, st])}
   }

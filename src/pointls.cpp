@@ -51,7 +51,8 @@ int Cpointls::read_pointls(std::string filename) {
         inFile.clear();
   		exit(-1);
 #else
-      Rf_error("Unable to open file... I exit");
+  		throw Rcpp::exception("Unable to open file.");
+  		//Rf_error("Unable to open file... I exit");
 #endif
   	}
   	while (!inFile.eof()) {

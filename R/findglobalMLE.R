@@ -4,7 +4,7 @@ findglobalMLE <- function(initptinfK) {
     chullformats=blackbox.getOption("hulls")$Kgtotal, ##
     control=list( ##  parscale is provided within optimWrapper
       fnscale=-1/blackbox.getOption("scalefactor"), trace=FALSE, maxit=10000))
-  canonized <- canonize(blob$par)
+  canonized <- canonizeFromKrig(blob$par)
   DemographicModel <- blackbox.getOption("DemographicModel")
   if ("IBD" %in% DemographicModel) {
     blob <- c(blob, list(latt2Ns2=canonized$latt2Ns2))

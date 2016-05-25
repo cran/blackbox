@@ -257,7 +257,7 @@ int CSmooth::fillcovMat(const Typeforcov& locsmoothness) {
 //ostream_vec_vector(covMat,std::cout);
 //std::cout<<"]";
 return 0;
-};
+}
 
 
 
@@ -268,7 +268,7 @@ int CSmooth::fillcovFocal() {
     covFocal[jj]=Matern<Typeforcov>(euclFocal[jj],smoothness);
   }
   return 0;
-};
+}
 
 template<typename Typeforcov,typename TypeforES>
 int CSmooth::Krig_coef(Typeforcov lambda) { //constructs predictor in compact form
@@ -343,7 +343,7 @@ int CSmooth::Krig_coef(Typeforcov lambda) { //constructs predictor in compact fo
     // least square fit of input-value to return-value, input-value=T.(return-value)+e
     QR_T->coef<TypeforES>(coefs_fixed); ///output container = input;  (size=nrow mais seuls les ncolT premiers sont non-nuls)
 return 0;
-};
+}
 
 
 

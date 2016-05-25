@@ -128,7 +128,7 @@ profileByFullHull <- function(fixedlist=NA, otherlist=NULL,
   solution <- optr$solution
   names(solution) <- subnames
   vkrig <- tofullKrigingspace(solution,fixedlist)
-  canon <- canonize(vkrig)$canonVP ## completion/conversion to canonical
+  canon <- canonizeFromKrig(vkrig)$canonVP ## completion/conversion to canonical
   if (extrap==TRUE || length(notinKgspace)>0L ) {
     inKgspace <- isPointInCHull(vkrig, constraints=INFO$Kgtotal[c("a", "b")])
     # this typically determines whether the relLik appears as "extrapolated" in a plot

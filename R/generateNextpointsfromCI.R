@@ -9,18 +9,14 @@ generateNextpointsfromCI <- function(n, ## number of points generated PER CI poi
                                      verbose=FALSE
                                      ) {
   if (verbose) { message.redef("Generating points from confidence interval bounds...")  }
-  fitobject <- blackbox.getOption("fitobject")
-  rosglobal <- blackbox.getOption("rosglobal")
-  fittedNames <- blackbox.getOption("fittedNames")
-  fittedparamnbr <- blackbox.getOption("fittedparamnbr")
-  FONKgNames <- blackbox.getOption("FONKgNames")
-  FONKgLow <- blackbox.getOption("FONKgLow")
-  othernames <- FONKgNames %w/o% fittedNames
+  INFO <- blackbox.options()[c("fitobject","rosglobal","fittedNames","fittedparamnbr","FONKgNames",
+                               "FONKgLow","RMSpred","FONKgScale","samplingSpace","samplingScale")]
+  othernames <- INFO$FONKgNames %w/o% INFO$fittedNames
   #
-  probErr <- blackbox.getOption("RMSpred")*qnorm(0.99, 0, 1) ## qnorm thus misses 1% unidirectionally
-  locblob <- provideHullwFallBack(fitobject=fitobject,
-                                  lrthreshold=( rosglobal$value -posdlr*dlrtolerance -probErr ),
-                                  rosglobal=rosglobal,
+  probErr <- INFO$RMSpred*qnorm(0.99, 0, 1) ## qnorm thus misses 1% unidirectionally
+  locblob <- provideHullwFallBack(fitobject=INFO$fitobject,
+                                  lrthreshold=( INFO$rosglobal$value -posdlr*dlrtolerance -probErr ),
+                                  rosglobal=INFO$rosglobal,
                                   dlrtolerance=dlrtolerance,probErr=probErr,verbose=verbose)
   if (locblob$warn) {
     message.redef("(!)  Few good training points for ascertaining CIs.")
@@ -28,8 +24,8 @@ generateNextpointsfromCI <- function(n, ## number of points generated PER CI poi
   }
   knotsFromFitobject <- locblob$knots
   #
-  cumulgoodpoints <- as.data.frame(matrix(nrow=0, ncol=fittedparamnbr))
-  parnames <- intersect(names(CIpointsList), fittedNames) # the following code works without this, but
+  cumulgoodpoints <- as.data.frame(matrix(nrow=0, ncol=INFO$fittedparamnbr))
+  parnames <- intersect(names(CIpointsList), INFO$fittedNames) # the following code works without this, but
   #... the current problem is that fixedPar=latt2Ns2 not in Kgspace can generate points far from the main cluster of points => ugly graphics
   for (fixedPar in parnames) {
     for (it in seq_len(nrow(stcipoints <- CIpointsList[[fixedPar]]))) {
@@ -65,8 +61,20 @@ generateNextpointsfromCI <- function(n, ## number of points generated PER CI poi
       } else cumulgoodpoints <-  rbind(cumulgoodpoints, unlist(fixed)) ## add 1DCI bound to nextpoints
     }
   }
-  cumulgoodpoints <- shrink_knots(cumulgoodpoints,lower=LowUp$localLow,upper=LowUp$localUp,verbose=verbose) 
-  cumulgoodpoints <- toCanonical(cumulgoodpoints, FONKgLow=FONKgLow, othernames=othernames)
+  ## knots must now be in sampling space (and scale) for comparison to constraints in LowUpFromKnots via shrink_knots()
+  samplingSpace <- INFO$samplingSpace
+  NOTINKGSPACESCALE <- (length(samplingSpace %w/o% INFO$FONKgNames)>0
+                        || ! identical(INFO$FONKgScale,
+                                       INFO$samplingScale))
+  if (NOTINKGSPACESCALE) {
+    cumulgoodpoints <- t(apply(cumulgoodpoints, 1, function(v) {
+      fromFONKtoanyspace(v, samplingSpace,outputScale=INFO$samplingScale) ## FR->FR pas vrai si fixedparam => calcKntsInfo => redundant => convhulln plante sur colonne constante
+    }))
+  }
+  cumulgoodpoints <- shrink_knots(cumulgoodpoints,  ## samplingSpace
+                                  lower=LowUp$localLow, ## samplingSpace
+                                  upper=LowUp$localUp,verbose=verbose) 
+  cumulgoodpoints <- toCanonical(cumulgoodpoints, FONKgLow=INFO$FONKgLow)
   cumulgoodpoints <- unique(rbind(previous, cumulgoodpoints))
   msg <- paste("    ...already", nrow(cumulgoodpoints), "points generated...")
   cat(msg)

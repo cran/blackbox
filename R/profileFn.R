@@ -83,7 +83,7 @@ profileBySubHull <- function(fixedlist=NA, otherlist=NULL, extrap=F, locchull=NU
   ) { ##point unique: 'profile' is easily computed
     point <- colMeans(subvertices) ## don't lose colnames !
     vkrig <- tofullKrigingspace(point, fixedlist) ## conversion to full kriging param space
-    canon <- canonize(vkrig)$canonVP ## completion/conversion to canonical
+    canon <- canonizeFromKrig(vkrig)$canonVP ## completion/conversion to canonical
     if (length(notinKgspace)>0  || extrap==T) { ## the two cases where we don't already know the point to be in Kgspace
       inKgspace <- isPointInCHull(vkrig, constraints=blackbox.getOption("hulls")$Kgtotal[c("a", "b")])
     } else inKgspace <- TRUE
@@ -237,7 +237,7 @@ profileBySubHull <- function(fixedlist=NA, otherlist=NULL, extrap=F, locchull=NU
   }
   ## resu$par is a vector of parameters profiled out
   vkrig <- tofullKrigingspace(resu$par, fixedlist) ## conversion to full kriging param space
-  canon <- canonize(vkrig)$canonVP ## completion/conversion to canonical
+  canon <- canonizeFromKrig(vkrig)$canonVP ## completion/conversion to canonical
   zut <- resu;
   if (length(notinKgspace)>0  || extrap==T) {  ## the two cases where we don't already know the point to be in Kgspace
     inKgspace <- isPointInCHull(vkrig, constraints=blackbox.getOption("hulls")$Kgtotal[c("a", "b")])

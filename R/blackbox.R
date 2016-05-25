@@ -140,7 +140,7 @@ bbrhull <- function(n, from=10*n, vT,
     } else trypoints <- matrix(trypoints,ncol=1L)
   }
   colnames(trypoints) <- outputVars ## 'apply' feature
-  trypred <- predict(object, newdata=as.data.frame(trypoints), predVar=TRUE)
+  trypred <- predict(object, newdata=as.data.frame(trypoints), variances=list(predVar=TRUE))
   trySE <- attr(trypred, "predVar")
   trySE[trySE<0] <- 0
   trySE <- sqrt(trySE)

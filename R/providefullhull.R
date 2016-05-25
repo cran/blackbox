@@ -67,7 +67,7 @@ providefullhull <- function(varnames) { ##varnames should include variables not 
     if (is.null(locchull <- blackbox.getOption("hulls")$Kgtotal)) {
       if (  blackbox.getOption("redundant.mode")=="defaultPrecision") redmode <- "double"
       locchull <- resetCHull(tmp1, formats=c("vertices", "vertices001", "constraints"), redundant.mode=redmode)
-      .blackbox.data$options$hulls$Kgtotal <- locchull ## ici l'acces direct aux membres de la liste est utile
+      .blackbox.data$options$hulls$Kgtotal <- locchull ## direct access required
     }
     return(list(Kgtotal=locchull))
   }
@@ -87,7 +87,7 @@ providefullhull <- function(varnames) { ##varnames should include variables not 
     colnames(tmp1) <- outputnames  ## the outputname are lost by apply which keeps the original names !!
     locchull <- resetCHull(tmp1, formats=c("vertices", "constraints"), redundant.mode=redmode)
     locchull <- matchVertCons(locchull) ## ADDS correspondance between vertices and constraints
-    .blackbox.data$options$hulls[[namebit]] <- locchull ## .blackbox required here
+    .blackbox.data$options$hulls[[namebit]] <- locchull ##  direct access required
   }
   resu <- list(locchull)
   names(resu) <- namebit

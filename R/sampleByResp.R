@@ -120,8 +120,7 @@ sampleByResp <- function(size=blackbox.getOption("nextPointNumber"),
     subvT <- subsimplices.volTriangulation(redundvT,whichSimplex)
     candidates <- rvolTriangulation(n=n6,subvT)
   }
-  candidates <- toCanonical(candidates,FONKgLow = INFO$FONKgLow,
-                            othernames=INFO$FONKgNames %w/o% INFO$fittedNames)
+  candidates <- toCanonical(candidates,FONKgLow = INFO$FONKgLow)
   goodpoints <- rbind(goodpoints,candidates )
   plotcolors <- c(plotcolors,rep("orange",NROW(candidates))) ## orange : near inferred maximum
   ###################### => expand (size/5) +CI (<size/2) + rosglobal (6)
@@ -130,8 +129,7 @@ sampleByResp <- function(size=blackbox.getOption("nextPointNumber"),
   if (any(! whichSimplices)) { ## s'il y a des simplex en dehors du sommet
     subvT <- subsimplices.volTriangulation(redundvT, - whichSimplices)
     candidates <- rhullByEI(n=ceiling(size/10),vT=subvT,object=spaMMfit)
-    candidates <- toCanonical(candidates,FONKgLow = INFO$FONKgLow,
-                              othernames=INFO$FONKgNames %w/o% INFO$fittedNames)
+    candidates <- toCanonical(candidates,FONKgLow = INFO$FONKgLow)
     goodpoints <- rbind(goodpoints,candidates )
     plotcolors <- c(plotcolors,rep("cyan",NROW(candidates))) ## cyan= EI outside the "top" region
   }
@@ -139,8 +137,7 @@ sampleByResp <- function(size=blackbox.getOption("nextPointNumber"),
   ###################### filling "top" simplices:
   subvT <- subsimplices.volTriangulation(redundvT,whichSimplices)
   candidates <- rvolTriangulation(n=ceiling((size-nrow(goodpoints))*3/4),subvT)
-  candidates <- toCanonical(candidates,FONKgLow = INFO$FONKgLow,
-                            othernames=INFO$FONKgNames %w/o% INFO$fittedNames)
+  candidates <- toCanonical(candidates,FONKgLow = INFO$FONKgLow)
   goodpoints <- rbind(goodpoints,candidates )
   plotcolors <- c(plotcolors,rep("green",NROW(candidates))) ## green = non convex sampling of top (as def'd by CI threshold) vertices
   ###################### => expand (size/5) +CI (<size/2) + rosglobal (6) + EI (size/10) + top (3/4 or rest)

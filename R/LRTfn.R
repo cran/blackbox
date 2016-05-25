@@ -79,7 +79,7 @@ LRTfn <- function(LRTfixedvals, cleanResu) { ## LRTfixedvals is already in logsc
         ## and if this is relevant for rosglobal in Kriging hull...
         if ( ros$value>rosglobal$value ## if maximum lik is higher than that of current rosglobal
              &&  isPointInCHull(ros$par, constraints=blackbox.getOption("hulls")$Kgtotal[c("a", "b")]) ) { ## and maximum point is also in Kriging hull
-          canonized <- canonize(ros$par)
+          canonized <- canonizeFromKrig(ros$par)
           DemographicModel <- blackbox.getOption("DemographicModel")
           if ("IBD" %in% DemographicModel) {
             ros <- c(ros, list(latt2Ns2=canonized$latt2Ns2))
@@ -110,7 +110,7 @@ LRTfn <- function(LRTfixedvals, cleanResu) { ## LRTfixedvals is already in logsc
     pval <- (1-pchisq(LRT, df=length(LRTfixedvals))) ## p values
   } else {pval <- NA}
   if( ! any(is.na(KrigVec))) {
-    profpt.canon <- canonize(KrigVec)$canonVP
+    profpt.canon <- canonizeFromKrig(KrigVec)$canonVP
     resust <- paste("LRT for [ ", fixedstring, " ]: ", prettynum(LRT), ", and Pvalue: ", prettynum(pval), #
                   " (at [ ", paste(prettynum(profpt.canon), collapse=", "), " ]_c )", sep="")
     cat(resust, "\n")

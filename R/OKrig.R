@@ -1,6 +1,5 @@
 # wrapper for CKricoefs...
-OKrig <- function (x, Y)
-{
+OKrig <- function (x, Y) {
    xy <- x
    xy$y <- Y
    nuniquerows <- nrow(unique(x))
