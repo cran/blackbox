@@ -3,7 +3,9 @@
 #include <limits>
 #include <ctime>
 #include <algorithm> // stable_sort
+#define R_NO_REMAP
 #include "R.h"
+//#undef error
 #include "Krigtypes.h"
 #include "smooth.h"
 #include "smoothFriends.h"  // // FRIENDs de la class CSmooth
@@ -97,7 +99,7 @@ std::cout<<rtb;getchar();*/
            if (batchDebug) cin.get();
            exit(-1);
 #else
-     error("(!) From CSmooth::bisection_search() : Too many bisections. \n");
+     Rf_error("(!) From CSmooth::bisection_search() : Too many bisections. \n");
 #endif
         }
 return(numeric_limits<covTypedef>::signaling_NaN());
@@ -174,7 +176,7 @@ int CSmooth::sort_compress() {
   		if (batchDebug) std::cin.get();
   		exit(-1);
 #else
-       error("(!) CSmooth::sort_compress() called on data with suspicious number of columns");
+       Rf_error("(!) CSmooth::sort_compress() called on data with suspicious number of columns");
 #endif
    }
 //std::cout<<xy[0][0]<<" "<<xy[0][1]<<" "<<xy[0][2];getchar();
@@ -351,7 +353,7 @@ int CSmooth::filleuclArray() { // this function call only in Krig_engine_default
               stst.str("");
             }
             REprintf("%s\n",st.c_str());
-            error("(!) From CSmooth::filleuclArray(): Inf/NaN euclidian distance");
+            Rf_error("(!) From CSmooth::filleuclArray(): Inf/NaN euclidian distance");
 #endif
         }
      }

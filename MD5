@@ -1,4 +1,4 @@
-9c155d1bbe133497802dc6155b2935ac *DESCRIPTION
+14b9ee1a0335caa0137a9b53c2fcb909 *DESCRIPTION
 ad078b6be7be92c0bc6816eb21cff200 *NAMESPACE
 6a954864c4c9cb92e79a3273768b5ade *R/AUEformat.R
 364cb5fde6328ea1e0346ca74d4fa8c6 *R/CKrigcoefs.R
@@ -150,9 +150,9 @@ e025690fd4e0172ab7fefa1bf7990dac *src/gammln.h
 e2295e4571e26d1cc4f6a8c0bda4f7b0 *src/intern_newCSmooth.h
 ef1506b47a64a6760b61731064404e37 *src/pointls.cpp
 ed2c2fdd73674dbb0e04fef1ff8d3f7d *src/pointls.h
-aa406722491f4200397e1d1bc7bc6391 *src/qr.h
-4f685d7a18424c7750d12e4ae3d318f5 *src/smooth.cpp
-3ef35e6392ca8e7def661978e28445d0 *src/smooth.h
-c86eef0214978698596dd93e57b2b054 *src/smoothFriends.h
+d15d4be26968e7f608f6359d0f716785 *src/qr.h
+7acbba753938dbf2562d09396705c271 *src/smooth.cpp
+950953016943e34af82f16579c1dd763 *src/smooth.h
+ce796eab95b7dad716716c26328350ac *src/smoothFriends.h
 fb3eb6124bd3c53a614a94677f5b5f00 *tests/test-all.R
 5d7423393d41ab4ba3f4a0a75493d036 *tests/testthat/test-1D.R

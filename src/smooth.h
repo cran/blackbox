@@ -60,7 +60,7 @@ bool compareX(std::vector<someType> a, std::vector<someType> b) {
 #ifndef NO_R_CONSOLE // NOT NO_R = if DLL
 // called from R code: the arrya should already be sorted so that the order of
 // krig coefficients is the same in C and R code
-            if ((*ita)!=(*itb)) error("(!) From compareX() in DLL : parameter points provided by R call not sorted. \n");
+            if ((*ita)!=(*itb)) Rf_error("(!) From compareX() in DLL : parameter points provided by R call not sorted. \n");
 #endif
             ita++;itb++;
         }
@@ -156,7 +156,7 @@ const TypeforBrent ZEPS=(100.*EPSILON);
     exit(-1);
 #else
      REprintf("%d iterations.",ITMAX); // typically goes to
-     error("(!) From CSmooth::brent(): Too many iterations.\n");
+     Rf_error("(!) From CSmooth::brent(): Too many iterations.\n");
 #endif
 return fx;
 }

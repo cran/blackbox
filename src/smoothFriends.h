@@ -97,7 +97,7 @@ Typeforcov Krig_fgcv(Typeforcov lambda) {
         stst.str("");
 
 }
-        error("(!) (!) From Krig_fgcv() in DLL: !dfOver_n>0.");
+        Rf_error("(!) (!) From Krig_fgcv() in DLL: !dfOver_n>0.");
 #endif
     }
 
@@ -164,7 +164,7 @@ Typeforcov match_fs2hat_pure_error(Typeforcov lambda) {
         st+=stst.str()+" ";
         stst.str("");
         Rprintf("%s\n",st.c_str());
-        error("");
+        Rf_error("");
 #endif
     }
     fnevalcounter++;
@@ -245,7 +245,7 @@ int CSmooth::fillcovMat(const Typeforcov& locsmoothness) {
           if (batchDebug) std::cin.get();
           exit(-1);
 #else
-          error("(!) From CSmooth::fillcovMat(): something wrong with Matern covariance evaluation");
+          Rf_error("(!) From CSmooth::fillcovMat(): something wrong with Matern covariance evaluation");
 #endif
         }
         covMat[ii][jj]=covMat[jj][ii]=tmp; //iint<=jint semi matrix
@@ -299,7 +299,7 @@ int CSmooth::Krig_coef(Typeforcov lambda) { //constructs predictor in compact fo
            if (batchDebug) std::cin.get();
            exit(-1);
 #else
-           error("(!) From Krig_coef(): lambda neither explicitly given nor previously computed by GCV\n");
+           Rf_error("(!) From Krig_coef(): lambda neither explicitly given nor previously computed by GCV\n");
 #endif
         }
     }
@@ -637,7 +637,7 @@ Typeforcov CSmooth::gcv_Krig() {//estimates lambda by GCV, returns GCV criterion
        if (batchDebug) std::cin.get();
        exit(-1);
 #else
-     error("(!) From CSmooth::gcv_Krig(): problem with bounds. Seek this message in source and compare to Migraine code\n");
+     Rf_error("(!) From CSmooth::gcv_Krig(): problem with bounds. Seek this message in source and compare to Migraine code\n");
 #endif
     }
     lo+=(hi-lo)/80000.;
