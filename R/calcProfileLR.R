@@ -68,7 +68,7 @@ calcProfileLR <- function(varNames=blackbox.getOption("fittedNames"),
   pairlist <- checklist ## now contains only pairs valid for calcGridRelProfile
   if (length(pairlist)>0) {
     message.redef(paste("*** Computing ", length(pairlist), " two-dimensional profile confidence plots *** (may be slow)", sep=""))
-    write("\n", file=cleanResu)
+    #write("\n", file=cleanResu)
   }
   loccex.axis=INFO$graphicPars$cex.axis
   ## main loop
@@ -140,12 +140,11 @@ calcProfileLR <- function(varNames=blackbox.getOption("fittedNames"),
                                 points(xMLcoord, yMLcoord, pch="+");
                                 axis(1, at=xat, labels=mantissExp(xlabs), cex.axis=loccex.axis);
                                 axis(2, at=yat, labels=mantissExp(ylabs), cex.axis=loccex.axis)})
-      ## for grey scale figure one needs to have package gplots installed;
       if (("BWPlots" %innc% INFO$plotOptions) && length(yGrid)>1) {
         if (INFO$interactiveGraphics) provideDevice(bbdefaultPars=TRUE) ## one window for _each_ graphic
         filled.contour(x=xGrid, y=yGrid, cautiousRelLik, xlab=xlegend,
                        ylab=ylegend, main=localmain,
-                       col=colorpanel(20, "grey75", "white"),
+                       col=gray(seq(0.75,1,len = 20)), # gplots::colorpanel(20, "grey75", "white"), #
                        plot.axes={contour(xGrid, yGrid, RelLik, add=T, nlevels=1, levels=niveaux, labcex=INFO$graphicPars$labcex);
                                   #				   points(xGrid[BadExtrapol[, 1]], yGrid[BadExtrapol[, 2]], pch=19);
                                   points(xMLcoord, yMLcoord, pch="+");

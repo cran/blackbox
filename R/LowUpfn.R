@@ -6,13 +6,13 @@ LowUpfn <- function(lower, upper, boundstype="logical", scale=.blackbox.data$opt
   DemographicModel <- blackbox.getOption("DemographicModel")
   if ("IBD" %in% DemographicModel) D2bool <- ("2D" %in% DemographicModel)
   if (boundstype=="logical") {
-    maxima <- list(g=1, pGSM=1, Q1=0.999999999,twoNm=Inf, twoNmu=Inf, twoNfoundermu=Inf, twoNancmu=Inf, `T`=Inf, D=Inf,
+    maxima <- list(g=1, pGSM=1, Q1=0.999999,twoNm=Inf, twoNmu=Inf, twoNfoundermu=Inf, twoNancmu=Inf, `T`=Inf, D=Inf,
                    condS2=Inf)
-    minima <- list(g=0, pGSM=0, Q1=0.000000001,twoNm=0, twoNmu=0, twoNfoundermu=0, twoNancmu=0, `T`=0, D=0,
+    minima <- list(g=0, pGSM=0, Q1=0.000001,twoNm=0, twoNmu=0, twoNfoundermu=0, twoNancmu=0, `T`=0, D=0,
                    condS2=condaxialS2fromg(0, D2bool=D2bool) )
   } else if (boundstype=="numerical") {
-    maxima <- list(pGSM=0.99,Q1=0.999999999)
-    minima <- list(g=0,pGSM=0.01,Q1=0.000000001)
+    maxima <- list(pGSM=0.99,Q1=0.999999)
+    minima <- list(g=0,pGSM=0.01,Q1=0.000001)
     if ("IBD" %in% DemographicModel) {
       locnames <- unlist((lapply(blackbox.getOption("LRTlist"), function(l) {l$LRTnames})))
       if (length(intersect(c("condS2", "latt2Ns2"), c(blackbox.getOption("FONKgNames"), locnames)))>0) {

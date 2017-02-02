@@ -1,7 +1,8 @@
-#include "R.h" // fn error() pour message erreur
 #include "Krigtypes.h"
-#include "smooth.h"
+#define R_NO_REMAP
+#include "smooth.h" // (includes qr.h which includes R.h)
 #include "smoothFriends.h"
+#include "R.h" // fn error() pour message erreur
 using namespace Rcpp;
 
 

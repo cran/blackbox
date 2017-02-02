@@ -13,8 +13,8 @@ redundant.addVeq <- function(vertices, value,
     ##if (value>min(vertices) && value<max(vertices)) {resu <- array(value, dim=c(1, 1))} else resu <- NULL
   } else {
     if (is.null(simplicesIndices)) {
-      if (sessionInfo()$R.version$`svn rev` < "69993") {
-        ## FR->FR should be obsolete some day... load def of capture.output from R devel, future 3.3.0
+      if (getRversion()<'3.3.0') {
+        ## FR->FR should be obsolete when blackbox requires 3.3.0 or more  
         capture.output <- temp_capture.output
       } ## else R already has the right capture.output
       abyss <- capture.output(simplicesIndices <- try(convhulln(vertices, "Pp")),type="message")

@@ -40,8 +40,10 @@ calcGCV <- function(sorted_data=data, ## assumes sorted data
     message.redef(locstring)
     }
   }
+  if (verbose) {
     locstring <- paste("    Selection of points for GCV:", sep="")
     message.redef(locstring)
+  }
   if ("Migraine" %in% blackbox.getOption("usedBy")) blackbox.options(CovFnParam=CovFnParam)
   ##
   ## lambdaEst must always be estimated even if the CovFnParams are given.

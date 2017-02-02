@@ -51,6 +51,7 @@
 \alias{from2Ns2Tocanon}
 \alias{fromFONKtoanyspace}
 \alias{fromCanonToFONK}
+\alias{generateFileName}
 \alias{generateInitpts}
 \alias{generateNewPoints}
 \alias{generatePredictor}
@@ -65,7 +66,7 @@
 \alias{knotsFromLRTlist}
 \alias{knotsFromProfileEdges}
 \alias{.ls.objects}
-%\alias{locatePointinvT}
+\alias{locatePointinvT}
 \alias{lsos}
 \alias{lsOK}
 \alias{make.surface.grid}
@@ -148,7 +149,11 @@
 \alias{transformx}
 \alias{userunit}
 \alias{verticesBarycenter}
+\alias{volTriangulation}
 \alias{volTriangulationWrapper}
+\alias{rvolTriangulation}
+\alias{subsimplices.volTriangulation}
+\alias{rsimplex}
 \alias{writeCleanNAMED}
 \alias{writeoutput}
 \alias{zoomProfile}

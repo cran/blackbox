@@ -78,7 +78,7 @@ rawProfiles <- function(unselectedKgpt, ## not needed if plottype="prediction"
       if (plottype=="both") {
         if (nrow(unselectedKgpt)!=nrow(FONKgpointls)) {
           plot(unsxx, unsyvalues,
-               cex=0.5, cex.axis=loccex.axis, col=grey(0.7), xlab="", ylab="", log=logv)
+               cex=0.5, cex.axis=loccex.axis, col=gray(0.7), xlab="", ylab="", log=logv)
           par(new=TRUE) ## will ignore previous output in the same plot (eg for axis(3), (4))
           axesBool <- TRUE ## already axes on an existing plot
         }

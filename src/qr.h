@@ -1,9 +1,9 @@
 #ifndef H_QR
 #define H_QR
 
-#include "R.h"
 #include <R_ext/Linpack.h>
 #include "RcppEigen.h"
+#include "R.h"
 
 
 /** we use QR decomp to obtain (a part of) the Q matrix Q_2 that is combined with
@@ -324,7 +324,7 @@ public:
            if (batchDebug) std::cin.get();
            exit(-1);
 #else
-        Rf_error("(!) From qy(): y vector of wrong size\n");
+           Rf_error("(!) From qy(): y vector of wrong size\n");
 #endif
         }
         for (int ii=0;ii<nrow;ii++) y[ii]=yv[ii];
@@ -342,7 +342,7 @@ public:
            if (batchDebug) std::cin.get();
            exit(-1);
 #else
-        Rf_error("(!) From QY(): y matrix of wrong size\n");
+           Rf_error("(!) From QY(): y matrix of wrong size\n");
 #endif
         }
         int ncoly=ym[0].size();
@@ -445,7 +445,7 @@ if (true) {  /// version based on calling dqrsl on each column
            if (batchDebug) std::cin.get();
            exit(-1);
 #else
-        Rf_error("(!) From Qty(): y vector of wrong size\n");
+           Rf_error("(!) From Qty(): y vector of wrong size\n");
 #endif
         }
         for ( int ii=0;ii<nrow;ii++) y[ii]=yv[ii];
@@ -463,7 +463,7 @@ if (true) {  /// version based on calling dqrsl on each column
            if (batchDebug) std::cin.get();
            exit(-1);
 #else
-        Rf_error("(!) From Qty(): y matrix of wrong size\n");
+           Rf_error("(!) From Qty(): y matrix of wrong size\n");
 #endif
         }
          int ncoly=ym[0].size();
@@ -489,7 +489,7 @@ if (true) {  /// version based on calling dqrsl on each column
            if (batchDebug) std::cin.get();
            exit(-1);
 #else
-        Rf_error("(!) From Qtyt(): y matrix of wrong size\n");
+           Rf_error("(!) From Qtyt(): y matrix of wrong size\n");
 #endif
         }
         Eigen::MatrixXd resultm(nrow,ncoly);
@@ -512,7 +512,7 @@ if (true) {  /// version based on calling dqrsl on each column
            if (batchDebug) std::cin.get();
            exit(-1);
 #else
-        Rf_error("(!) From Qyt(): y matrix of wrong size\n");
+           Rf_error("(!) From Qyt(): y matrix of wrong size\n");
 #endif
         }
         std::vector<std::vector<outputType> > resultm(0);
@@ -535,7 +535,7 @@ if (true) {  /// version based on calling dqrsl on each column
            if (batchDebug) std::cin.get();
            exit(-1);
 #else
-        Rf_error("(!) From coef(): y vector of wrong size\n");
+           Rf_error("(!) From coef(): y vector of wrong size\n");
 #endif
         }
         for ( int ii=0;ii<nrow;ii++) y[ii]=yv[ii];

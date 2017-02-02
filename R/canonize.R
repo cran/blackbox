@@ -1,16 +1,17 @@
-## wrapper around canonize, accepting matrix input and extracting canonVP 
+## wrapper around canonizeFromKrig, accepting matrix input and extracting canonVP 
 ## input has dim. Since 2016/01/05, output always has dim
-toCanonical <- function(candidates, FONKgLow,
+toCanonical <- function(candidates, ## in (possibly incomplete) Kriging space 
+                        FONKgLow,
                         otherlist=NULL ## for completion from CI info 
                         ) {
-  INFO <- blackbox.options()[c("ParameterNames","FONKgNames")]
-  if(nrow(candidates)>1) {
+  INFO <- blackbox.options()[c("ParameterNames","fittedNames")]
+  if  (is.matrix(candidates)) {
     candidates <- apply(candidates, 1, tofullKrigingspace,fixedlist=otherlist)
-    if (length(INFO$FONKgNames)>1L) {
+    if (length(INFO$fittedNames)>1L) {
       candidates <- t(candidates)
     } else candidates <- matrix(candidates, ncol=1)
     ## apply loses $canonVP names and instead copies the candidates' names...
-    colnames(candidates) <- INFO$FONKgNames
+    colnames(candidates) <- INFO$fittedNames
     candidates <- apply(candidates, 1, function(v) {canonizeFromKrig(v)$canonVP}) ## transposed // expected; except if fittedparamnbr==1...
     if (length(INFO$ParameterNames)>1L) {
       candidates <- t(candidates)
@@ -26,7 +27,7 @@ toCanonical <- function(candidates, FONKgLow,
 
 
 
-canonizeFromKrig <- function(input) { ## from vector within Kriging space AND in Kriging scale, also returns composite var
+canonizeFromKrig <- function(input) { ## from vector in complete Kriging space AND in Kriging scale, also returns composite var
   INFO <- blackbox.options()[c("FONKgLow","ParameterNames","DemographicModel","FONKgNames","FONKgScale")]
   FONKinput <- INFO$FONKgLow ## initial value
   if (length(setdiff(names(input),names(FONKinput)))>0L) {

@@ -3,11 +3,9 @@
 #include <limits>
 #include <ctime>
 #include <algorithm> // stable_sort
-#define R_NO_REMAP
-#include "R.h"
-//#undef error
 #include "Krigtypes.h"
-#include "smooth.h"
+#define R_NO_REMAP
+#include "smooth.h" // (includes qr.h which includes R.h)
 #include "smoothFriends.h"  // // FRIENDs de la class CSmooth
 
 CSmooth* test;
@@ -99,7 +97,7 @@ std::cout<<rtb;getchar();*/
            if (batchDebug) cin.get();
            exit(-1);
 #else
-     Rf_error("(!) From CSmooth::bisection_search() : Too many bisections. \n");
+           Rf_error("(!) From CSmooth::bisection_search() : Too many bisections. \n");
 #endif
         }
 return(numeric_limits<covTypedef>::signaling_NaN());
@@ -162,7 +160,7 @@ CSmooth::CSmooth(Cpointls & ptls,double GCV, int verbosity) {
   }
   nFixef=1; // ordinary kriging by default
   hglmOffset=0;
-};
+}
 
 
 
@@ -176,7 +174,7 @@ int CSmooth::sort_compress() {
   		if (batchDebug) std::cin.get();
   		exit(-1);
 #else
-       Rf_error("(!) CSmooth::sort_compress() called on data with suspicious number of columns");
+  		Rf_error("(!) CSmooth::sort_compress() called on data with suspicious number of columns");
 #endif
    }
 //std::cout<<xy[0][0]<<" "<<xy[0][1]<<" "<<xy[0][2];getchar();
@@ -259,7 +257,7 @@ int CSmooth::sort_compress() {
   		std::cerr << "CSmooth::sort_compress() detected no replicate y values for any X values" << std::endl;
   		std::cerr << "  Estimation of correlation parameters will fail. " << std::endl;
 #else
-      // error("(!) CSmooth::sort_compress() detected no replicate y values for any X values. I exit");
+      // Rf_error("(!) CSmooth::sort_compress() detected no replicate y values for any X values. I exit");
        REprintf("CSmooth::sort_compress() detected no replicate y values for any X values.\n");
 #endif
    }
@@ -330,7 +328,7 @@ int CSmooth::filleuclArray() { // this function call only in Krig_engine_default
         euclidian=0;                                     /*axialArray contains *squared* axial dist...*/
         for (int kk=0;kk<fittedparamnbr;kk++) euclidian+=(axialArray[ii][jj][kk]/CovTheta2[kk]);
         euclArray[ii][jj]=sqrt(euclidian);
-        if (isnan(euclidian) || isinf(euclidian)) {
+        if (ISNAN(euclidian) || ! R_FINITE(euclidian)) {
 #ifdef NO_R_CONSOLE
             std::cerr<<"(!) From CSmooth::filleuclArray(): Inf/NaN euclidian distance"<<std::endl;
             std::cerr<<"pair i,j: "<<ii<<","<<jj<<std::endl<<"CovTheta: ";
@@ -359,7 +357,7 @@ int CSmooth::filleuclArray() { // this function call only in Krig_engine_default
      }
    }
 return 0;
-};
+}
 
 int CSmooth::fillaxialFocal(std::vector<ioType>& focal) { //& useful
     ioType tmp; // hmmmmmmmmmmmmmmm
@@ -375,7 +373,7 @@ int CSmooth::fillaxialFocal(std::vector<ioType>& focal) { //& useful
         }
     }
 return 0;
-};
+}
 
 
 int CSmooth::filleuclFocal() {
@@ -397,7 +395,7 @@ int CSmooth::filleuclFocal() {
      }
 
 return 0;
-};
+}
 
 
 

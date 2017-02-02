@@ -25,13 +25,14 @@ writeFinalInfo <- function(cleanResu="") {
   }
   ## note that the C codes seeks estimates in the VERY LAST line of the output.txt file: do not write comments after the following output:
   ## GOP <- ...RMSpred/...RMSy ## Goodness of prediction criterion.
-  improbableError <- blackbox.getOption("RMSpred")*qnorm(0.99, 0, 1)
-  GOP <- rosglobal$value + blackbox.getOption("maxobsFONKy") - improbableError
+  possibleError <- blackbox.getOption("RMSpred")*qnorm(0.99, 0, 1) ## guess for error realistic in 99% of cases
+  actualPredictionError <- rosglobal$value + blackbox.getOption("maxobsFONKy") ## mind the sign reversal
+  GOP <- rosglobal$value + blackbox.getOption("maxobsFONKy") - possibleError
   writeoutput(paste(blackbox.getOption("dataFile"), "(final)", sep=""),
               returncode=returncode,
               prettynum(blackbox.getOption("RMSpred")),
               prettynum(blackbox.getOption("RMSy")),
-              prettynum(GOP))
+              prettynum(GOP)) ## GOP is excess error in prediction not explained in 99% of cases
   if ( ! blackbox.getOption("interactiveGraphics")) { ##
     plotFiles <- blackbox.getOption("plotFiles")
     if(!is.null(plotFiles) & length(plotFiles)>0)

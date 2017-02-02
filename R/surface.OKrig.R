@@ -48,7 +48,7 @@ surface.OKrig <- function (obj, grid.list = NA, extrap = FALSE, graphics.reset =
                                           labcex=blackbox.getOption("graphicPars")$labcex)
                          }, ## plot.axes works like a fn definition
                        levels =nul ,
-                       col=colorpanel(lnul-1, "grey60", "white"),
+                       col=gray(seq(0.6,1,len = lnul-1)), #gplots::colorpanel(lnul-1, "grey60", "white"),
                        xlab=xlab, ylab=ylab, main=main, ...)
       } else { ## Color contour plot
         filled.contour(out.p$x, out.p$y, out.p$z,

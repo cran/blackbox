@@ -6,8 +6,6 @@
 #include <sstream>
 #include <limits>
 #include <cmath> //for std::abs
-//#include "R.h" // fn error() pour message erreur
-//#include "BesselK.h" //celui de IBDSIm et non celui de programmation/libraries/bessel.h
 #include "Rmath.h" // bessel_k (and apparently required before loading Rcpp.h...)
 #include "Bessel_nr.h" // bessk
 #include <Rcpp.h> // a charger apres les headers contenant des templated functions ???
@@ -59,7 +57,7 @@ Typeforcov Matern(Typeforcov dist,const Typeforcov& smoothness) {
         }
 //DEBUG
 //cov*=0.9999;
-/*        if (std::isnan(cov) || std::isinf(cov)) {
+/*        if (ISNAN(cov) || ! R_FINITE(cov)) {
             std::stringstream stst;
             stst<<"Matern pb: "<<dist<<" "<<smoothness<<std::endl;
 #ifdef NO_R_CONSOLE

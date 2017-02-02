@@ -29,19 +29,21 @@ preprocessbboptions <- function(optionList) {
   dev.off() ## close the parasitic device
   unlink("Rplots.pdf") ## removes the parasitic file
   # Set device type and basic filename, open file
-  if (is.null(optionList$graphicsFormat)) { ## then gets the default (eps)
-    optionList$graphicsFormat <- blackbox.getOption("graphicsFormat")
-  } ## else it should be a valid device _function (name)_ such as eps or pdf
+  if (is.null(optionList$graphicsFormat)) { ## then gets the default 
+    optionList$graphicsFormat <- blackbox.getOption("graphicsFormat") ## (eps device)
+  } ## else it should be a valid device _function (name)_ such as eps, pdf or cairo_pdf...
   interactiveGraphics <- optionList$interactiveGraphics ## check user's non-default
   if (is.null(interactiveGraphics)) { ## then uses default set by .onLoad
     interactiveGraphics <- blackbox.getOption("interactiveGraphics")
   }
   if ( interactiveGraphics ) {
     optionList["basicRplotsfile"] <- list(NULL) ## probably already is, but ... ?
-  } else {
+  } else { ## determines graphics file extension name; not the format !
     if (identical(tolower(optionList$graphicsFormat),"postscript")) {
       graphicsExt <- ".ps"
-    } else { ## here Migraine's default 'eps' which calls OKsmooth's eps function with 'good' height/width
+    } else if (identical(tolower(optionList$graphicsFormat),"cairo_pdf")) {
+      graphicsExt <- ".pdf"
+    } else { ## here 'pdf', or Migraine's default 'eps' which calls OKsmooth's eps function with 'good' height/width
       graphicsExt <- paste(".", tolower(optionList$graphicsFormat), sep="")
     }
     optionList$basicRplotsfile <- paste("Rplots_", optionList$jobSampleNbr, graphicsExt, sep="");
@@ -61,6 +63,8 @@ preprocessbboptions <- function(optionList) {
   optionList$GCVrangeFactors <- c(optionList$GCVlowerFactor, optionList$GCVupperFactor) # FR->FR but not yet used !!
   optionList["GCVlowerFactor"] <- list(NULL) ## explicit element with NULL value => to over-write any preexisting option value
   optionList["GCVupperFactor"] <- list(NULL) ## explicit element with NULL value => to over-write any preexisting option value
+  optionList["margProfsInfo"] <- list(NULL) ## explicit element with NULL value => to over-write any preexisting option value
+  #
   # Migraine  defaults (will overwrite OKsmooth defaults)
   if (optionList$covFamily %in% c("Matern", "GneitingMatern")) {
     if (is.null(optionList$initSmoothness)) optionList$initSmoothness <- 3.99 ## but CKrigcoefs uses another value

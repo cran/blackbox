@@ -62,6 +62,7 @@ optimWrapper <- function(objectivefn=function(x) {tofKpredict.nohull(x, fixedlis
                      opts=list(algorithm="NLOPT_LN_BOBYQA",maxeval=-1))
       resu$par <- structure(resu$solution,names=parnames)
       resu$value <- - resu$objective
+      resu$convergence <- resu$status
     } else resu <- optim(initinfh, objectivefn, gr=objectivefn.grad, method="L-BFGS-B", control=control, lower=lower, upper=upper)
     ## resu$par is in 'full' Kriging variable *space* (but not necessary within hull of kriged points) since initinfh is
     ## check the OPTIM result
@@ -93,7 +94,7 @@ optimWrapper <- function(objectivefn=function(x) {tofKpredict.nohull(x, fixedlis
           ## then add points if its actual dimension is lower. Actual dimension is determined from the presence of equality constraints in the H repr
           ##
           hull.liks <- apply(chull.pts, 1, tofKpredict.nohull, fixedlist=NULL)
-          orderedhull <- chull.pts[order(hull.liks, decreasing=T), ]
+          orderedhull <- chull.pts[order(hull.liks, decreasing=TRUE), ]
           minimalhull <- orderedhull[seq(fittedparamnbr), ] ## one point will be added in the loop before any test
           minimalVrepr <- cbind(0, 1, minimalhull)
           nr <- length(hull.liks)

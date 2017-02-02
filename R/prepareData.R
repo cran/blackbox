@@ -19,10 +19,17 @@ prepareData <- function(data, ParameterNames=NULL, respName=NULL, verbose=TRUE) 
   absD <- (apply(abs(diff(t(t(pointls)), lag=1)), 1, max)) ## absD no longer has rownames
   nullabsD <- (absD==0)
   if (length(which(nullabsD))>0 && verbose) {
-    message.redef("(!) Some likelihood estimates  from independent replicates appear identical. ")
-    message.redef("    Although this could occur in normal use, this may well be the result ")
-    message.redef("    of appending twice or more the result of the same replicate to the pointls file. ")
-    message.redef("    Look in particular for the following cordinates in the pointls file:")
+    if ("Migraine" %in% blackbox.getOption("usedBy")) {
+      message.redef("(!) Some likelihood estimates  from independent replicates appear identical. ")
+      message.redef("    Although this could occur in normal use, this may well be the result ")
+      message.redef("    of appending twice or more the result of the same replicate to the pointls file. ")
+      message.redef("    Look in particular for the following cordinates in the pointls file:")
+    } else {
+      message.redef("(!) Some objective-function values from independent replicates appear identical. ")
+      message.redef("    Although this could occur in normal use if the function is deterministic,")
+      message.redef("    this may as well be the result of improper simulation. ")
+      message.redef("    Look in particular for the following cordinates in the pointls file:")
+    }
     apply(pointls[which(nullabsD), , drop=FALSE], 1, function(v) {message.redef(v[1:paramnbr])})
   }
   lenptls <- nrow(pointls)

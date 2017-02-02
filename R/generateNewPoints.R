@@ -174,7 +174,6 @@ generateNewPoints <- function(pointnbr=-1, ##   pointnbr is the target size for 
                               vT=volTriangulation(knotsInfo$knotsVH$vertices), 
                               verbose=FALSE ## verbosity for development purposes
                               ) {
-#browser()
   INFO <- blackbox.options()[c("FONKgLow","fittedNames","fittedparamnbr","ParameterNames",
                                "FONKgNames","memcheck","barycenterFn","scalefactor",
                                "samplingSpace","parDigits")]
@@ -220,22 +219,22 @@ generateNewPoints <- function(pointnbr=-1, ##   pointnbr is the target size for 
       knots <- knotsInfo$knotsVH$vertices
       newLowUp <- FALSE
     } ## else leave knots unchanged
-    if (is.null(focalPoint)) { ## then perform an optim to find default focalPoint
-      barycenter <- do.call(INFO$barycenterFn, list(vertices=knots))
-      ## knots in in sampling scale, optim in sampling scale, return valu in fullKg space
-      # apparent bug : barycenter <- tofullKrigingspace(barycenter) ## as the knots (presumably)
-      optr <- optimWrapper( ##purefn,
-        initval=barycenter, gr=NULL,
-        chullformats=knotsInfo$knotsVH,
-        control=list( ## parscale is provided within optimWrapper
-          fnscale=-1/INFO$scalefactor, trace=FALSE, maxit=10000))
-      ## may fail if optimize on a facet of the hull
-      focalPoint <- optr$par
-      focalPoint <- fromFONKtoanyspace(focalPoint,INFO$samplingSpace)
-    }
-    #}
     #
     if (step=="expand") {
+      if (is.null(focalPoint)) { ## then perform an optim to find default focalPoint
+        barycenter <- do.call(INFO$barycenterFn, list(vertices=knots))
+        ## knots in in sampling scale, optim in sampling scale, return valu in fullKg space
+        # apparent bug : barycenter <- tofullKrigingspace(barycenter) ## as the knots (presumably)
+        optr <- optimWrapper( ##purefn,
+          initval=barycenter, gr=NULL,
+          chullformats=knotsInfo$knotsVH,
+          control=list( ## parscale is provided within optimWrapper
+            fnscale=-1/INFO$scalefactor, trace=FALSE, maxit=10000))
+        ## may fail if optimize on a facet of the hull
+        focalPoint <- optr$par # cf rExpandedHull() call: space must be that of knotsInfo$knotsVH
+        # ./. which is a subset of samplingSpace, which is full dimensional (estimated or not)
+        focalPoint <- fromFONKtoanyspace(focalPoint,colnames(knotsInfo$knotsVH$vertices)) 
+      }
       candidates <- rExpandedHull(trynbr,
                                 knotshull=knots,
                                 hrepr=knotsInfo$knotsVH$Hrep,
@@ -321,7 +320,7 @@ generateNewPoints <- function(pointnbr=-1, ##   pointnbr is the target size for 
 
 
 selectByLR <- function(candidates, lrthreshold, othernames, FONKgLow, fittedparamnbr) {
-  pred <- apply(candidates, 1, purefn, testhull=F) ## must be ins .blackbox.data$options$KrigSpace and Scale
+  pred <- apply(candidates, 1, purefn, testhull=F) ## must be in .blackbox.data$options$KrigSpace and Scale
   bons <- ( (!is.na(pred)) & (pred> lrthreshold )) ## selection according to predicted likelihood
   if(any(bons)) {
     candidates <- candidates[which(bons), , drop=FALSE]

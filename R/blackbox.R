@@ -11,7 +11,7 @@ bboptim <-function(data,ParameterNames=NULL,respName=NULL,control=list(),force=F
     maximizeBool <-  ! ( is.null(fnscale) || fnscale >= 0 ) ## default is FALSE
   } else if (is.null(fnscale)) {
     if (maximizeBool) fnscale <- -1
-  } else stop("Mixing controls maximize and fnscale is dangerous. Please correct.")
+  } else stop("Mixing controls 'maximize' and 'fnscale' is dangerous. Please correct.")
   gcvres <- calcGCV(sorted_etc, force=force, decreasing=maximizeBool, optimizers=optimizers ) ## decreasing important info for calcGCV -> selectFn
   ranfix <- list(rho=1/gcvres$CovFnParam[ParameterNames],
                  nu=gcvres$CovFnParam[["smoothness"]])
@@ -23,7 +23,7 @@ bboptim <-function(data,ParameterNames=NULL,respName=NULL,control=list(),force=F
                                       # this is confusing as clik is then not stable to translation...
   ranfix <- c(ranfix,list(phi=phi))
   if (TRUE) {
-    thisfit <- HLCor(form,data=data,ranPars=ranfix,REMLformula=form)
+    thisfit <- HLCor(form,data=data,ranPars=ranfix,REMLformula=form) ## (thisfit recomputed soon)
     ranfix <- c(ranfix,list(lambda=thisfit$lambda))
     etafix <- list(beta=fixef(thisfit))
   } else { ## FR->FR equivalent alternatives? except that one provides etaFix the other not

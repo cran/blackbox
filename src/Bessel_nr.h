@@ -33,14 +33,7 @@ knowledge of the CeCILL license and that you accept its terms.
 #ifndef H_BESSELK
 #define H_BESSELK
 
-#include "R.h"
-/*#ifdef R_R_H
-// ie if we have loaded R.h
-#undef DBL_MIN
-#undef DBL_MAX
-#endif*/
-
-#include <cmath> //floor, ceil, isnan
+#include <cmath> //floor, ceil
 
 #include <cstdio>
 #include <limits>
@@ -58,7 +51,13 @@ knowledge of the CeCILL license and that you accept its terms.
 #define M_SQRT_2dPI	0.797884560802865355879892119869	/* sqrt(2/pi) */
 #endif
 #include "Bessel.h"
-
+#include "R.h" // must be included last
+/*#ifdef R_R_H
+ // ie if we have loaded R.h
+#undef DBL_MIN
+#undef DBL_MAX
+#endif*/
+ 
 int imin2(int x, int y);
 int imax2(int x, int y);
 

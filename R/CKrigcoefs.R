@@ -22,6 +22,9 @@ CKrigcoefs <- function(xy,
                                    "L-BFGS-B"=0, ## verbosity from optim() is awkward
                                    as.integer(optimise)*verbosity
   )
+  if ("Migraine" %in% blackbox.getOption("usedBy")) {
+    init_factor <- 2/3
+  } else init_factor <- 2/30 ## better when rugged landscapes are possible  
   success <- newCSmooth(xy= t(xy), ## newCSmooth is an Rcpp export
              nrowxy=nrowxy,
              ncolxy=ncolxy,
@@ -43,14 +46,16 @@ CKrigcoefs <- function(xy,
       KgLow <- apply(xx,2,min)
       KgUp <- apply(xx,2,max)
       maxrange <- KgUp-KgLow
-      GCVlowerFactor <- 2 # or 20 ? cf comments on Migraine default in Migraine code
+      GCVlowerFactor <- 20 # or 20 ? cf comments on Migraine default in Migraine code
       GCVupperFactor <- 5
       lower <- maxrange/(GCVlowerFactor*nuniquerows)
       upper <- maxrange*GCVupperFactor
+      init_factor <- rep(init_factor,length(lower))
       if (maxSmoothness-minSmoothness>1e-6) { # fixed Smoothness case
         maxrange <- c(maxrange,maxSmoothness-minSmoothness)
         lower <- c(lower,minSmoothness)
         upper <- c(upper,maxSmoothness)
+        init_factor <- c(init_factor,2/3)
         fixedSmoothness <- numeric(0) ## not c() which is NULL...
       } else {
         initCovFnParam <- initCovFnParam[seq_len(length(lower))]
@@ -59,7 +64,7 @@ CKrigcoefs <- function(xy,
       for (it in seq_len(length(lower))) {
         if (initCovFnParam[it]<lower[it] ## includes default case
             || initCovFnParam[it]>upper[it]) {
-          initCovFnParam[it]=lower[it]+maxrange[it]*2/3;
+          initCovFnParam[it]=lower[it]+maxrange[it]*init_factor[it]
         }
       }
       if ("L-BFGS-B" %in% method) {

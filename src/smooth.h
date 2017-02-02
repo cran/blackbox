@@ -2,7 +2,6 @@
 #define H_SMOOTH
 
 //#define TEST_OCV
-#include "R.h"
 
 #include <vector>
 #ifdef NO_R_CONSOLE
@@ -12,7 +11,7 @@
 #include <limits>
 #include <ctime>
 #include <numeric> //for inner_product
-#include "qr.h"
+#include "qr.h" // (includes R.h)
 #include "pointls.h"
 #include <Rcpp.h>
 #include <RcppEigen.h> //Eigen::SelfAdjointEigenSolve
@@ -21,7 +20,7 @@
 //ZEPS is a small number that protects against trying to achieve fractional accuracy for a minimum that
 //happens to be exactly zero.
 #define SHFT(a,b,c,d) (a)=(b);(b)=(c);(c)=(d);
-# define SIGN(a,b) ((b) >= 0.0 ? fabs(a) : -fabs(a))
+#define SIGN(a,b) ((b) >= 0.0 ? fabs(a) : -fabs(a))
 
 extern int fnevalcounter;
 

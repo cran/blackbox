@@ -55,7 +55,7 @@ sampleByResp <- function(size=blackbox.getOption("nextPointNumber"),
   if ( ! is.null(outfile)) unlink(outfile) ## this *deletes* *now* the file if it exists, before possible failure of this function.
     
   INFO <- blackbox.options()[c("ycolname","fittedNames","pureRMSE","lambdaEst","FONKgpointls","fitobject",
-                               "CovFnParam","CIlevel","CIpointsList","rosglobal","FONKgLow","FONKgNames","ParameterNames")]
+                               "CovFnParam","CIlevel","CIpointsList","rosglobal","FONKgLow","FONKgNames","ParameterNames","parDigits")]
 
   ycolname <- blackbox.getOption("ycolname")
   message.redef("\n*** Generating points for next iteration ***")
@@ -161,7 +161,9 @@ sampleByResp <- function(size=blackbox.getOption("nextPointNumber"),
   ## output to file
   goodpoints <- goodpoints[ ordergdpts , , drop=FALSE]
   if ( ! is.null(outfile)) {
+    oldDigits <- options(digits=INFO$parDigits)
     write(t(goodpoints), file=outfile, ncolumns=ncol(goodpoints)) ## t() still needed here...
+    options(oldDigits)
     write(paste("# initCovFnParam=",paste(INFO$CovFnParam,collapse=" ")), file=outfile, append=TRUE)
   }
   invisible(goodpoints)

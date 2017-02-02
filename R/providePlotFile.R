@@ -1,3 +1,18 @@
+##base::tempfile generates more random names
+generateFileName <- function(base="tmp",ext="") { ## for a file
+  pattern <- paste(base,"*",ext,sep="")
+  allmatches <- dir(pattern=pattern)
+  allremainders <- substring(allmatches,nchar(base)+1)
+  allremainders <- unlist(strsplit(allremainders,ext)) ## removes the extension from the remainder 
+  allremainders <- as.numeric(allremainders[which( ! is.na(as.numeric(allremainders )))  ]) ## as.numeric("...")
+  if (length(allremainders) == 0) {
+    num <- 0
+  } else num <- max(allremainders)+1
+  validFileName <-paste ( base , num , ext,sep="") 
+  return(validFileName)
+}
+
+
 saveOldFile <- function(filename) {
   preexists <- file.info(filename)[1,1]
   if ( ! is.na(preexists)) { ## if file preexists on disk, we save it under another name
@@ -6,7 +21,7 @@ saveOldFile <- function(filename) {
     len <- length(namesplit)
     begname <- paste(paste(namesplit[-len],collapse="."),".old_",sep="") ## "Rplots_1.old_"
     endname <- paste(".",namesplit[len],sep="") ## ".eps"
-    copyname <- generateFileName(begname,endname) ## spaMM::generateFileName => "Rplots_1.old_<#>.eps"
+    copyname <- generateFileName(begname,endname) ## => "Rplots_1.old_<#>.eps"
     #
     unlink(copyname)
     success <- file.copy(filename,copyname)

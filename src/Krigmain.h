@@ -6,8 +6,6 @@
 #include <sstream>
 #include <limits>
 #include <cmath> //for std::abs
-//#include "R.h" // fn error() pour message erreur
-//#include "BesselK.h" //celui de IBDSIm et non celui de programmation/libraries/bessel.h
 #include "Rmath.h" // bessel_k (and apparently required before loading Rcpp.h...)
 #include "Bessel_nr.h" // bessk
 #include <Rcpp.h> // a charger apres les headers contenant des templated functions ???
