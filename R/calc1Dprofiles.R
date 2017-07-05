@@ -19,6 +19,8 @@ calc1Dprofiles <- function(varNames=blackbox.getOption("spec1DProfiles")) {
       if ("IBD" %in% INFO$DemographicModel) varNames <- c(varNames, "latt2Ns2")
       if((length(intersect(INFO$DemographicModel, c("OnePopVarSize", "IM")))) && ("PopSizeRatioProf" %innc% INFO$plotOptions)) varNames <- c(varNames, "Nratio")
       else if("OnePopFounderFlush" %in% INFO$DemographicModel && ("PopSizeRatioProf" %innc% INFO$plotOptions)) varNames <- c(varNames, "Nratio", "NactNfounderratio", "NfounderNancratio")
+      if((length(intersect(INFO$DemographicModel, c("OnePopFounderFlush", "OnePopVarSize")))) && ("DgmuProf" %innc% INFO$plotOptions)) varNames <- c(varNames, "Dgmu")
+      if((length(intersect(INFO$DemographicModel, c("OnePopFounderFlush", "OnePopVarSize", "IM")))) && ("TgmuProf" %innc% INFO$plotOptions)) varNames <- c(varNames, "Tgmu")
     } else varNames <- c()
   }
   varNames <- varNames %w/o% INFO$constantNames
@@ -54,6 +56,10 @@ calc1Dprofiles <- function(varNames=blackbox.getOption("spec1DProfiles")) {
         xMLcoord <- rosglobal$NactNfounderratio
       } else if (st=="NfounderNancratio") {
         xMLcoord <- rosglobal$NfounderNancratio
+      } else if (st=="Dgmu") {
+        xMLcoord <- rosglobal$Dgmu
+      } else if (st=="Tgmu") {
+        xMLcoord <- rosglobal$Tgmu
       } else {
         if (st=="latt2Ns2") xMLcoord <- rosglobal$latt2Ns2 ## internal
       }
@@ -105,6 +111,8 @@ plot1DprofFrom2D <- function(varNames=blackbox.getOption("spec1DProfiles")) {
       if ("IBD" %in% INFO$DemographicModel) varNames <- c(varNames, "latt2Ns2")
       if((length(intersect(INFO$DemographicModel, c("OnePopVarSize", "IM")))) && ("PopSizeRatioProf" %innc% INFO$plotOptions)) varNames <- c(varNames, "Nratio")
       if("OnePopFounderFlush" %in% INFO$DemographicModel && ("PopSizeRatioProf" %innc% INFO$plotOptions)) varNames <- c(varNames, "Nratio", "NactNfounderratio", "NfounderNancratio")
+      if((length(intersect(INFO$DemographicModel, c("OnePopFounderFlush", "OnePopVarSize")))) && ("DgmuProf" %innc% INFO$plotOptions)) varNames <- c(varNames, "Dgmu")
+      if((length(intersect(INFO$DemographicModel, c("OnePopFounderFlush", "OnePopVarSize", "IM")))) && ("TgmuProf" %innc% INFO$plotOptions)) varNames <- c(varNames, "Tgmu")
     } #else varNames <- c()
   }
   varNames <- varNames %w/o% INFO$constantNames
@@ -143,6 +151,10 @@ plot1DprofFrom2D <- function(varNames=blackbox.getOption("spec1DProfiles")) {
         xMLcoord <- INFO$rosglobal$NactNfounderratio
       } else if (st=="NfounderNancratio") {
         xMLcoord <- INFO$rosglobal$NfounderNancratio
+      } else if (st=="Dgmu") {
+        xMLcoord <- INFO$rosglobal$Dgmu
+      } else if (st=="Tgmu") {
+        xMLcoord <- INFO$rosglobal$Tgmu
       } else {
         if (st=="latt2Ns2") xMLcoord <- INFO$rosglobal$latt2Ns2 ## internal
       }

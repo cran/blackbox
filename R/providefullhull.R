@@ -41,6 +41,16 @@ setHullPrecMode <- function(notinKgspace,outputnames) {
     namebit <- paste(namebit, "Nratio", sep="_")
     if (optRedmode=="defaultPrecision") redmode <- "rational"
   }
+  if ("Dgmu" %in% notinKgspace) {
+    outputnames[which(outputnames=="D")] <- "Dgmu"
+    namebit <- paste(namebit, "Dgmu", sep="_")
+    if (optRedmode=="defaultPrecision") redmode <- "rational"
+  }
+  if ("Tgmu" %in% notinKgspace) {
+    outputnames[which(outputnames=="T")] <- "Tgmu"
+    namebit <- paste(namebit, "Tgmu", sep="_")
+    if (optRedmode=="defaultPrecision") redmode <- "rational"
+  }
   if(nchar(namebit)==0L) {stop.redef("composite variable not handled in hull computation")}
   return(list(redmode=redmode,outputnames=outputnames,namebit=namebit))
 }

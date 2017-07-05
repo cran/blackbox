@@ -63,6 +63,8 @@ calcProfileLR <- function(varNames=blackbox.getOption("fittedNames"),
     if ("Nancratio" %in% paire && "twoNmu" %in% varNames) {testvars <- (testvars %w/o% "Nancratio")}
     if ("NactNfounderratio" %in% paire && "twoNmu" %in% varNames) {testvars <- (testvars %w/o% "NactNfounderratio")}
     if ("NfounderNancratio" %in% paire && "twoNancmu" %in% varNames) {testvars <- (testvars %w/o% "NfounderNancratio")}
+    if ("Dgmu" %in% paire && "D" %in% varNames) {testvars <- (testvars %w/o% "Dgmu")}
+    if ("Tgmu" %in% paire && "T" %in% varNames) {testvars <- (testvars %w/o% "Tgmu")}
     if(length(testvars)==0) checklist=c(checklist, list(paire))
   }
   pairlist <- checklist ## now contains only pairs valid for calcGridRelProfile

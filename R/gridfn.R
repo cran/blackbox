@@ -28,6 +28,16 @@ gridfn <- function(varname, gridsteps=blackbox.getOption("gridstepsNbr"), margef
     lob <- max(min(latt2Ns2pt), latt2Ns2/2.5)
     upb <- min(max(latt2Ns2pt), latt2Ns2 * 1000)
     testlog <- T
+  } else if(varname=="Dgmu") {
+    Dgmupt <- blackbox.getOption("Dgmupt")
+    lob <- min(Dgmupt)
+    upb <- max(Dgmupt)
+    testlog <- T ## RL->FR ??
+  } else if(varname=="Tgmu") {
+    Tgmupt <- blackbox.getOption("Tgmupt")
+    lob <- min(Tgmupt)
+    upb <- max(Tgmupt)
+    testlog <- T ## RL->FR ??
   } else if(varname=="Nratio") {
     Nratiopt <- blackbox.getOption("Nratiopt")
     lob <- min(Nratiopt)

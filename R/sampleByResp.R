@@ -66,16 +66,25 @@ sampleByResp <- function(size=blackbox.getOption("nextPointNumber"),
   locphi <- max(1e-06,INFO$pureRMSE^2)
   loclambda <- locphi/INFO$lambdaEst
   if (verbose) { message.redef("Computing predictor for EI...")  }
-  spaMMfit <- corrHLfit(form, data=INFO$FONKgpointls,
-                        ranFix=list(rho=1/INFO$CovFnParam[INFO$fittedNames],
+  spaMMfit <- spaMM::HLCor(form, data=INFO$FONKgpointls,
+                        ranPars=list(rho=1/INFO$CovFnParam[INFO$fittedNames],
                                     #         note '1/...'
                                     nu=INFO$CovFnParam["smoothness"],
                                     lambda=loclambda,phi=locphi))
-  obspred <- predict(spaMMfit, variances=list(linPred=TRUE))
-  obsSE <- attr(obspred, "predVar")
+  obspredlogLs <- - predict(spaMMfit, variances=list(linPred=TRUE,respVar=TRUE))
+  maxpred <- max(obspredlogLs)
+  CIdlr <- qchisq(1-blackbox.getOption("CIlevel"), 1)/2
+  upperpts <- which(obspredlogLs>maxpred-CIdlr)
+  upper_respVar <- attr(obspredlogLs, "respVar")[upperpts] ## theo error^2 of prediction including residual error
+  upperSEs <- (obspredlogLs[upperpts]+spaMMfit$y[upperpts])^2 ## actual error^2 of prediction
+  blackbox.options(upperPred_crits=list(RMSpred=sqrt(mean(upperSEs)), ## different mean from RMSpred elsewhere
+                                        GOP=sqrt(mean(upper_respVar/upperSEs)) ## large GOP: actual error smaller than theo error
+                                        )) 
+  
+  obsSE <- attr(obspredlogLs, "predVar")
   obsSE[obsSE<0] <- 0
   ## attention le signe de la prediction est inversé... SPECIFIQUEMENT POUR MIGRAINE
-  spaMMfit$Qmax <- max( - obspred+1.96 * sqrt(obsSE)) ## best improvement function for already computed points
+  spaMMfit$Qmax <- max( obspredlogLs+1.96 * sqrt(obsSE)) ## best improvement function for already computed points
   #
   ######################
   ###################### First sampling using expansion

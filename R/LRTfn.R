@@ -2,6 +2,7 @@ LRTfn <- function(LRTfixedvals, cleanResu) { ## LRTfixedvals is already in logsc
   fitobject <- blackbox.getOption("fitobject")
   fittedNames <- blackbox.getOption("fittedNames")
   fittedparamnbr <- blackbox.getOption("fittedparamnbr")
+  plotOptions <- blackbox.getOption("plotOptions")
   ### only for outputs to output.txt, and to the screen
   usernames <- sapply(names(LRTfixedvals), userunit, format="ASCII") ## may be nicer than those actually entered by user
   uservalues <- unlist(LRTfixedvals)
@@ -84,11 +85,15 @@ LRTfn <- function(LRTfixedvals, cleanResu) { ## LRTfixedvals is already in logsc
           if ("IBD" %in% DemographicModel) {
             ros <- c(ros, list(latt2Ns2=canonized$latt2Ns2))
           } else {
-            if("OnePopVarSize" %in% DemographicModel) {
-              ros <- c(ros, list(Nratio=canonized$Nratio))
-            } else 
-                if ("OnePopFounderFlush" %in% DemographicModel) {ros <- c(ros, list(Nratio=canonized$Nratio), list(NactNfounderratio=canonized$NactNfounderratio), list(NfounderNancratio=canonized$NfounderNancratio))}
+          if( ("OnePopVarSize" %in% DemographicModel) || ("IM" %in% DemographicModel) ) {
+            ros <- c(ros, list(Nratio=canonized$Nratio))
+          } else 
+              if ("OnePopFounderFlush" %in% DemographicModel) {ros <- c(ros, list(Nratio=canonized$Nratio), list(NactNfounderratio=canonized$NactNfounderratio), list(NfounderNancratio=canonized$NfounderNancratio))}
           }
+          # if ( length(intersect(DemographicModel, c("OnePopVarSize", "OnePopFounderFlush", "IM")))>0) {
+          #   ros <- c(ros, list(Dgmu=canonized$Dgmu)) ## RL 022017 unnecessary at this step because no LRT are asked for Dgmu or Tgmu with timescale=popsize
+          #   ros <- c(ros, list(Tgmu=canonized$Tgmu))
+          # }      
           ros <- c(ros, canonVP=list(canonized$canonVP)) ## !!comme dans findGlobalMLE !!
           blackbox.options(rosglobal=ros)
         }

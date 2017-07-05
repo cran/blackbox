@@ -101,12 +101,12 @@ calcPredictorOK <- function(FONKgpointls,
   ## tmp <- fitobject$fitted.values-fit$y
   ## when there is a single block
   ## differences between predicted and observed values
-  tmp <- predict(fitobject, testhull=FALSE)
-  fitobject$fitted.values <- tmp ## prediction of kriged points ## removed t(t()) 03/2015
-  tmp <- tmp+as.vector(FONKgpointls[, ycolname]) #+ car y/-y
-  blackbox.options(RMSpred=sqrt(mean((tmp)^2)))  #note replicated coordinates count twice (as they should)
+  predKriged <- predict(fitobject, testhull=FALSE)
+  fitobject$fitted.values <- predKriged ## prediction of kriged points 
+  predError <- predKriged + as.vector(FONKgpointls[, ycolname]) #+ car y/-y
+  blackbox.options(RMSpred=sqrt(mean((predError)^2)))  #note replicated coordinates count twice (as they should)
   llocalst <- paste("RMS residual error from predictions of smoothed points: ", prettynum(blackbox.getOption("RMSpred")),
-                    "\n (RMS of variance from all pairs, smoothed or not: ", prettynum(blackbox.getOption("RMSy")),")")
+                    "\n (RMS of variance from all pairs, smoothed or not: ", prettynum(blob$RMSy),")")
   cat(llocalst, "\n") ## FR->FR for call through migraine, cat() goes in Rout_1 but not on screen. llocalst could deserve to go on screen
   blackbox.options(fitobject=fitobject)
   invisible(fitobject)

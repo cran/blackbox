@@ -56,7 +56,7 @@ prepareData <- function(data, ParameterNames=NULL, respName=NULL, verbose=TRUE) 
     FONKgpointls <- FONKgpointls[!infini, ]
   }
   if ("Migraine" %in% blackbox.getOption("usedBy")) {
-    blackbox.options(maxobsFONKy = min(FONKgpointls[, blackbox.getOption("ycolname")]))## will be used in pointfromR ... ugly coding
+    #blackbox.options(maxobsFONKy = min(FONKgpointls[, blackbox.getOption("ycolname")]))## will be used in pointfromR ... ugly coding
     blackbox.options(FONKgpointls = FONKgpointls) ##
   } else {
     attr(FONKgpointls,"fittedNames") <- fittedNames

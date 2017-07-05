@@ -14,12 +14,38 @@ function (charname, format = "expression", Nbstyle = T)
             format = format)
     if (charname == "g")
         tmp <- AUEformat("g", "g", "italic(g)", format = format)
-    if (charname == "D")
-        tmp <- AUEformat("Dg/2N", "D[g]/2N", "italic(D)[g]/2*italic(N)",
-            format = format)
-    if (charname == "T")
-        tmp <- AUEformat("Tg/2N", "T[g]/2N", "italic(T)[g]/2*italic(N)",
-            format = format)
+    if (charname == "D") {
+        timeScale <- blackbox.getOption("timeScale") ##RL 022017: for time scaled by pop size or mutation rate (D and T)
+        if ("popSize" %in% timeScale) {
+          tmp <- AUEformat("Dg/2N", "D[g]/2N", "italic(D)[g]/2*italic(N)",
+              format = format)
+        } else if ("mutationRate" %in% timeScale) {
+          tmp <- AUEformat("Dg*mu", "D[g]*mu", "italic(D)[g]*mu",
+                           format = format)
+        } else {
+          stop.redef(paste("(!) from formatName: invalid timeScale value (timeScale= timeScale ) for parameter D."))
+        }
+      }
+    if (charname == "T") {
+        timeScale <- blackbox.getOption("timeScale") ##RL 022017: for time scaled by pop size or mutation rate (D and T)
+        if ("popSize" %in% timeScale) {
+          tmp <- AUEformat("Tg/2N", "T[g]/2N", "italic(T)[g]/2*italic(N)",
+                           format = format)
+        } else if ("mutationRate" %in% timeScale) {
+          tmp <- AUEformat("Tg*mu", "T[g]*mu", "italic(T)[g]*mu",
+                           format = format)
+        } else {
+          stop.redef(paste("(!) from formatName: invalid timeScale value (timeScale= timeScale ) for parameter T."))
+        }
+    }
+    if (charname == "Dgmu") {
+        tmp <- AUEformat("Dg*mu", "D[g]*mu", "italic(D)[g]*mu",
+                         format = format)
+    }
+    if (charname == "Tgmu") {
+        tmp <- AUEformat("Tg*mu", "T[g]*mu", "italic(T)[g]*mu",
+                         format = format)
+    }
     if (charname == "pGSM")
         tmp <- AUEformat("pGSM", "p[GSM]", "italic(p)[GSM]",
             format = format)
@@ -68,6 +94,7 @@ function (charname, format = "expression", Nbstyle = T)
         }, format = format)
     if (charname == "condS2")
         tmp <- AUEformat("s2cond", "", "sigma~scriptstyle(phantom()[scriptstyle(cond)]^{scriptstyle(2)})",
-            format = format)
+             format = format)
     return(tmp)
+
 }

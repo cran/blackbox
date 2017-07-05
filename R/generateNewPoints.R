@@ -156,7 +156,7 @@ if (FALSE) { ## explanation with messy code
   good <- seq(qrvecs$rank)
   lowerdimensionalprojections <- (t(qr.Q(qrvecs)) %*% cbind(0,colvecs))[good,] ## putting back the origin
   # in example, clearly origin + (+/-)sqrt(2) projections on obvious orthogonal basis
-  indices <- convhulln(t(lowerdimensionalprojections),"Pp") ## example: eliminates the central point which is the origin
+  indices <- geometry::convhulln(t(lowerdimensionalprojections),"Pp") ## example: eliminates the central point which is the origin
   # put back the full dimension, which first point still 'origin':
   fulldimensionalfromorigin <-  qr.Q(qrvecs)[,good] %*% lowerdimensionalprojections
   # put back the coordinates of the origin:

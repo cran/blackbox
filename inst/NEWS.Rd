@@ -1,7 +1,30 @@
 \name{NEWS}
 \title{blackbox News}
 \encoding{UTF-8}
-\section{CHANGES UP TO VERSION 1.0.15}{
+\section{CHANGES UP TO VERSION 1.1.0}{
+\subsection{USER-LEVEL CHANGES}{
+\itemize{
+\item Less primitive convergence diagnostics are implemented in bboptim().
+\item (Migraine-specific) New mesures of ''goodness of prediction'' implemented.
+\item (Migraine-specific) add logscale for 1D profile plots
+\item
+}
+}
+\subsection{CORRECTED BUGS}{
+\itemize{
+\item blackbox.options(<new values>) did not return old values.
+\item (Migraine-specific) Return code modified for consistency with documentation (but this does not really affect the analyses).
+\item (Migraine-specific) variables names could be lost in generateNewPoints().
+\item (Migraine-specific) Invalid requests by users for CIs for some composite variables could lead to an execution error.
+}
+}
+\subsection{OTHER CHANGES}{
+\itemize{
+\item Added native routine registration.
+}
+}
+}
+\section{CHANGES UP TO VERSION 1.0.18}{
 \subsection{BUGS}{
 \itemize{
 \item More C++ portability issues fixed.

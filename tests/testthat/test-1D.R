@@ -16,7 +16,7 @@ bbresu <- bboptim(simuls)
 print(bbresu)
 
 # refine with additional points
-while ( ! bbresu$convergence ) {
+while ( ! all(bbresu$conv_crits) ) {
   candidates <- rbb(bbresu)
   newsimuls <- cbind(candidates,bb=apply(candidates,1,"fr"))
   bbresu <- bboptim(rbind(bbresu$fit$data,newsimuls))

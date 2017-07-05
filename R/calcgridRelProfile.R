@@ -31,6 +31,8 @@ calcGridRelProfile <- function(fixed, profileMethod="profileBySubHull",
   if ("Nancratio" %in% fixed && "twoNmu" %in% INFO$fittedNames) {testvars <- (testvars %w/o% "Nancratio")}
   if ("NactNfounderratio" %in% fixed && "twoNmu" %in% INFO$fittedNames) {testvars <- (testvars %w/o% "NactNfounderratio")}
   if ("NfounderNancratio" %in% fixed && "twoNancmu" %in% INFO$fittedNames) {testvars <- (testvars %w/o% "NfounderNancratio")}
+  if ("Dgmu" %in% fixed && "D" %in% INFO$fittedNames) {testvars <- (testvars %w/o% "Dgmu")}
+  if ("Tgmu" %in% fixed && "T" %in% INFO$fittedNames) {testvars <- (testvars %w/o% "Tgmu")}
   if(length(testvars)>0L) {
     locmess <- paste("'",fixed,"'",sep="",collapse=", ")
     locmess <- paste("Skipping profile grid computation for",locmess)
@@ -53,6 +55,8 @@ calcGridRelProfile <- function(fixed, profileMethod="profileBySubHull",
   if ("Nancratio" %in% fixed && "twoNmu" %in% othervars) {othervars <- (othervars %w/o% "twoNmu")}
   if ("NactNfounderratio" %in% fixed && "twoNmu" %in% othervars) {othervars <- (othervars %w/o% "twoNmu")}
   if ("NfounderNancratio" %in% fixed && "twoNancmu" %in% othervars) {othervars <- (othervars %w/o% "twoNancmu")}
+  if ("Dgmu" %in% fixed && "D" %in% othervars) {othervars <- (othervars %w/o% "D")}
+  if ("Tgmu" %in% fixed && "T" %in% othervars) {othervars <- (othervars %w/o% "T")}
   otherlist <- vector("list", length(othervars))
   names(otherlist) <- othervars
   poslogL <- length(othervars)+1L

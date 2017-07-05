@@ -1,4 +1,5 @@
-bboptim <-function(data,ParameterNames=NULL,respName=NULL,control=list(),force=FALSE,optimizers=blackbox.getOption("optimizers")) {
+bboptim <-function(data, ParameterNames=NULL, respName=NULL, control=list(), force=FALSE,
+                   optimizers=blackbox.getOption("optimizers"), precision=1e-3) {
   np <- ncol(data)-1L
   if (is.null(ParameterNames)) ParameterNames <- colnames(data)[seq(np)]
   if (is.null(respName)) respName <- colnames(data)[np+1L]
@@ -23,23 +24,25 @@ bboptim <-function(data,ParameterNames=NULL,respName=NULL,control=list(),force=F
                                       # this is confusing as clik is then not stable to translation...
   ranfix <- c(ranfix,list(phi=phi))
   if (TRUE) {
-    thisfit <- HLCor(form,data=data,ranPars=ranfix,REMLformula=form) ## (thisfit recomputed soon)
+    oldopt <- spaMM::spaMM.options(spaMM_glm_conv_silent=TRUE)
+    thisfit <- spaMM::HLCor(form,data=data,ranPars=ranfix,REMLformula=form) ## (thisfit recomputed soon)
+    spaMM::spaMM.options(oldopt)
     ranfix <- c(ranfix,list(lambda=thisfit$lambda))
     etafix <- list(beta=fixef(thisfit))
   } else { ## FR->FR equivalent alternatives? except that one provides etaFix the other not
     ranfix <- c(ranfix,list(lambda=phi/gcvres$lambdaEst)) ## lambdaGCV := phiHGLM/lambdaHGLM !
     etafix <- list()
   }
-  thisfit <- corrHLfit(form,data=sorted_etc,ranFix=ranfix,etaFix=etafix) ## full data smoothed with lambda and phi estimated from cleaned data
+  thisfit <- spaMM::fitme(form,data=sorted_etc,fixed=c(ranfix,etafix),method="REML") ## full data smoothed with lambda and phi estimated from cleaned data
   #
   lower <- apply(sorted_etc[,ParameterNames,drop=FALSE],2,min)
   upper <- apply(sorted_etc[,ParameterNames,drop=FALSE],2,max)
   if ( ! maximizeBool ) {
     init <- thisfit$data[which.min(predict(thisfit)),ParameterNames]
-    optr_fitted <- list(par=init,value=min(predict(thisfit)))
+    optr_fitted <- list(par=init,value=min(predict(thisfit,newdata=thisfit$data))) ## need newdata bc of numerical errors
   } else {
     init <- thisfit$data[which.max(predict(thisfit)),ParameterNames]
-    optr_fitted <- list(par=init,value=max(predict(thisfit)))
+    optr_fitted <- list(par=init,value=max(predict(thisfit,newdata=thisfit$data)))
   }
   mse <- attr(predict(thisfit,init,variances=list(linPred=TRUE,dispVar=TRUE)),"predVar")[1]
   mse <- max(0,mse)
@@ -49,7 +52,7 @@ bboptim <-function(data,ParameterNames=NULL,respName=NULL,control=list(),force=F
     if (is.null(control$parscale)) control$parscale <- (upper-lower)
     optr <- optim(init, function(v) {as.numeric(predict(thisfit,newdata=v))},
                   ## as numeric because otherwise in 1D, optim -> minimize -> returns a max
-                  ##   of same type as predict(thisfit$fit,newdata=v), i.e. matrix.
+                  ##   of same type as predict(thisfit,newdata=v), i.e. matrix.
                   lower=lower,upper=upper,control=control,method="L-BFGS-B")
   } else if ("lbfgsb3" %in% optimizers){
     if ( maximizeBool ) {
@@ -98,24 +101,27 @@ bboptim <-function(data,ParameterNames=NULL,respName=NULL,control=list(),force=F
   if (maximizeBool) {
     convergence <- (optr_fitted$value > optr$value-reltol)
   } else convergence <- (optr_fitted$value < optr$value+reltol)
+  conv_crits <- c(objective=convergence,precision=(spaMM::get_predVar(thisfit,optr$par)<precision))
   resu <- list(fit=thisfit,optr_fitted=optr_fitted,optr=optr,callArgs = as.list(match.call())[-1],colTypes=colTypes,
-               GCVmethod=gcvres$GCVmethod,RMSE=RMSE,convergence=convergence)
+               GCVmethod=gcvres$GCVmethod,RMSE=RMSE,conv_crits=conv_crits)
   class(resu) <- c("list","bboptim")
   return(resu)
 }
 
 print.bboptim <- function(x,...) {
-  if (x$convergence) {
-    cat("\nApparent convergence at optimum:\n")
+  if (all(x$conv_crits)) {
+    cat("Apparent convergence at optimum:\n")
     print(x["optr"],...)
     cat("Other elements of bboptim object not fully shown:",
         paste(setdiff(names(x),c("optr","convergence")),collapse=", "))
   } else {
-    cat("\nApparent optimum not ascertained:\n")
-    cat("Inferred optimum among fitted points:\n")
-    print(x[["optr_fitted"]],...)
+    reasons <- c(objective="optimum objective not reached",precision="target precision not reached")[ ! (x$conv_crits)]
+    cat("Apparent optimum not ascertained: ")
+    cat(paste(reasons,collapse = " & "))
+    cat("\nInferred optimum among fitted points:\n")
+    print(unlist(x[["optr_fitted"]]),...)
     cat("Inferred optimum over all space:\n")
-    print(c(x[["optr"]][c("par","value")],RMSE=signif(x$RMSE,4)),...)
+    print(c(unlist(x[["optr"]][c("par","value")]),RMSE=signif(x$RMSE,4)),...)
     cat("Other elements of bboptim object not fully shown:",
         paste(setdiff(names(x),c("optr_fitted","RMSE","convergence")),collapse=", "))
   }

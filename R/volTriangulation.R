@@ -3,7 +3,7 @@ volTriangulation <- function(vertices) { ##
   ## probleme with repeated vertices occurs sometimes:
   vertices <- unique(vertices)
   ## ...otherwise it is possible that a vertex (from $vertices) is later selected, which is not in the $simplicesTable
-  tc <- delaunayn(vertices,"Pp") ## triangulation by simplices
+  tc <- geometry::delaunayn(vertices,"Pp") ## triangulation by simplices
   # cf blckbox::volTriangulationWrapper for cases where delaunayn fails
   pmul <- cbind(-1,diag(ncol(vertices)))
   factorialdim <- factorial(ncol(vertices)) ## which is not always try if only a subspace is sampled

@@ -114,12 +114,19 @@ rawProfiles <- function(unselectedKgpt, ## not needed if plottype="prediction"
         xmin <- exp(FONKgLow[st])
         xmax <- exp(FONKgUp[st])
         plotfn <- function(z) {z <- matrix(log(z), ncol=1);colnames(z) <- st;purefn(z)}
+        logv <- "x"
       } else {
         xmin <- FONKgLow[st]
         xmax <- FONKgUp[st]
         plotfn <- function(z) {z <- matrix(z, ncol=1);colnames(z) <- st;purefn(z)}
+        logv <- ""
       }
-      plot(plotfn, xmin, xmax, add=(dev.cur()>1),xlab=st,ylab="ln(L)",cex.axis=loccex.axis)
+      plot(plotfn, xmin, xmax, add=(dev.cur()>1),xlab=st,ylab="ln(L)",cex.axis=loccex.axis,log=logv)
+      rosglobal <- blackbox.getOption("rosglobal")
+      abline(h=rosglobal$value-qchisq(0.95, df=1)/2, col=2)
+      text(xmin, pos=4, rosglobal$value-qchisq(0.95, df=1)/2*1.3, "0.95", col=2, cex=loccex.axis, offset=-0.3)
+      abline(h=rosglobal$value-qchisq(0.99, df=1)/2, col=3)
+      text(xmin, pos=4, rosglobal$value-qchisq(0.99, df=1)/2*1.3, "0.99", col=3, cex=loccex.axis, offset=-0.3)
     }
     if (plottype=="both") {
       axis(3,cex.axis=loccex.axis);axis(4,cex.axis=loccex.axis)

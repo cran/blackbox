@@ -15,21 +15,27 @@ pointsToFONK <- function(pointls,set_options=FALSE) {
         FONKgpointls[, 3] <- apply(FONKgpointls[, 3, drop=FALSE], 1, condaxialS2fromg,D2bool=D2bool)
         ## pas de logscale ici !!
       }
-    } else if ("OnePopVarSize" %in% DemographicModel) {
+    } else if ( ("OnePopVarSize" %in% DemographicModel) || ("OnePopFounderFlush" %in% DemographicModel)  || ("IM" %in% DemographicModel) )  {
       Nratiopt <- numeric(nrow(FONKgpointls))
       Nratiopt <- apply(FONKgpointls[, ParameterNames], 1, toNratioFromCanonical)
       if (set_options) blackbox.options(Nratiopt=Nratiopt)
-    } else if ("OnePopFounderFlush" %in% DemographicModel) {
-      Nratiopt <- numeric(nrow(FONKgpointls))
-      Nratiopt <- apply(FONKgpointls[, ParameterNames], 1, toNratioFromCanonical)
-      if (set_options) blackbox.options(Nratiopt=Nratiopt)
-      NactNfounderratiopt <- numeric(nrow(FONKgpointls))
-      NactNfounderratiopt <- apply(FONKgpointls[, ParameterNames], 1, toNactNfounderratioFromCanonical)
-      if (set_options) blackbox.options(NactNfounderratiopt=NactNfounderratiopt)
-      NfounderNancratiopt <- numeric(nrow(FONKgpointls))
-      NfounderNancratiopt <- apply(FONKgpointls[, ParameterNames], 1, toNfounderNancratioFromCanonical)
-      if (set_options) blackbox.options(NfounderNancratiopt=NfounderNancratiopt)
-    }
+      if ( !("IM" %in% DemographicModel) ) {
+        Dgmupt <- numeric(nrow(FONKgpointls))
+        Dgmupt <- apply(FONKgpointls[, ParameterNames], 1, toDgmuFromCanonical)
+        if (set_options) blackbox.options(Dgmupt=Dgmupt)
+      }
+      Tgmupt <- numeric(nrow(FONKgpointls))
+      Tgmupt <- apply(FONKgpointls[, ParameterNames], 1, toTgmuFromCanonical)
+      if (set_options) blackbox.options(Tgmupt=Tgmupt)
+      if ("OnePopFounderFlush" %in% DemographicModel) {
+        NactNfounderratiopt <- numeric(nrow(FONKgpointls))
+        NactNfounderratiopt <- apply(FONKgpointls[, ParameterNames], 1, toNactNfounderratioFromCanonical)
+        if (set_options) blackbox.options(NactNfounderratiopt=NactNfounderratiopt)
+        NfounderNancratiopt <- numeric(nrow(FONKgpointls))
+        NfounderNancratiopt <- apply(FONKgpointls[, ParameterNames], 1, toNfounderNancratioFromCanonical)
+        if (set_options) blackbox.options(NfounderNancratiopt=NfounderNancratiopt)
+      }
+    } 
   }
   colnames(FONKgpointls)[seq_len(length(FONKgNames))] <- FONKgNames
   if (set_options) {
@@ -55,7 +61,7 @@ pointsToFONK <- function(pointls,set_options=FALSE) {
     FONKgpointls <- FONKgpointls[!infini, ]
   }
   if (set_options) {
-    blackbox.options(maxobsFONKy = min(FONKgpointls[, blackbox.getOption("ycolname")]))## will be used in pointfromR ... ugly coding
+    #blackbox.options(maxobsFONKy = min(FONKgpointls[, blackbox.getOption("ycolname")]))## will be used in pointfromR ... ugly coding
     blackbox.options(FONKgpointls = FONKgpointls) ##
   }
   invisible(FONKgpointls)
@@ -77,16 +83,21 @@ fromCanonToFONK <- function(pointsNonL) {
         FONKgpointls[, 3] <- apply(FONKgpointls[, 3, drop=FALSE], 1, condaxialS2fromg,D2bool=D2bool)
         ## pas de logscale ici !!
       }
-    } else if ("OnePopVarSize" %in% DemographicModel) {
+    } else if ( ("OnePopVarSize" %in% DemographicModel) || ("OnePopFounderFlush" %in% DemographicModel) || ("IM" %in% DemographicModel) ) {
       Nratiopt <- numeric(nrow(FONKgpointls))
       Nratiopt <- apply(FONKgpointls[, ParameterNames], 1, toNratioFromCanonical)
-    } else if ("OnePopFounderFlush" %in% DemographicModel) {
-      Nratiopt <- numeric(nrow(FONKgpointls))
-      Nratiopt <- apply(FONKgpointls[, ParameterNames], 1, toNratioFromCanonical)
-      NactNfounderratiopt <- numeric(nrow(FONKgpointls))
-      NactNfounderratiopt <- apply(FONKgpointls[, ParameterNames], 1, toNactNfounderratioFromCanonical)
-      NfounderNancratiopt <- numeric(nrow(FONKgpointls))
-      NfounderNancratiopt <- apply(FONKgpointls[, ParameterNames], 1, toNfounderNancratioFromCanonical)
+      if ( !("IM" %in% DemographicModel) ) {
+        Dgmupt <- numeric(nrow(FONKgpointls))
+        Dgmupt <- apply(FONKgpointls[, ParameterNames], 1, toDgmuFromCanonical)
+      }
+      Tgmupt <- numeric(nrow(FONKgpointls))
+      Tgmupt <- apply(FONKgpointls[, ParameterNames], 1, toTgmuFromCanonical)
+      if ("OnePopFounderFlush" %in% DemographicModel) {
+        NactNfounderratiopt <- numeric(nrow(FONKgpointls))
+        NactNfounderratiopt <- apply(FONKgpointls[, ParameterNames], 1, toNactNfounderratioFromCanonical)
+        NfounderNancratiopt <- numeric(nrow(FONKgpointls))
+        NfounderNancratiopt <- apply(FONKgpointls[, ParameterNames], 1, toNfounderNancratioFromCanonical)
+      }
     }
   }
   colnames(FONKgpointls)[seq_len(length(FONKgNames))] <- FONKgNames

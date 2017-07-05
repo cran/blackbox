@@ -30,12 +30,6 @@ blackbox.getOption(x)
  }
 }
 \details{
-
-  Invoking \code{blackbox.options()} with no arguments returns a list with the
-  current values of the options. Invoking \code{blackbox.getOption(<option name>)} returns the value of the option rather than a list.
-
-%~  Internally, the options are kept in the list \code{.SpaMM}.\cr
-
   blackbox.options() provides an interface for changing many undocumented options.
 
   The package is designed to infer likelihood surfaces by smoothing estimated likelihood points in a model with some canonical parameters (\bold{ParameterNames}). A transformed parameter space may be considered for smoothing, wherein some parameters are variable (\bold{fittedNames}) and others may be constant. The transformed parameter space including constant parameters has names \bold{FONKgNames} (FON for Fitted Or Not).
@@ -44,7 +38,7 @@ blackbox.getOption(x)
   For \code{blackbox.getOption}, the current value set for option \code{x}, or
   \code{NULL} if the option is unset.
 
-  For \code{blackbox.options()}, a list of all set options sorted by category.  For
+  For \code{blackbox.options()}, a list of all set options.  For
   \code{blackbox.options(name)}, a list of length one containing the set value,
   or \code{NULL} if it is unset.  For uses setting one or more options,
   a list with the previous values of the options changed (returned

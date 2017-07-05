@@ -13,8 +13,8 @@
                                extraScale=c(),
                                LikStatistic=NULL,
                                lambdaEst = NA, ## cf default values expected by C...
-                               hglmLambdaEst = NA,
-                               hglmPhiEst = NA,
+                               #hglmLambdaEst = NA,
+                               #hglmPhiEst = NA,
                                CIlo = NA,
                                CIup = NA,
                                dump_frames = FALSE, ## private option (initially) for debugging rbb()
@@ -46,21 +46,21 @@
 
 blackbox.options <- function(...) {
   if (nargs() == 0) return(.blackbox.data$options)
-  current <- .blackbox.data$options
   temp <- list(...)
   if (length(temp) == 1 && is.null(names(temp))) {
     arg <- temp[[1]]
     switch(mode(arg),
            list = temp <- arg,
-           character = return(.blackbox.data$options[arg]), ## return here for eg ... = "NUMAX"
+           character = return(.blackbox.data$options[arg]),  ## return here for eg ... = "NUMAX"
            stop("invalid argument: ", sQuote(arg)))
   }
-  if (length(temp) == 0) return(current)
-  n <- names(temp)
-  if (is.null(n)) stop("options must be given by name")
-  current[n] <- temp
-  .blackbox.data$options <- current
-  invisible(current)
+  if (length(temp) == 0) return(.blackbox.data$options)
+  argnames <- names(temp)
+  if (is.null(argnames)) stop("options must be given by name")
+  old <- .blackbox.data$options[argnames]
+  names(old) <- argnames ## bc names are not valid for previously absent elements
+  .blackbox.data$options[argnames] <- temp
+  invisible(old)
 }
 
 blackbox.getOption <- function (x) {blackbox.options(x)[[1]]}
@@ -83,7 +83,7 @@ blackbox.getOption <- function (x) {blackbox.options(x)[[1]]}
     stop <- stop.redef
   }
   .blackbox.data$options$stdoutRedirBool <- stdoutRedirBool
-  abyss <- suppressMessages(delaunayn(matrix(1,nrow=2,ncol=1))) # *sigh*
+  abyss <- suppressMessages(geometry::delaunayn(matrix(1,nrow=2,ncol=1))) # *sigh*
 }
 
 ".onUnload" <- function (libpath) {

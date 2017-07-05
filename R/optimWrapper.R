@@ -62,7 +62,9 @@ optimWrapper <- function(objectivefn=function(x) {tofKpredict.nohull(x, fixedlis
                      opts=list(algorithm="NLOPT_LN_BOBYQA",maxeval=-1))
       resu$par <- structure(resu$solution,names=parnames)
       resu$value <- - resu$objective
-      resu$convergence <- resu$status
+      if (resu$status>0) { # Successful termination cf http://ab-initio.mit.edu/wiki/index.php/NLopt_Reference:
+        resu$convergence <- 0
+      } else resu$convergence <- resu$status # negative value indicates problem
     } else resu <- optim(initinfh, objectivefn, gr=objectivefn.grad, method="L-BFGS-B", control=control, lower=lower, upper=upper)
     ## resu$par is in 'full' Kriging variable *space* (but not necessary within hull of kriged points) since initinfh is
     ## check the OPTIM result

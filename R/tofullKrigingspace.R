@@ -20,7 +20,7 @@ tofullKrigingspace <- function(fittedlist, fixedlist=NULL) { ## output in krigin
   }
   ## FR 18/11/10 replaced fittedNames by ParameterNames in next line, for case where latt2Ns2 in fittedNames and twoNm in fixedlist (for LRT on twoNm...)
   ## Not sure whether this will be OK with fittedparamnbr< param nbr
-  checkfitted <- names(fittedlist) %w/o% c(ParameterNames, "latt2Ns2", "Nratio", "NactNfounderratio", "NfounderNancratio", "condS2")
+  checkfitted <- names(fittedlist) %w/o% c(ParameterNames, "latt2Ns2", "Nratio", "NactNfounderratio", "NfounderNancratio", "condS2", "Dgmu", "Tgmu")
   if (length(checkfitted)>0) {
     message.redef("(!)From tofullKrigingspace(): names(fittedlist) contains unhandled variable")
     message.redef("   or combination of variables") ##latt2Ns2 plus another variable
@@ -29,7 +29,7 @@ tofullKrigingspace <- function(fittedlist, fixedlist=NULL) { ## output in krigin
   }
   ## check fixedlist
   if(!is.null(fixedlist)) {
-    checkfixed <- names(fixedlist) %w/o% c(ParameterNames, "latt2Ns2", "Nratio", "NactNfounderratio", "NfounderNancratio", "condS2")
+    checkfixed <- names(fixedlist) %w/o% c(ParameterNames, "latt2Ns2", "Nratio", "NactNfounderratio", "NfounderNancratio", "condS2", "Dgmu", "Tgmu")
     if (length(checkfixed)>0) {
       message.redef("(!)From tofullKrigingspace(): names(fixedlist) contains unhandled variable")
       message.redef("   or combination of variables") ##latt2Ns2 plus another variable
@@ -92,6 +92,26 @@ tofullKrigingspace <- function(fittedlist, fixedlist=NULL) { ## output in krigin
       S2 <- latt2Ns2/twoNm ##cond axial S2 from g
     }
     KrigVec["g"] <- groot(S2, D2bool=D2bool )
+  }
+  if("D" %in% fittedNames && is.na(KrigVec["D"])) { ## then we must have Dgmu somewhere
+    Dgmu <- getvalue("Dgmu")
+    if(is.na(Dgmu)) {
+      stop.redef("(!) From tofullKrigingspace(): neither D nor Dgmu given")
+    } else {
+      if(is.na(KrigVec["twoNmu"])) { ## RL 022017 means that twoNmu was not fitted, yet impossible...
+        KrigVec["D"] <- Dgmu/blackbox.getOption("FONKgLow")["twoNmu"]
+      } else {KrigVec["D"] <- Dgmu/KrigVec["twoNmu"]} ## twoNmu is already unlog'ed above and D will be relog'ed below
+    }
+  }
+  if("T" %in% fittedNames && is.na(KrigVec["T"])) { ## then we must have Tgmu somewhere
+    Tgmu <- getvalue("Tgmu")
+    if(is.na(Tgmu)) {
+      stop.redef("(!) From tofullKrigingspace(): neither T nor Tgmu given")
+    } else {
+      if(is.na(KrigVec["twoNmu"])) { ## RL 022017 means that twoNmu was not fitted, yet impossible...
+        KrigVec["T"] <- Tgmu/blackbox.getOption("FONKgLow")["twoNmu"]
+      } else {KrigVec["T"] <- Tgmu/KrigVec["twoNmu"]} ## twoNmu is already unlog'ed above and T will be relog'ed below
+    }
   }
   if("twoNmu" %in% fittedNames && is.na(KrigVec["twoNmu"])) { ## then we must have Nratio somewhere
     Nratio <- getvalue("Nratio")

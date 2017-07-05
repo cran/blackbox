@@ -21,9 +21,11 @@ fromFONKtoanyspace <- function(FONKinput, outputnames, outputScale=blackbox.getO
     if ("latt2Ns2" %in% outputnames) {names(output)[which(names(output)=="twoNm")] <- "latt2Ns2"; output["latt2Ns2"] <- canon$latt2Ns2}
     if ("condS2" %in% outputnames) {names(output)[which(names(output)=="g")] <- "condS2"; output["condS2"] <- canon$latt2Ns2/canon$canonVP["twoNm"]} ## writes condS2 in place of g
     if ("Nratio" %in% outputnames) {names(output)[which(names(output)=="twoNmu")] <- "Nratio"; output["Nratio"] <- canon$Nratio}
-    if ("Nancratio" %in% outputnames) {message.redef("Nancratio Here 7");names(output)[which(names(output)=="twoNmu")] <- "Nratio"; output["Nratio"] <- canon$Nratio}
-    if ("NactNfounderratio" %in% outputnames) {names(output)[which(names(output)=="twoNmu")] <- "NactNfounderratio"; output["NactNfounderratio"] <- canon$NactNfounderratio}
+    if ("Nancratio" %in% outputnames) {names(output)[which(names(output)=="twoNmu")] <- "Nratio"; output["Nratio"] <- canon$Nratio}
+    if ("NactNfounderratio" %in% outputnames) {names(output)[which(names(output)=="twoNmu")] <- "NactNfounderratio"; if (is.null(canon$NactNfounderratio)) browser(); output["NactNfounderratio"] <- canon$NactNfounderratio}
     if ("NfounderNancratio" %in% outputnames) {names(output)[which(names(output)=="twoNancmu")] <- "NfounderNancratio"; output["NfounderNancratio"] <- canon$NfounderNancratio}
+    if ("Dgmu" %in% outputnames) {names(output)[which(names(output)=="D")] <- "Dgmu"; output["Dgmu"] <- canon$Dgmu}
+    if ("Tgmu" %in% outputnames) {names(output)[which(names(output)=="T")] <- "Tgmu"; output["Tgmu"] <- canon$Tgmu}
   } else { ## need to unlog since no call to canonizeFromKrig.
     ## the else close is slightly inelegant (one could rather compare the two logscales), but clear.
     output <- FONKinput

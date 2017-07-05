@@ -59,6 +59,7 @@ generateNextpointsfromCI <- function(n, ## number of points generated PER CI poi
           cumulgoodpoints <- rbind(cumulgoodpoints, trypoints)
         }
       } else cumulgoodpoints <-  rbind(cumulgoodpoints, unlist(fixed)) ## add 1DCI bound to nextpoints
+      if (length(cumulgoodpoints)==1L) names(cumulgoodpoints) <- names(fixed) ## Modif RL 02062017, to be checked
     }
   }
   ## knots must now be in sampling space (and scale) for comparison to constraints in LowUpFromKnots via shrink_knots()

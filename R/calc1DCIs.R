@@ -44,15 +44,19 @@ calc1DCIs <- function(oneDimCIvars,
     if( ! (intlCIvar %in% fittedNames)) {
       if(intlCIvar=="latt2Ns2") {
         MLval <- NA ## should be recomputed using composite hull within bounds1D
-      } else if(CIvar=="Nratio") {
+      } else if(intlCIvar=="Nratio") {
         MLval <- NA ## should be recomputed using composite hull within bounds1D
-      } else if(CIvar=="Nancratio") {
+      } else if(intlCIvar=="Nancratio") {
         MLval <- NA ## should be recomputed using composite hull within bounds1D
-      } else if(CIvar=="NactNfounderratio") {
+      } else if(intlCIvar=="NactNfounderratio") {
         MLval <- NA ## should be recomputed using composite hull within bounds1D
-      } else if(CIvar=="NfounderNancratio") {
+      } else if(intlCIvar=="NfounderNancratio") {
         MLval <- NA ## should be recomputed using composite hull within bounds1D
-      } else if(CIvar=="twoNm") {
+      } else if(intlCIvar=="twoNm") {
+        MLval <- NA ## should be recomputed using composite hull within bounds1D
+      } else if(intlCIvar=="Dgmu") {
+        MLval <- NA ## should be recomputed using composite hull within bounds1D
+      } else if(intlCIvar=="Tgmu") {
         MLval <- NA ## should be recomputed using composite hull within bounds1D
       } else {
         immedst <- paste("(!) 1D CI computation on given combination of CI/kriging variables not implemented : ", CIvar)
@@ -75,6 +79,10 @@ calc1DCIs <- function(oneDimCIvars,
         MLval <- rosglobal$NactNfounderratio ## RL: written by analogy, maybe not meaningful
       } else if (intlCIvar=="NfounderNancratio") {
         MLval <- rosglobal$NfounderNancratio ## RL: written by analogy, maybe not meaningful
+      } else if (intlCIvar=="Dgmu") {
+        MLval <- rosglobal$Dgmu ## RL: written by analogy, maybe not meaningful
+      } else if (intlCIvar=="Tgmu") {
+        MLval <- rosglobal$Tgmu ## RL: written by analogy, maybe not meaningful
       } else { ## canonical kriging var
         MLval <- (rosglobal$canonVP)[intlCIvar]
       }
@@ -82,7 +90,17 @@ calc1DCIs <- function(oneDimCIvars,
     }
     locchull.pts <- providefullhull(intlCIvar)[[1]]$vertices
     if (! intlCIvar %in% colnames(locchull.pts)) {
-      stop.redef("Unfeasible CI requested; either dubious combination of options (e.g., CI for 'Nb' requested with 'g' fixed) or a bug.")
+      if ( (intlCIvar=="Tgmu" && ! "T" %in% fittedNames) || (intlCIvar=="Dgmu"  && ! "D" %in% fittedNames) ) {
+        immedst <- paste("(!) 1D CI computation on a composite parameter for which one of the variables is not fitted : ", CIvar)
+        message.redef(immedst)
+        write(immedst, file=cleanResu)
+        ## ... in particular no providefulhull algo in this case...
+        civarst <- paste(dataString, "(", CIvar, "_CI_NOT_COMPUTED)", sep="")
+        writeoutput(civarst=civarst, levelSlot=NA, CIloSlot=NA, CIupSlot=NA)
+        next ## SKIPS remainder of loop body 
+      } else {
+        stop.redef("Unfeasible CI requested; either dubious combination of options (e.g., CI for 'Nb' requested with 'g' fixed) or a bug.")
+      }
     }
     lowval <- min(locchull.pts[, intlCIvar])
     hival <- max(locchull.pts[, intlCIvar])

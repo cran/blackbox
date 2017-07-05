@@ -25,7 +25,7 @@ profileBySubHull <- function(fixedlist=NA, otherlist=NULL, extrap=F, locchull=NU
     stop.redef()
   }
   notinKgspace <- names(fixedlist) %w/o% fittedNames
-  checknames <- notinKgspace %w/o% c(blackbox.getOption("ParameterNames"), "latt2Ns2", "Nratio", "NactNfounderratio", "NfounderNancratio")
+  checknames <- notinKgspace %w/o% c(blackbox.getOption("ParameterNames"), "latt2Ns2", "Nratio", "NactNfounderratio", "NfounderNancratio", "Dgmu", "Tgmu")
   if (length(checknames)>0) {
     message.redef(c("Error: incorrect members ", checknames, " of fixedlist argument to profile() function"))
     stop.redef()

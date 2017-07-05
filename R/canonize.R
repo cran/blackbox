@@ -28,7 +28,7 @@ toCanonical <- function(candidates, ## in (possibly incomplete) Kriging space
 
 
 canonizeFromKrig <- function(input) { ## from vector in complete Kriging space AND in Kriging scale, also returns composite var
-  INFO <- blackbox.options()[c("FONKgLow","ParameterNames","DemographicModel","FONKgNames","FONKgScale")]
+  INFO <- blackbox.options()[c("FONKgLow","ParameterNames","DemographicModel","plotOptions", "oneDimCIvars", "FONKgNames","FONKgScale")]
   FONKinput <- INFO$FONKgLow ## initial value
   if (length(setdiff(names(input),names(FONKinput)))>0L) {
     stop("debugging 29/04/2106: input argument of canonizeFromKrig() is invalid (should be within kriging space).")
@@ -53,34 +53,47 @@ canonizeFromKrig <- function(input) { ## from vector in complete Kriging space A
       latt2Ns2 <- (tolatt2Ns2(canon))["latt2Ns2"] ## requires that canon is indeed already canonical
     }
     return(list(canonVP=canon, latt2Ns2=latt2Ns2))
-  } else if ( length(intersect(DemographicModel, c("OnePopVarSize", "IM")))>0) {
+  } else if ( length(intersect(DemographicModel, c("OnePopVarSize", "OnePopFounderFlush", "IM")))>0) {
     if("Nratio" %in% FONKgNames) {
       Nratio <- FONKinput["Nratio"] ## saved in return value of canonizeFromKrig
       canon["twoNmu"] <- FONKinput[["Nratio"]]*FONKinput[["twoNancmu"]]
     } else {## constructs Nratio
       Nratio <- toNratioFromCanonical(canon) ## requires that canon is indeed already canonical
     }
-    return(list(canonVP=canon, Nratio=Nratio))
-  } else if ("OnePopFounderFlush" %in% DemographicModel) {
-    ##Remember that Nratio in FounderFush is called Nancratio for the user, RL 052013
-    if("Nratio" %in% FONKgNames) {
-      Nratio <- FONKinput["Nratio"] ## saved in return value of canonizeFromKrig
-      canon["twoNmu"] <- FONKinput[["Nratio"]]*FONKinput[["twoNancmu"]]
-    } else {## constructs Nratio
-      Nratio <- toNratioFromCanonical(canon) ## requires that canon is indeed already canonical
+    paramValList=list(canonVP=canon, Nratio=Nratio)
+    if ("OnePopFounderFlush" %in% DemographicModel) {
+      if("NactNfounderratio" %in% FONKgNames) {
+        NactNfounderratio <- FONKinput["NactNfounderratio"] ## saved in return value of canonizeFromKrig
+        canon["twoNmu"] <- FONKinput[["NactNfounderratio"]]*FONKinput[["twoNfoundermu"]]
+      } else {## constructs NactNfounderratio
+        NactNfounderratio <- toNactNfounderratioFromCanonical(canon) ## requires that canon is indeed already canonical
+      }
+      if("NfounderNancratio" %in% FONKgNames) {
+        NfounderNancratio <- FONKinput["NfounderNactratio"] ## saved in return value of canonizeFromKrig
+        canon["twoNancmu"] <- FONKinput[["twoNfoundermu"]]/FONKinput[["NfounderNancratio"]]
+      } else {## constructs NfounderNancratio
+        NfounderNancratio <- toNfounderNancratioFromCanonical(canon) ## requires that canon is indeed already canonical
+      }
+      paramValList=c(paramValList,list(NactNfounderratio=NactNfounderratio, NfounderNancratio=NfounderNancratio))
     }
-    if("NactNfounderratio" %in% FONKgNames) {
-      NactNfounderratio <- FONKinput["NactNfounderratio"] ## saved in return value of canonizeFromKrig
-      canon["twoNmu"] <- FONKinput[["NactNfounderratio"]]*FONKinput[["twoNfoundermu"]]
-    } else {## constructs NactNfounderratio
-      NactNfounderratio <- toNactNfounderratioFromCanonical(canon) ## requires that canon is indeed already canonical
+    if ( !("IM" %in% DemographicModel) && ( ("DgmuProf" %innc% INFO$plotOptions) || ("Dgmu" %innc% INFO$oneDimCIvars) ) )  {
+      if("Dgmu" %in% FONKgNames) {
+        Dgmu <- FONKinput["Dgmu"] ## saved in return value of canonizeFromKrig
+        canon["D"] <- FONKinput[["Dgmu"]]/FONKinput[["twoNmu"]]
+      } else {## constructs Dgmu
+        Dgmu <- toDgmuFromCanonical(canon) ## requires that canon is indeed already canonical
+      }
+      paramValList=c(paramValList,list(Dgmu=Dgmu))
     }
-    if("NfounderNancratio" %in% FONKgNames) {
-      NfounderNancratio <- FONKinput["NfounderNactratio"] ## saved in return value of canonizeFromKrig
-      canon["twoNancmu"] <- FONKinput[["twoNfoundermu"]]/FONKinput[["NfounderNancratio"]]
-    } else {## constructs NfounderNancratio
-      NfounderNancratio <- toNfounderNancratioFromCanonical(canon) ## requires that canon is indeed already canonical
+    if ( ("TgmuProf" %innc% INFO$plotOptions) || ("Tgmu" %innc% INFO$oneDimCIvars) )  {
+      if("Tgmu" %in% FONKgNames) {
+        Tgmu <- FONKinput["Tgmu"] ## saved in return value of canonizeFromKrig
+        canon["T"] <- FONKinput[["Tgmu"]]/FONKinput[["twoNmu"]]
+      } else {## constructs Tgmu
+        Tgmu <- toTgmuFromCanonical(canon) ## requires that canon is indeed already canonical
+      }
+      paramValList=c(paramValList,list(Tgmu=Tgmu))
     }
-    return(list(canonVP=canon, Nratio=Nratio, NactNfounderratio=NactNfounderratio, NfounderNancratio=NfounderNancratio))
+    return(paramValList)
   } else return(list(canonVP=canon))
 } ## end def canonizeFromKrig

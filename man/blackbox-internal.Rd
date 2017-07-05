@@ -142,6 +142,8 @@
 \alias{toNfounderNancratioFromCanonical}
 \alias{toNfounderratioFromCanonical}
 \alias{toNratioFromCanonical}
+\alias{toDgmuFromCanonical}
+\alias{toTgmuFromCanonical}
 \alias{toUserValues}
 \alias{tofKpredict.nohull}
 \alias{tofullKrigingspace}

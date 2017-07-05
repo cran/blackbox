@@ -1,5 +1,7 @@
 writeFinalInfo <- function(cleanResu="") {
   rosglobal <- blackbox.getOption("rosglobal")
+  plotOptions <- blackbox.getOption("plotOptions")
+  oneDimCIvars <- blackbox.getOption("oneDimCIvars")
   message.redef("...done.")
   message.redef("\n*** Final likelihood estimates, and predicted logL: ***")
   message.redef(prettyNamedUserValues(c(rosglobal$canonVP, "ln(L)"=rosglobal$value), extradigits=2))
@@ -23,16 +25,18 @@ writeFinalInfo <- function(cleanResu="") {
     write(paste("\n      NactNfounder ratio: ", prettynum(rosglobal$NactNfounderratio), " ", sep=""), file=cleanResu)
     write(paste("\n      NfounderNanc ratio: ", prettynum(rosglobal$NfounderNancratio), " ", sep=""), file=cleanResu)
   }
+  if (length(intersect(DemographicModel, c("OnePopVarSize", "OnePopFounderFlush", "IM")))>0) {
+    if ( !("IM" %in% DemographicModel) && ( ("DgmuProf" %innc% plotOptions) || ("Dgmu" %innc% oneDimCIvars) ) ) write(paste("\n      Dg*mu: ", prettynum(rosglobal$Dgmu), " ", sep=""), file=cleanResu)
+    if ( ("TgmuProf" %innc% plotOptions) || ("Tgmu" %innc% oneDimCIvars) ) write(paste("\n      Tg*mu: ", prettynum(rosglobal$Dgmu), " ", sep=""), file=cleanResu)
+  }
   ## note that the C codes seeks estimates in the VERY LAST line of the output.txt file: do not write comments after the following output:
-  ## GOP <- ...RMSpred/...RMSy ## Goodness of prediction criterion.
-  possibleError <- blackbox.getOption("RMSpred")*qnorm(0.99, 0, 1) ## guess for error realistic in 99% of cases
-  actualPredictionError <- rosglobal$value + blackbox.getOption("maxobsFONKy") ## mind the sign reversal
-  GOP <- rosglobal$value + blackbox.getOption("maxobsFONKy") - possibleError
+  upperPred_crits <- blackbox.getOption("upperPred_crits")
+  if (is.null(upperPred_crits)) upperPred_crits <- c(RMSpred=NA,GOP=NA) ## if sampleByResp has not been run (which should not occur)
   writeoutput(paste(blackbox.getOption("dataFile"), "(final)", sep=""),
               returncode=returncode,
-              prettynum(blackbox.getOption("RMSpred")),
-              prettynum(blackbox.getOption("RMSy")),
-              prettynum(GOP)) ## GOP is excess error in prediction not explained in 99% of cases
+              NA,
+              upperPred_crits$RMSpred, ## RMSpred for upper points only
+              upperPred_crits$GOP) ## GOP root mean relative squared error of prediction
   if ( ! blackbox.getOption("interactiveGraphics")) { ##
     plotFiles <- blackbox.getOption("plotFiles")
     if(!is.null(plotFiles) & length(plotFiles)>0)

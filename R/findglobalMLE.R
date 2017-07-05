@@ -15,6 +15,12 @@ findglobalMLE <- function(initptinfK) {
   } else if("IM" %in% DemographicModel) {
     blob <- c(blob, list(Nratio=canonized$Nratio))
   }
+  plotOptions <- blackbox.getOption("plotOptions")
+  oneDimCIvars <- blackbox.getOption("oneDimCIvars")
+  if ( length(intersect(DemographicModel, c("OnePopVarSize", "OnePopFounderFlush", "IM")))>0) {
+    if ( !("IM" %in% DemographicModel) && ( ("DgmuProf" %innc% plotOptions) || ("Dgmu" %innc% oneDimCIvars) ) )  blob <- c(blob, list(Dgmu=canonized$Dgmu))
+    if ( ("TgmuProf" %innc% plotOptions) || ("Tgmu" %innc% oneDimCIvars) )  blob <- c(blob, list(Tgmu=canonized$Tgmu))
+  }
   blob <-  c(blob, canonVP=list(canonized$canonVP))
   return(blob)
 }
