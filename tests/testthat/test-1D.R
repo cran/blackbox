@@ -22,4 +22,4 @@ while ( ! all(bbresu$conv_crits) ) {
   bbresu <- bboptim(rbind(bbresu$fit$data,newsimuls))
 }
 
-expect_equal(bbresu$optr$par,1,tolerance=1e-4)
+testthat::expect_equal(bbresu$optr$par,1,tolerance=1e-4)

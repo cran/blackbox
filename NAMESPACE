@@ -5,16 +5,17 @@ export(calc1DCIs,preprocessbboptions,buildPointls,buildFONKgpointls,islogscale,b
 export(calcGCV,calcPredictorOK,maximizeOK,calc1Dprofiles,calcProfileLR,calc2D3Dplots,sampleByResp,calcLRTs,writeFinalInfo,bboptim,rbb)
 export(init_grid) ## user-level in Infusion...
 #####
-importFrom("graphics", "abline", "axis", "contour", "filled.contour", "lines", "par", "plot", "points", "text", "title")
-importFrom("graphics", "mtext", "strwidth")
+importFrom("graphics", "abline", "axis", "contour", "filled.contour", "lines", 
+           "par", "plot", "points", "text", "title", "mtext", "strwidth")
 importFrom("grDevices", "dev.cur", "dev.list", "dev.new", "dev.off", "dev.set", "graphics.off", "gray", "postscript", "rainbow")
-importFrom("stats", "as.formula", "constrOptim", "cov", "dnorm", "median", "na.omit", "nlminb", "optim", "optimize", "pchisq", "pnorm", "predict", "qchisq", "qnorm", "runif", "uniroot")
-importFrom("stats", "quantile")
-importFrom("utils", "alarm", "read.table", "write.table")
-importFrom("utils", "memory.size", "object.size","read.csv","dump.frames","capture.output","sessionInfo")
+importFrom("stats", "as.formula", "constrOptim", "cov", "dnorm", "median", "na.omit", "nlminb", 
+           "optim", "optimize", "pchisq", "pnorm", "predict", "qchisq", "qnorm", "runif", 
+           "uniroot", "quantile")
+importFrom("utils", "alarm", "read.table", "write.table", "memory.size", "object.size",
+           "read.csv","dump.frames","capture.output","sessionInfo")
 importFrom(rcdd,d2q,q2d,scdd,lpcdd,qneg,qmatmult,qdq,qmq,addHeq,redundant)
-importFrom(spaMM,spaMM.colors,niceLabels)
-importFrom(spaMM, fixef, spaMM.getOption, ULI, MaternCorr, overcat)
+importFrom(spaMM, "spaMM.colors", "fixef", "spaMM.getOption", "MaternCorr")  ## doc'ed fns
+importFrom(spaMM, "niceLabels") ## undoc'ed fns
 importFrom(proxy,dist)
 importFrom(numDeriv,grad,hessian,jacobian)
 importFrom(lattice,wireframe)
@@ -22,6 +23,7 @@ importFrom(Rcpp,evalCpp)
 #importFrom(minqa,bobyqa)
 importFrom(nloptr,nloptr)
 #importFrom(lbfgsb3,lbfgsb3)
+importFrom(utils,setTxtProgressBar,txtProgressBar)
 export(spaMM.colors) # bc currently in migraine_ .R scripts written by Migraine
 S3method(print, bboptim)
 S3method(print, OKrig)

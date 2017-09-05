@@ -21,6 +21,7 @@ blackbox.getOption(x)
    \item{\code{fittedNames}}{See Details}
    \item{\code{gridStepsNbr}}{Number of steps of the grid of value for each parameter in profile plots.}
    \item{\code{graphicPars}}{Graphic parameters used for most plots.}
+   \item{\code{coreNbr}}{Number of cores that R can use for paralell profile computations.}
    \item{\code{verbosity=0}:}{Controls display of information about generalized cross-validation.
      \code{0} suppresses (most) messages.
      \code{1} displays information about estimates and progress of the procedure.

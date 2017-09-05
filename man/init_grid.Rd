@@ -15,7 +15,7 @@ init_grid(lower=c(par=0), upper=c(par=1), steps=NULL,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{lower}{
-  A vector of lower bounds for the parameters, as well as fixed arguments to be passed to the function simulating the summary statistics. Elements must be named. Fixed parameters character strings.   
+  A vector of lower bounds for the parameters, as well as fixed arguments to be passed to the function simulating the summary statistics. Elements must be named. 
   }
   \item{upper}{
   A vector of upper bounds for the parameters, as well as fixed parameters. Elements must be named and match those of \code{lower}.  

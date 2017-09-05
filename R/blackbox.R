@@ -222,7 +222,7 @@ rbb <- function(object,n=NULL,from=NULL,focus=0.75) {
   # avoiding more than two replicates
   candidatesWPred <- predict(object$fit,newdata=candidates,binding=ycolname)
   poolWresp <- rbind(object$fit$data,candidatesWPred) ## mixes observed responses and predicted responses
-  uli <- ULI(poolWresp[,1:np,drop=FALSE])
+  uli <- .ULI(poolWresp[,1:np,drop=FALSE])
   ## test uli without optr$par
   if (any(table(uli[-length(uli)])>2L)) { ## on previous + candidates: should never be reached
     if (blackbox.getOption("dump_frames")) { ## FR->FR private option for debugging, removable later ?

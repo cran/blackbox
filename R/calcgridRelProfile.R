@@ -73,7 +73,7 @@ calcGridRelProfile <- function(fixed, profileMethod="profileBySubHull",
   ntotal <- length(xGrid)*length(yGrid)
   ptit <- 1L
   prevmsglength <- 0L
-  nProfileCalls <- 0L
+  ##nProfileCalls <- 0L ##RL 072017: not used
   profilesTime <- 0
   t0 <- proc.time()["user.self"]
   usernames <- sapply(fixed, formatName, format="ASCII")
@@ -87,6 +87,8 @@ calcGridRelProfile <- function(fixed, profileMethod="profileBySubHull",
     passes <- 1L ## but more passes could make sense for 1D profile of 2-D surface
   } else passes <- c(1L,2L,3L)
 
+  cores_info <- .init_cores()
+  
   for (pass in passes) {
     ptit <- 1L
     if (pass==3L) {
@@ -96,11 +98,13 @@ calcGridRelProfile <- function(fixed, profileMethod="profileBySubHull",
       xSeq <- seq_len(length(xGrid))
       ySeq <- seq_len(length(yGrid))
     }
-    for(i in xSeq) {
+    if(cores_info$nb_cores==1L || pass!=1L) {
+      for(i in xSeq) {
       for(j in ySeq) { ## NOTE no meaningful value outside the range covered by kriging
         fixedlist[fixed[1L]] <- xGrid[i]
         if (length(fixed)>1) {fixedlist[fixed[2]] <- yGrid[j]}
         locarglist <- list(fixedlist=fixedlist)
+        
         if (length(fixedlist)==INFO$fittedparamnbr) { ## no profile
           if (INFO$fittedparamnbr==1L) {
             grmf <- list(full=unlist(fixedlist), value=purefn(unlist(fixedlist)), par=NULL, inKgspace=TRUE) ## single param, grid is the Kriged range
@@ -110,8 +114,11 @@ calcGridRelProfile <- function(fixed, profileMethod="profileBySubHull",
           }
         } else {
           if (pass==1L) {
-            toto <- system.time(grmf <- do.call(profileMethod,list(fixedlist=fixedlist))) ## returns canonical vector
-            nProfileCalls <- nProfileCalls+1
+            parVec <- c(i,j,fixedlist)
+            names(parVec)[1]="x";if (length(fixed)>1) names(parVec)[2]="y";
+            toto <- system.time(grmf <- indepCalcProfileLRforeachPoint(parVec, profileMethod))
+            #RL 072017: was toto <- system.time(grmf <- do.call(profileMethod,list(fixedlist=fixedlist))) ## returns canonical vector
+            ##nProfileCalls <- nProfileCalls+1 ##RL: 072017 not used
             profilesTime <- profilesTime+toto["user.self"]
             if(profileMethod=="profileBySubHull") subhullinfo[[i, j]] <- grmf$subHull_V_and_H
           } else {
@@ -154,22 +161,54 @@ calcGridRelProfile <- function(fixed, profileMethod="profileBySubHull",
         }
         if (interactive()) {
           msg <- paste(" (step ", pass, ") Already ", ptit, " profile points computed out of ", ntotal, "     ", sep="")
-          prevmsglength <- overcat(msg, prevmsglength)
+          prevmsglength <- .overcat(msg, prevmsglength)
           ptit <- ptit+1L
         }
       } ## y subloop
       if (pass==1L) {
-        if ( ! interactive() && INFO$profile3passesBool && length(fixedlist)<INFO$fittedparamnbr) {
+        if (  !interactive() && INFO$profile3passesBool && length(fixedlist)<INFO$fittedparamnbr) {
           pastHullNProf <- proc.time()["user.self"]-t0
           hullNProf <- pastHullNProf*length(xGrid)/i
           if (INFO$profile3passesBool && length(fixedlist)<INFO$fittedparamnbr) {
             if (length(fixedlist)>1) {estTime <- hullNProf+2*profilesTime} else {estTime <- hullNProf+profilesTime} ## overestim as next profile() calls should take less time
           } ##else (string must be short enough that the end of the line is not met...)
           msg <- paste("Estimated time for ", paste(usernames, collapse=", ") , " profile plot: ", signif(hullNProf, 2), " s. (remaining: ", signif(hullNProf-pastHullNProf, 2), " s.)      ", sep="")
-          if (hullNProf>10) prevmsglength <- overcat(msg, prevmsglength)
+          if (hullNProf>10) prevmsglength <- .overcat(msg, prevmsglength)
         }
       }
     } ## x loop
+    } else {
+      
+      for(i in xSeq) {
+        for(j in ySeq) { ## NOTE no meaningful value outside the range covered by kriging
+          fixedlist[fixed[1L]] <- xGrid[i]
+          if (length(fixed)>1) {fixedlist[fixed[2]] <- yGrid[j]}
+          if (i*j==1L) {parGrid <- c(i,j,fixedlist)} else parGrid=rbind(parGrid,c(i,j,fixedlist))
+        }
+      }
+      colnames(parGrid)[1]="x";if (length(fixed)>1) colnames(parGrid)[2]="y";
+      for ( i in 1:NROW(parGrid) ) {rownames(parGrid)[i]=i}
+      resGrid <- vector("list", NROW(parGrid)) #matrix(NA,nrow=NROW(parGrid),ncol=4L) ## FR: doit être pré- déclarée, si j'en crois mon code...
+      resGrid <- .run_cores(indepCalcProfileLRforeachPoint, parGrid, profileMethod, cores_info)
+      parallel::stopCluster(cores_info$cl)
+      
+      for ( i in 1:NROW(parGrid) ) {
+      
+        if ( ! is.na(resGrid[i,]$value)) { ## old comment before parallelization of the 1st pass: TRUE on 1st pass and if zut was TRUE otherwise
+          profpts[as.numeric(parGrid[i,1]), as.numeric(parGrid[i,2]), ] <- c(resGrid[i,]$par[othervars], resGrid[i,]$value)
+          ## = profiled out values which maximize profile | fixed, and profile logL
+          if (pass==1L) { if ( ! is.na(resGrid[i,]$value)) inKrigSpace[as.numeric(parGrid[i,1]), as.numeric(parGrid[i,2])] <- resGrid[i,]$inKgspace} # RL if (pass==1L) always true
+          if (resGrid[i,]$inKgspace && resGrid[i,]$value>tempGridRelbestll) {
+           tempGridRelbestll <- resGrid[i,]$value
+           tempBestfull <- resGrid[i,]$full ## non log
+          }
+        }
+      }
+      if (interactive()) {
+       msg <- paste(" (step ", pass, ") Already ", NROW(parGrid), " profile points computed out of ", NROW(parGrid), "     ", sep="")
+       prevmsglength <- .overcat(msg, prevmsglength)
+      }
+    }## else if(cores_info$nb_cores==1L)
   } ## end iteration on passes
   if (length(fixed)>1L) {
     locfn <- function(fixed,MARGIN,Grid,oGrid,INFO) { # to improve 1D profiles
@@ -258,3 +297,28 @@ calcGridRelProfile <- function(fixed, profileMethod="profileBySubHull",
   if (interactive()) {cat("\n")}
   return(list(xGrid=xGrid, yGrid=yGrid, RelLik=RelLik, inKrigSpace=inKrigSpace))
 } ## end calcGridRelProfile
+
+
+indepCalcProfileLRforeachPoint <- function(parVec, profileMethod=NULL, blackboxOptions=NULL) {#"profileBySubHull") {
+
+    if ( ! is.null(blackboxOptions) ) blackbox.options(blackboxOptions)
+  .blackbox.data$options$fitobject$CKrigidx <- NULL # inhibits use of the objects stored only in DLL instance for parent process
+
+  locfixedlist <- vector("list", length(parVec) - 2)
+  locfixedlist[1] <- parVec[3]; names(locfixedlist)[1] <- names(parVec)[3];
+  if (length(locfixedlist)>1) { locfixedlist[2] <- parVec[4]; names(locfixedlist)[2] <- names(parVec)[4];}
+  INFO <- list(fittedparamnbr=blackbox.getOption("fittedparamnbr"))
+  if (length(locfixedlist)==INFO$fittedparamnbr) { ## no profile
+    if (INFO$fittedparamnbr==1L) {
+      grmf <- list(full=unlist(locfixedlist), value=purefn(unlist(locfixedlist)), par=NULL, inKgspace=TRUE) ## single param, grid is the Kriged range
+    } else { ## 2 params
+      Lvalue <- purefn(unlist(locfixedlist)) ## FR->FR: alsways use Kgtotal hull : valid ?
+      grmf <- list(full=unlist(locfixedlist), value=Lvalue, par=NULL, inKgspace= (! is.na(Lvalue)) )
+    }
+  } else {
+      toto <- system.time(grmf <- do.call(profileMethod,list(fixedlist=locfixedlist))) ## returns canonical vector
+      ##profilesTime <- profilesTime+toto["user.self"] ##RL 07 2017: to be adapted to paralell computation
+      if(profileMethod=="profileBySubHull") subHull_V_and_H <- grmf$subHull_V_and_H
+  }
+  return(list(full=grmf$full, value=grmf$value, par=grmf$par, inKgspace=grmf$inKgspace, subHull_V_and_H=subHull_V_and_H))
+}

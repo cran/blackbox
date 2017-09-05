@@ -1,13 +1,19 @@
 \name{NEWS}
 \title{blackbox News}
 \encoding{UTF-8}
+\section{CHANGES UP TO VERSION 1.1.2}{
+\subsection{USER-LEVEL CHANGES}{
+\itemize{
+\item (Migraine-specific) Parallel computation is implemented for profile point computations.
+}
+}
+}
 \section{CHANGES UP TO VERSION 1.1.0}{
 \subsection{USER-LEVEL CHANGES}{
 \itemize{
 \item Less primitive convergence diagnostics are implemented in bboptim().
 \item (Migraine-specific) New mesures of ''goodness of prediction'' implemented.
 \item (Migraine-specific) add logscale for 1D profile plots
-\item
 }
 }
 \subsection{CORRECTED BUGS}{

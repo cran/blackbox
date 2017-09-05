@@ -82,7 +82,7 @@ if (blackbox.getOption("example_maxtime")>4) {
 
 #### With noise
 
-if (blackbox.getOption("example_maxtime")>100) {
+if (blackbox.getOption("example_maxtime")>78) {
  set.seed(123)
  simuls <- cbind(parsp,bb=apply(parsp,1,"fr",sd=0.1))
 

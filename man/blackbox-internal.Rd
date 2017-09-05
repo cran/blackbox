@@ -18,6 +18,7 @@
 \alias{calcKnotsInfo}
 \alias{profileByFullHull}
 \alias{calcGridRelProfile}
+\alias{indepCalcProfileLRforeachPoint}
 \alias{calcBounds1D}
 \alias{generateNextpointsfromCI}
 \alias{toCanonical}

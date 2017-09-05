@@ -282,7 +282,7 @@ generateNewPoints <- function(pointnbr=-1, ##   pointnbr is the target size for 
       candidates <- signif(candidates, INFO$parDigits)
       previous <- unique(rbind(previous, candidates)) ## previous accumulates valid results
       msg <- paste("    ...already", min(pointnbr, nrow(previous)), "points generated...")
-      prevmsglength <- overcat(msg, prevmsglength)
+      prevmsglength <- .overcat(msg, prevmsglength)
     }
     n_added <- NROW(previous)-nini ## added to 'previous' since input 'previous'
     successrate <- n_added/nbrtriedpoints

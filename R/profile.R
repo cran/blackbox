@@ -26,6 +26,10 @@
                                verbosity=0,
                                useEI=TRUE,
                                memcheck=-1, ## >0: threshold for browser() => no check when memcheck<=0;
+                               cores_avail_warned=FALSE,
+                               nb_cores_warned=FALSE,
+                               coreNbr=NULL,
+                               doSNOW_warned=FALSE,
                                ##### used by many fns even outside Migraine
                                ParameterNames=NULL,
                                ##### not documented bc used in the body of undocumented Migraine fns
