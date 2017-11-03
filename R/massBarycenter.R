@@ -1,5 +1,5 @@
 massBarycenter <- function (vertices) {
-    tc <- geometry::delaunayn(vertices, options = "Pp")
+    tc <- delaunayn(vertices, options = "Pp")
     pmul <- cbind(-1, diag(rep(1, ncol(vertices))))
     vb <- apply(tc, 1, function(v) {
         simplex <- vertices[v, ]

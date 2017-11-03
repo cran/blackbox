@@ -6,7 +6,7 @@ resetCHull <- function(object,
                      returnRational=FALSE,
                      verboseThreshold=if (.Platform$r_arch=="x64") {1000} else {600}) {
   if (quickndirty) { ## tries to avoid two bottlenecks: (1) unique.matrix; (2) rational arithm
-    vertices <- object[unique(as.numeric(geometry::convhulln(object, "Pp"))), ]
+    vertices <- object[unique(as.numeric(convhulln(object, "Pp"))), ]
     resu <- list()
     if ("vertices" %in% formats ) resu <- c(resu, list(vertices=vertices))
     if ("constraints" %in% formats) {
@@ -34,7 +34,7 @@ resetCHull <- function(object,
     } else if (ncol(redundantpts)==1L) {
       vertices <- array(c(min(redundantpts), max(redundantpts)), dim=c(2, 1))
     } else {
-      trycn <- try(geometry::convhulln(redundantpts, "Pp"),silent=TRUE) ## possibly SLOW
+      trycn <- try(convhulln(redundantpts, "Pp"),silent=TRUE) ## possibly SLOW
       #if (inherits(trycn,"try-error")) trycn <- try(convhulln_allowing_lowerdim(redundantpts))
       if (inherits(trycn,"try-error")) {
         amknots <- as.matrix(redundantpts) ## the sweep syntax does not work on data.frame's 

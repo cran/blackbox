@@ -27,7 +27,7 @@ writeFinalInfo <- function(cleanResu="") {
   }
   if (length(intersect(DemographicModel, c("OnePopVarSize", "OnePopFounderFlush", "IM")))>0) {
     if ( !("IM" %in% DemographicModel) && ( ("DgmuProf" %innc% plotOptions) || ("Dgmu" %innc% oneDimCIvars) ) ) write(paste("\n      Dg*mu: ", prettynum(rosglobal$Dgmu), " ", sep=""), file=cleanResu)
-    if ( ("TgmuProf" %innc% plotOptions) || ("Tgmu" %innc% oneDimCIvars) ) write(paste("\n      Tg*mu: ", prettynum(rosglobal$Dgmu), " ", sep=""), file=cleanResu)
+    if ( ("TgmuProf" %innc% plotOptions) || ("Tgmu" %innc% oneDimCIvars) ) write(paste("\n      Tg*mu: ", prettynum(rosglobal$Tgmu), " ", sep=""), file=cleanResu)
   }
   ## note that the C codes seeks estimates in the VERY LAST line of the output.txt file: do not write comments after the following output:
   upperPred_crits <- blackbox.getOption("upperPred_crits")

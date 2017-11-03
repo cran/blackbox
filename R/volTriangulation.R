@@ -3,7 +3,7 @@ volTriangulation <- function(vertices) { ##
   ## probleme with repeated vertices occurs sometimes:
   vertices <- unique(vertices)
   ## ...otherwise it is possible that a vertex (from $vertices) is later selected, which is not in the $simplicesTable
-  tc <- geometry::delaunayn(vertices,"Pp") ## triangulation by simplices
+  tc <- delaunayn(vertices,"Pp") ## triangulation by simplices
   # cf blckbox::volTriangulationWrapper for cases where delaunayn fails
   pmul <- cbind(-1,diag(ncol(vertices)))
   factorialdim <- factorial(ncol(vertices)) ## which is not always try if only a subspace is sampled
@@ -92,7 +92,7 @@ locatePointinvT <- function(point, ## numeric (not matrix or data frame: see use
     vM <- pmul %*% simplex # is simplex[-1,]-simplex[1,] for each simplex
     vWeights <- try(solve(t(vM),point-simplex[1,]),silent=TRUE) ## as.numeric(point) would be required if point were a (1-row) matrix
     # problem may occur if volume of simplex is nearly zero
-    if (inherits(vWeights,"try-error")) {vWeights <- MASS::ginv(t(vM)) %*% (point-simplex[1,])}
+    if (inherits(vWeights,"try-error")) {vWeights <- ginv(t(vM)) %*% (point-simplex[1,])}
     vWeights <- c(1-sum(vWeights),vWeights) ## weights for all vertices
     min(vWeights) ## if the point is within/marginally outside/clearly outside the vT, this will return a positive/small negative/large negative value
   })
@@ -109,7 +109,7 @@ locatePointinvT <- function(point, ## numeric (not matrix or data frame: see use
     vM <- pmul %*% simplex # is simplex[-1,]-simplex[1,] for each simplex
     vWeights <- try(solve(t(vM),point-simplex[1,]),silent=TRUE) ## as.numeric(point) would be required if point were a (1-row) matrix
     # problem may occur if volume of simplex is nearly zero
-    if (inherits(vWeights,"try-error")) {vWeights <- MASS::ginv(t(vM)) %*% (point-simplex[1,])}
+    if (inherits(vWeights,"try-error")) {vWeights <- ginv(t(vM)) %*% (point-simplex[1,])}
     vWeights <- c(1-sum(vWeights),vWeights) ## weights for all vertices
     min(vWeights) ## if the point is within/marginally outside/clearly outside the vT, this will return a positive/small negative/large negative value
   })

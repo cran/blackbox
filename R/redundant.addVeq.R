@@ -17,8 +17,8 @@ redundant.addVeq <- function(vertices, value,
         ## FR->FR should be obsolete when blackbox requires 3.3.0 or more  
         capture.output <- temp_capture.output
       } ## else R already has the right capture.output
-      abyss <- capture.output(simplicesIndices <- try(geometry::convhulln(vertices, "Pp")),type="message")
-      if (inherits(simplicesIndices,"try-error")) simplicesIndices <- geometry::delaunayn(vertices,"Pp")
+      abyss <- capture.output(simplicesIndices <- try(convhulln(vertices, "Pp")),type="message")
+      if (inherits(simplicesIndices,"try-error")) simplicesIndices <- delaunayn(vertices,"Pp")
       ##                                          redundant, but appears numerically more robust
     }
     blub <- lapply(seq(nrow(simplicesIndices)), function(ii){addSimplexEq(vertices[simplicesIndices[ii, ], ], value)})
@@ -34,7 +34,7 @@ redundant.addVeq <- function(vertices, value,
     colnames(resu) <- colNames;resu <- resu[, diffNames, drop=FALSE] ## now one fewer column
     if (nrow(resu)>ncol(resu)) { ##
       if (ncol(resu)>1L) {
-        resu <- resu[unique(as.numeric(geometry::convhulln(resu, "Pp"))), , drop=FALSE] ## redundant vertex elimination
+        resu <- resu[unique(as.numeric(convhulln(resu, "Pp"))), , drop=FALSE] ## redundant vertex elimination
       } else resu <- array(c(min(resu), max(resu)), dim=c(2L, 1L))
     }
     colnames(resu) <- diffNames

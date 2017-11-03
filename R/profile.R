@@ -87,7 +87,9 @@ blackbox.getOption <- function (x) {blackbox.options(x)[[1]]}
     stop <- stop.redef
   }
   .blackbox.data$options$stdoutRedirBool <- stdoutRedirBool
-  abyss <- suppressMessages(geometry::delaunayn(matrix(1,nrow=2,ncol=1))) # *sigh*
+  d <- c(-1,1)
+  abyss <- suppressMessages(delaunayn( as.matrix(rbind(expand.grid(d,d,d),0)))) # *sigh*
+  ## see https://github.com/cran/geometry/blob/master/R/delaunayn.R for how an environment is associated to the function. (F I X M E other packages)
 }
 
 ".onUnload" <- function (libpath) {

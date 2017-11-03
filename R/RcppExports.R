@@ -2,30 +2,30 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 newCSmooth <- function(xy, nrowxy, ncolxy, nuniquerows, GCV, optimiseBool, verbosity) {
-    .Call('blackbox_newCSmooth', PACKAGE = 'blackbox', xy, nrowxy, ncolxy, nuniquerows, GCV, optimiseBool, verbosity)
+    .Call(`_blackbox_newCSmooth`, xy, nrowxy, ncolxy, nuniquerows, GCV, optimiseBool, verbosity)
 }
 
 deleteCSmooth <- function() {
-    .Call('blackbox_deleteCSmooth', PACKAGE = 'blackbox')
+    .Call(`_blackbox_deleteCSmooth`)
 }
 
 flushCSmoothTable <- function() {
-    .Call('blackbox_flushCSmoothTable', PACKAGE = 'blackbox')
+    .Call(`_blackbox_flushCSmoothTable`)
 }
 
 GCV_lamVar_covFix_Wrapper <- function(a, fixedSmoothness, returnFnvalue) {
-    .Call('blackbox_GCV_lamVar_covFix_Wrapper', PACKAGE = 'blackbox', a, fixedSmoothness, returnFnvalue)
+    .Call(`_blackbox_GCV_lamVar_covFix_Wrapper`, a, fixedSmoothness, returnFnvalue)
 }
 
 Krig_coef_Wrapper <- function(aA, lambdaP) {
-    .Call('blackbox_Krig_coef_Wrapper', PACKAGE = 'blackbox', aA, lambdaP)
+    .Call(`_blackbox_Krig_coef_Wrapper`, aA, lambdaP)
 }
 
 getFnEvalCount <- function() {
-    .Call('blackbox_getFnEvalCount', PACKAGE = 'blackbox')
+    .Call(`_blackbox_getFnEvalCount`)
 }
 
 CcovFocal <- function(focal, CKrigidxP) {
-    .Call('blackbox_CcovFocal', PACKAGE = 'blackbox', focal, CKrigidxP)
+    .Call(`_blackbox_CcovFocal`, focal, CKrigidxP)
 }
 

@@ -1,6 +1,19 @@
 \name{NEWS}
 \title{blackbox News}
 \encoding{UTF-8}
+\section{CHANGES UP TO VERSION 1.1.3}{
+\subsection{USER-LEVEL CHANGES}{
+\itemize{
+\item No user-level changes.
+}
+}
+\subsection{OTHER CHANGES}{
+\itemize{
+\item Changes for compatibility wth Rcpp::compileAttributes() in Rcpp >= 0.12.12
+\item Other internal changes for compatibility with planned changes in other packages.
+}
+}
+}
 \section{CHANGES UP TO VERSION 1.1.2}{
 \subsection{USER-LEVEL CHANGES}{
 \itemize{

@@ -24,16 +24,16 @@ bboptim <-function(data, ParameterNames=NULL, respName=NULL, control=list(), for
                                       # this is confusing as clik is then not stable to translation...
   ranfix <- c(ranfix,list(phi=phi))
   if (TRUE) {
-    oldopt <- spaMM::spaMM.options(spaMM_glm_conv_silent=TRUE)
-    thisfit <- spaMM::HLCor(form,data=data,ranPars=ranfix,REMLformula=form) ## (thisfit recomputed soon)
-    spaMM::spaMM.options(oldopt)
+    oldopt <- spaMM.options(spaMM_glm_conv_silent=TRUE)
+    thisfit <- HLCor(form,data=data,ranPars=ranfix,REMLformula=form) ## (thisfit recomputed soon)
+    spaMM.options(oldopt)
     ranfix <- c(ranfix,list(lambda=thisfit$lambda))
     etafix <- list(beta=fixef(thisfit))
   } else { ## FR->FR equivalent alternatives? except that one provides etaFix the other not
     ranfix <- c(ranfix,list(lambda=phi/gcvres$lambdaEst)) ## lambdaGCV := phiHGLM/lambdaHGLM !
     etafix <- list()
   }
-  thisfit <- spaMM::fitme(form,data=sorted_etc,fixed=c(ranfix,etafix),method="REML") ## full data smoothed with lambda and phi estimated from cleaned data
+  thisfit <- fitme(form,data=sorted_etc,fixed=c(ranfix,etafix),method="REML") ## full data smoothed with lambda and phi estimated from cleaned data
   #
   lower <- apply(sorted_etc[,ParameterNames,drop=FALSE],2,min)
   upper <- apply(sorted_etc[,ParameterNames,drop=FALSE],2,max)
@@ -101,7 +101,7 @@ bboptim <-function(data, ParameterNames=NULL, respName=NULL, control=list(), for
   if (maximizeBool) {
     convergence <- (optr_fitted$value > optr$value-reltol)
   } else convergence <- (optr_fitted$value < optr$value+reltol)
-  conv_crits <- c(objective=convergence,precision=(spaMM::get_predVar(thisfit,optr$par)<precision))
+  conv_crits <- c(objective=convergence,precision=(get_predVar(thisfit,optr$par)<precision))
   resu <- list(fit=thisfit,optr_fitted=optr_fitted,optr=optr,callArgs = as.list(match.call())[-1],colTypes=colTypes,
                GCVmethod=gcvres$GCVmethod,RMSE=RMSE,conv_crits=conv_crits)
   class(resu) <- c("list","bboptim")

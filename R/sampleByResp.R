@@ -66,7 +66,7 @@ sampleByResp <- function(size=blackbox.getOption("nextPointNumber"),
   locphi <- max(1e-06,INFO$pureRMSE^2)
   loclambda <- locphi/INFO$lambdaEst
   if (verbose) { message.redef("Computing predictor for EI...")  }
-  spaMMfit <- spaMM::HLCor(form, data=INFO$FONKgpointls,
+  spaMMfit <- HLCor(form, data=INFO$FONKgpointls,
                         ranPars=list(rho=1/INFO$CovFnParam[INFO$fittedNames],
                                     #         note '1/...'
                                     nu=INFO$CovFnParam["smoothness"],

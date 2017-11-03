@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // newCSmooth
 SEXP newCSmooth(SEXP xy, SEXP nrowxy, SEXP ncolxy, SEXP nuniquerows, SEXP GCV, SEXP optimiseBool, SEXP verbosity);
-RcppExport SEXP blackbox_newCSmooth(SEXP xySEXP, SEXP nrowxySEXP, SEXP ncolxySEXP, SEXP nuniquerowsSEXP, SEXP GCVSEXP, SEXP optimiseBoolSEXP, SEXP verbositySEXP) {
+RcppExport SEXP _blackbox_newCSmooth(SEXP xySEXP, SEXP nrowxySEXP, SEXP ncolxySEXP, SEXP nuniquerowsSEXP, SEXP GCVSEXP, SEXP optimiseBoolSEXP, SEXP verbositySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -25,7 +25,7 @@ END_RCPP
 }
 // deleteCSmooth
 int deleteCSmooth();
-RcppExport SEXP blackbox_deleteCSmooth() {
+RcppExport SEXP _blackbox_deleteCSmooth() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -35,7 +35,7 @@ END_RCPP
 }
 // flushCSmoothTable
 int flushCSmoothTable();
-RcppExport SEXP blackbox_flushCSmoothTable() {
+RcppExport SEXP _blackbox_flushCSmoothTable() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -45,7 +45,7 @@ END_RCPP
 }
 // GCV_lamVar_covFix_Wrapper
 SEXP GCV_lamVar_covFix_Wrapper(SEXP a, SEXP fixedSmoothness, SEXP returnFnvalue);
-RcppExport SEXP blackbox_GCV_lamVar_covFix_Wrapper(SEXP aSEXP, SEXP fixedSmoothnessSEXP, SEXP returnFnvalueSEXP) {
+RcppExport SEXP _blackbox_GCV_lamVar_covFix_Wrapper(SEXP aSEXP, SEXP fixedSmoothnessSEXP, SEXP returnFnvalueSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -58,7 +58,7 @@ END_RCPP
 }
 // Krig_coef_Wrapper
 List Krig_coef_Wrapper(SEXP aA, SEXP lambdaP);
-RcppExport SEXP blackbox_Krig_coef_Wrapper(SEXP aASEXP, SEXP lambdaPSEXP) {
+RcppExport SEXP _blackbox_Krig_coef_Wrapper(SEXP aASEXP, SEXP lambdaPSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -70,7 +70,7 @@ END_RCPP
 }
 // getFnEvalCount
 int getFnEvalCount();
-RcppExport SEXP blackbox_getFnEvalCount() {
+RcppExport SEXP _blackbox_getFnEvalCount() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -80,7 +80,7 @@ END_RCPP
 }
 // CcovFocal
 SEXP CcovFocal(SEXP focal, SEXP CKrigidxP);
-RcppExport SEXP blackbox_CcovFocal(SEXP focalSEXP, SEXP CKrigidxPSEXP) {
+RcppExport SEXP _blackbox_CcovFocal(SEXP focalSEXP, SEXP CKrigidxPSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -89,4 +89,20 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(CcovFocal(focal, CKrigidxP));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_blackbox_newCSmooth", (DL_FUNC) &_blackbox_newCSmooth, 7},
+    {"_blackbox_deleteCSmooth", (DL_FUNC) &_blackbox_deleteCSmooth, 0},
+    {"_blackbox_flushCSmoothTable", (DL_FUNC) &_blackbox_flushCSmoothTable, 0},
+    {"_blackbox_GCV_lamVar_covFix_Wrapper", (DL_FUNC) &_blackbox_GCV_lamVar_covFix_Wrapper, 3},
+    {"_blackbox_Krig_coef_Wrapper", (DL_FUNC) &_blackbox_Krig_coef_Wrapper, 2},
+    {"_blackbox_getFnEvalCount", (DL_FUNC) &_blackbox_getFnEvalCount, 0},
+    {"_blackbox_CcovFocal", (DL_FUNC) &_blackbox_CcovFocal, 2},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_blackbox(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }
