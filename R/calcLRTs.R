@@ -4,7 +4,7 @@ calcLRTs <- function(testPointList, cleanResu="") {
     LRTlist <- list()
     for(testPoint in testPointList) { ## for each successive sublist of testPointList
       ##Nb can be a correct testPoint variable absent from fittedNames ?
-      notValidParams <- (names(testPoint) %w/o% c(blackbox.getOption("ParameterNames"), "latt2Ns2", "Nratio", "NactNfounderratio", "NfounderNancratio", "condS2")) ## names(LRTfixedvals) must be standardNames
+      notValidParams <- (names(testPoint) %w/o% c(blackbox.getOption("ParameterNames"), "latt2Ns2", "NMratio", "mratio", "m2overmu", "m1overmu", "Nratio", "NactNfounderratio", "NfounderNancratio", "Dgmu", "Tgmu", "condS2")) ## names(LRTfixedvals) must be standardNames
       LRTfixedvals <- testPoint[(names(testPoint) %w/o% notValidParams)] ## removeparameters not considered in the analyses but that user would have input in TestPoint setting
       if (length(notValidParams)>0) {
         mess <- paste("   this parameter (", notValidParams, ") and its associated value wil be ignored.")

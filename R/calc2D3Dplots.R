@@ -3,6 +3,7 @@ calc2D3Dplots <- function(plotFile=NULL,pairlist=list()) { ## plain or slice plo
   plotobject <- blackbox.getOption("fitobject")
   fittedparamnbr <- blackbox.getOption("fittedparamnbr")
   fittedNames <- blackbox.getOption("fittedNames")
+  plotOptions <- blackbox.getOption("plotOptions")
   # (1) determine number of plots
   spec2DProfiles <- blackbox.getOption("spec2DProfiles")
   if (fittedparamnbr<3L) {
@@ -31,7 +32,7 @@ calc2D3Dplots <- function(plotFile=NULL,pairlist=list()) { ## plain or slice plo
     if (plotFile) plotFile <- blackbox.getOption("basicRplotsfile")
   }
   # (3) actual plots
-  if (nplots>0L) {
+  if (nplots>0L && ! ("NoSurfaces" %innc% plotOptions) )  {
     if ( is.character(plotFile)) providePlotFile(plotFile) ## exclude NULL,FALSE...
     if (fittedparamnbr==1L) {
       message.redef("*** A plot of the predicted likelihood is produced. ***")

@@ -11,7 +11,7 @@ generateInitpts <- function (bestProfiledOut, vertices, ui, ci, hrepr, # hrep be
       if (all(bPcheck > 0)) {
         initlogl <- tofKpredict.nohull(bestProfiledOut, fixedlist = fixedlist)
       } else {
-        trouble <- TRUE ## by default assumes a  potential problem when precision is double...
+        trouble <- TRUE 
         initlogl <- NA
       }
     } else {

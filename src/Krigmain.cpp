@@ -113,7 +113,7 @@ int flushCSmoothTable() { // useful for deleting pointers stored in CKrigptrTabl
 
 
 // [[Rcpp::export]]
-SEXP GCV_lamVar_covFix_Wrapper( SEXP a, SEXP fixedSmoothness, SEXP returnFnvalue ){
+SEXP GCV_lamVar_covFix_Wrapper( SEXP a, SEXP fixedSmoothness, SEXP returnFnvalue ){ // ici la DEF
   Rcpp::NumericVector xa(a);
   Rcpp::NumericVector xfixedSmoothness(fixedSmoothness); // may be of zero length
   bool xreturnFnvalue=as<bool>(returnFnvalue);

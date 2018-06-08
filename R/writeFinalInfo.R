@@ -29,9 +29,15 @@ writeFinalInfo <- function(cleanResu="") {
     if ( !("IM" %in% DemographicModel) && ( ("DgmuProf" %innc% plotOptions) || ("Dgmu" %innc% oneDimCIvars) ) ) write(paste("\n      Dg*mu: ", prettynum(rosglobal$Dgmu), " ", sep=""), file=cleanResu)
     if ( ("TgmuProf" %innc% plotOptions) || ("Tgmu" %innc% oneDimCIvars) ) write(paste("\n      Tg*mu: ", prettynum(rosglobal$Tgmu), " ", sep=""), file=cleanResu)
   }
+  if (length(intersect(DemographicModel, c("Npop", "IM")))>0) {
+    write(paste("\n      NMratio: ", prettynum(rosglobal$NMratio), " ", sep=""), file=cleanResu)
+    write(paste("\n      mratio: ", prettynum(rosglobal$mratio), " ", sep=""), file=cleanResu)
+    if (  ("movermuProf" %innc% plotOptions) || ("m1overmu" %innc% oneDimCIvars) ) write(paste("\n      m1/mu: ", prettynum(rosglobal$m1overmu), " ", sep=""), file=cleanResu)
+    if ( ("movermuProf" %innc% plotOptions) || ("m2overmu" %innc% oneDimCIvars) ) write(paste("\n      m2/mu: ", prettynum(rosglobal$m2overmu), " ", sep=""), file=cleanResu)
+  }
   ## note that the C codes seeks estimates in the VERY LAST line of the output.txt file: do not write comments after the following output:
   upperPred_crits <- blackbox.getOption("upperPred_crits")
-  if (is.null(upperPred_crits)) upperPred_crits <- c(RMSpred=NA,GOP=NA) ## if sampleByResp has not been run (which should not occur)
+  if (is.null(upperPred_crits)) upperPred_crits <- list(RMSpred=NA,GOP=NA) ## if sampleByResp has not been run (which should not occur)
   writeoutput(paste(blackbox.getOption("dataFile"), "(final)", sep=""),
               returncode=returncode,
               NA,

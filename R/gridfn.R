@@ -28,36 +28,56 @@ gridfn <- function(varname, gridsteps=blackbox.getOption("gridstepsNbr"), margef
     lob <- max(min(latt2Ns2pt), latt2Ns2/2.5)
     upb <- min(max(latt2Ns2pt), latt2Ns2 * 1000)
     testlog <- T
+  } else if(varname=="NMratio") {
+    NMratiopt <- blackbox.getOption("NMratiopt")
+    lob <- min(NMratiopt)
+    upb <- max(NMratiopt)
+    testlog <- T 
+  } else if(varname=="mratio") {
+    mratiopt <- blackbox.getOption("mratiopt")
+    lob <- min(mratiopt)
+    upb <- max(mratiopt)
+    testlog <- T 
+  } else if(varname=="m1overmu") {
+    m1overmupt <- blackbox.getOption("m1overmupt")
+    lob <- min(m1overmupt)
+    upb <- max(m1overmupt)
+    testlog <- T
+  } else if(varname=="m2overmu") {
+    m2overmupt <- blackbox.getOption("m2overmupt")
+    lob <- min(m2overmupt)
+    upb <- max(m2overmupt)
+    testlog <- T
   } else if(varname=="Dgmu") {
     Dgmupt <- blackbox.getOption("Dgmupt")
     lob <- min(Dgmupt)
     upb <- max(Dgmupt)
-    testlog <- T ## RL->FR ??
+    testlog <- T
   } else if(varname=="Tgmu") {
     Tgmupt <- blackbox.getOption("Tgmupt")
     lob <- min(Tgmupt)
     upb <- max(Tgmupt)
-    testlog <- T ## RL->FR ??
+    testlog <- T
   } else if(varname=="Nratio") {
     Nratiopt <- blackbox.getOption("Nratiopt")
     lob <- min(Nratiopt)
     upb <- max(Nratiopt)
-    testlog <- T ## Nratiopt is in canonical scale...
+    testlog <- T
   }  else if(varname=="Nancratio") {
     Nratiopt <- blackbox.getOption("Nratiopt")
     lob <- min(Nratiopt)
     upb <- max(Nratiopt)
-    testlog <- T ## Nancratiopt is in canonical scale...
+    testlog <- T
   }  else if(varname=="NactNfounderratio") {
     NactNfounderratiopt <- blackbox.getOption("NactNfounderratiopt")
     lob <- min(NactNfounderratiopt)
     upb <- max(NactNfounderratiopt)
-    testlog <- T ## NactNfounderratiopt is in canonical scale...
+    testlog <- T
   }  else if(varname=="NfounderNancratio") {
     NfounderNancratiopt <- blackbox.getOption("NfounderNancratiopt")
     lob <- min(NfounderNancratiopt)
     upb <- max(NfounderNancratiopt)
-    testlog <- T ## NfounderNancratiopt is in canonical scale...
+    testlog <- T
   }  else {
     stop.redef(paste("(!) From gridfn: Unhandled variable name '", varname, "'"))
   }

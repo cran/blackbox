@@ -8,7 +8,8 @@ addtoedges <- function(profileEdges=blackbox.getOption("profileEdges"), locedge)
   if (is.null(nr)) nr <- 0
   if ( oldnr<1001 & nr>1000 ) {
     cat("(Reducing profileEdges)", "\n")
-    profileEdges <- resetCHull(profileEdges, formats="vertices", redundant.mode="double")$vertices
+    blob <- resetCHull(profileEdges, formats="vertices", redundant.mode="double")
+    profileEdges <- blob$vertices
   }
   blackbox.options(profileEdges=profileEdges)
   return(profileEdges) ## but the two return may not be used

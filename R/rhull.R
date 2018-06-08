@@ -49,8 +49,8 @@ rExpandedHull <- function(pointnumber, knotshull, hrepr=NULL, vT,extrapol, ## no
 
 ## all outputVars must be included in fittedNames (or add fromFONK code )
 rhullByEI <- function(n, tryn=100*n ,vT, object, fixed=NULL, outputVars=blackbox.getOption("fittedNames"),blockSize=100L) {
-  ## so that oldXnew matrices will contain less than spaMM.getOption("ff_threshold")~1e7 elements,
-  maxn <- floor(spaMM.getOption("ff_threshold")/nrow(object$data))
+  ## so that oldXnew matrices will contain less than blackbox.getOption("max_mat_size")~1e7 values,
+  maxn <- floor(blackbox.getOption("max_mat_size")/nrow(object$data))
   if (maxn <= n) {
     locmess <- paste("From rhullByEI(): 'maxn': ",maxn,"<=",n," ('n'). 'n' reduced to")
     n <- ceiling(maxn/10)
@@ -73,7 +73,7 @@ rhullByEI <- function(n, tryn=100*n ,vT, object, fixed=NULL, outputVars=blackbox
   } else trypoints <- matrix(trypoints,ncol=1L)
   #}
   colnames(trypoints) <- outputVars ## 'apply' feature
-  ## FR->FR j'ai decoupe calcPredVar mais pas point predict(), qui peut aussi être limitant.
+  ## F I X M E j'ai decoupe calcPredVar mais pas point predict(), qui peut aussi être limitant.
   ## il faudrait decouper predict ~ comme ca:
   if ( tryn > blockSize) {
     fulldata <- as.data.frame(trypoints)

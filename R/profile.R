@@ -29,14 +29,14 @@
                                cores_avail_warned=FALSE,
                                nb_cores_warned=FALSE,
                                coreNbr=NULL,
-                               doSNOW_warned=FALSE,
                                ##### used by many fns even outside Migraine
                                ParameterNames=NULL,
                                ##### not documented bc used in the body of undocumented Migraine fns
                                graphicsFormat="eps", #providePlotFile
                                plotOptions=NULL, ## FR->FR attention min/maj dans code C->R  !!!!!!!!!!!!!!!!!!!!
                                graphicPars=NULL,
-                               ##### not documented bc used only as arguments undocumented fns (dangerous)
+                               ##### not documented bc used only as controls of undocumented fns (dangerous)
+                               max_mat_size=1e7,
                                # ...
                                ##### not documented bc used only as arguments (not default) of documented fns (OK)
                                designRetain=1, ## default in and outside Migraine
@@ -79,7 +79,6 @@ blackbox.getOption <- function (x) {blackbox.options(x)[[1]]}
 
 
 ".onLoad" <- function (lib, pkg) {
-#  .blackbox.data$Constants$Version <- utils::packageVersion("blackbox")
   .blackbox.data$options$interactiveGraphics <- (interactive() && ((.Platform$OS.type=="windows") || capabilities("X11")))
   message <- message.redef
   tmp <- commandArgs()
@@ -89,7 +88,6 @@ blackbox.getOption <- function (x) {blackbox.options(x)[[1]]}
   .blackbox.data$options$stdoutRedirBool <- stdoutRedirBool
   d <- c(-1,1)
   abyss <- suppressMessages(delaunayn( as.matrix(rbind(expand.grid(d,d,d),0)))) # *sigh*
-  ## see https://github.com/cran/geometry/blob/master/R/delaunayn.R for how an environment is associated to the function. (F I X M E other packages)
 }
 
 ".onUnload" <- function (libpath) {

@@ -37,15 +37,21 @@ resetCHull <- function(object,
       trycn <- try(convhulln(redundantpts, "Pp"),silent=TRUE) ## possibly SLOW
       #if (inherits(trycn,"try-error")) trycn <- try(convhulln_allowing_lowerdim(redundantpts))
       if (inherits(trycn,"try-error")) {
-        amknots <- as.matrix(redundantpts) ## the sweep syntax does not work on data.frame's 
         colvecs <- t(sweep(redundantpts[-1,,drop=FALSE],2,redundantpts[1,],`-`))
         qrvecs <- qr(colvecs)
         if (qrvecs$rank<ncol(redundantpts)) {
-          message.redef("resetCHull: qhull failed because input points are in a linear subspace\n of lower dimension than the number of coordinates.\n The calling function may handle this problem.")
+          #message.redef(paste("resetCHull: qhull failed because input points are in a linear subspace\n",
+          #                   "of lower dimension than the number of coordinates.\n",
+          #                    "The calling function may handle this problem."))
+          ## handle points in subspace:
+          #vertices <- scdd(scdd(cbind(0,1,redundantpts),representation="V")$output,representation="H")$output[,-(1:2)]
+          ## same using dedicated function:
+          vertices <- redundant(cbind(0,1,redundantpts),representation="V")$output[,-(1:2)]
         } else {
-          message.redef("resetCHull: qhull failed for an unidentified reason (input points are not\n in a linear subspace of lower dimension than the number of coordinates.")
+          message.redef(paste("resetCHull: qhull failed for an unidentified reason (but not because input points\n",
+                              "would be in a linear subspace of lower dimension than the number of coordinates)."))
+          return(trycn)
         }
-        return(trycn)
       } else vertices <- redundantpts[unique(as.numeric(trycn)), ] ## removes redundant vertices
     }
     #    if (onr>verboseThreshold) message("       ... done. *]")
@@ -58,12 +64,12 @@ resetCHull <- function(object,
     message("convex hull requested for a single 'unique()' point.")
   }
   resu <- list()
-  if ("vertices" %in% formats ) resu <- c(resu, list(vertices=vertices))
+  if ("vertices" %in% formats ) resu$vertices <- vertices
   if ("vertices001" %in% formats) { ## MINUS vertices, for lpcdd ! May become a rarely used option...
     if ( returnRational) {
-      resu <- c(resu, list(vertices001=cbind("0", "0", "1", -vertices)))
+      resu$vertices001 <- cbind("0", "0", "1", -vertices)
     } else {
-      resu <- c(resu, list(vertices001=cbind(0, 0, 1, -vertices)))
+      resu$vertices001 <- cbind(0, 0, 1, -vertices)
     }
   }
   if ("constraints" %in% formats) {

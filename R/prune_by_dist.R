@@ -26,15 +26,7 @@ prune_by_dist <- function(rownamedarray,
   }
   if (!is.null(scales)) rownamedarray <- sweep(rownamedarray,2L,sqrt(scales),FUN=`/`) # t(t(rownamedarray)/sqrt(scales))
   nr <- nrow(rownamedarray)
-  if (nr^2 > spaMM.getOption("ff_threshold") ) {
-    if (requireNamespace("ff",quietly=TRUE)) {
-      distContainer <- ff::ff( vmode ="double", dim=c(nr,nr))
-      distContainer[] <- proxy::dist(x=rownamedarray,y=rownamedarray) 
-    } else {
-      message("Package 'ff' for large matrices may be needed but is not installed.")
-      distContainer <- proxy::dist(rownamedarray)
-    }
-  } else distContainer <- proxy::dist(rownamedarray)
+  distContainer <- proxy::dist(rownamedarray)
   #
   adjmat <- matrix(TRUE,nrow=nrow(rownamedarray),ncol=nrow(rownamedarray))
   distrange <- range(distContainer[])
@@ -107,7 +99,7 @@ prune_by_dist <- function(rownamedarray,
   } else Th_clu <- clu(threshold)
   #
   if (is.null(goodrows)) { # the uses Th_clu
-    if ( ! inherits(distContainer,"ff")) distContainer <- as.matrix(distContainer)
+    distContainer <- as.matrix(distContainer)
     findMostDistant <- function(id) {
       inrows <- (Th_clu$membership==id) ## $membership does not have rownames
       if ( ! is.null(fixedRows)) inrows <- (inrows & issampleRow)

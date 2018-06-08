@@ -1,7 +1,7 @@
 ## data would need attributes fittedparamnbr, CovFnParam,fittedNames,GCVdesignRetain
 calcGCV <- function(sorted_data=data, ## assumes sorted data
                     data, ## back compatibility
-                    CovFnParam=NULL,
+                    CovFnParam=NULL, ## excluding smoothness at this point
                     GCVptnbr=Inf,
                     topmode=FALSE,
                     verbose=FALSE,

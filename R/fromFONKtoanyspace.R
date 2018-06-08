@@ -20,6 +20,10 @@ fromFONKtoanyspace <- function(FONKinput, outputnames, outputScale=blackbox.getO
     output <- canon$canonVP ## bug: ;names(output) <- outputnames canonVP can be longer than outputnames
     if ("latt2Ns2" %in% outputnames) {names(output)[which(names(output)=="twoNm")] <- "latt2Ns2"; output["latt2Ns2"] <- canon$latt2Ns2}
     if ("condS2" %in% outputnames) {names(output)[which(names(output)=="g")] <- "condS2"; output["condS2"] <- canon$latt2Ns2/canon$canonVP["twoNm"]} ## writes condS2 in place of g
+    if ("NMratio" %in% outputnames) {names(output)[which(names(output)=="M1")] <- "NMratio"; output["NMratio"] <- canon$NMratio}
+    if ("mratio" %in% outputnames) {names(output)[which(names(output)=="M1")] <- "mratio"; output["mratio"] <- canon$mratio}
+    if ("m1overmu" %in% outputnames) {names(output)[which(names(output)=="M1")] <- "m1overmu"; output["m1overmu"] <- canon$m1overmu}
+    if ("m2overmu" %in% outputnames) {names(output)[which(names(output)=="M2")] <- "m2overmu"; output["m2overmu"] <- canon$m2overmu}
     if ("Nratio" %in% outputnames) {names(output)[which(names(output)=="twoNmu")] <- "Nratio"; output["Nratio"] <- canon$Nratio}
     if ("Nancratio" %in% outputnames) {names(output)[which(names(output)=="twoNmu")] <- "Nratio"; output["Nratio"] <- canon$Nratio}
     if ("NactNfounderratio" %in% outputnames) {names(output)[which(names(output)=="twoNmu")] <- "NactNfounderratio"; if (is.null(canon$NactNfounderratio)) browser(); output["NactNfounderratio"] <- canon$NactNfounderratio}

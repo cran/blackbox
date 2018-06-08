@@ -8,7 +8,7 @@ selectFn <- function(ptls,
                     ycolname=blackbox.getOption("ycolname"),
                     fittedNames =blackbox.getOption("fittedNames"),
                     fittedLoci= blackbox.getOption("respCols"),
-                    verbose=F) {
+                    verbose=FALSE) {
   fittedparamnbr <- length(fittedNames)
   designRetain <- min(1,designRetain)
   if ( ! is.numeric(maxPtNbr)) {

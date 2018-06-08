@@ -55,9 +55,6 @@ function (charname, format = "expression", Nbstyle = T)
     if (charname == "twoNfoundermu")
         tmp <- AUEformat("2Nfoundermu", "", "2*italic(N)[founder]*mu",
             format = format)
-    if (charname == "Nratio")
-        tmp <- AUEformat("Nratio", "Nratio", "italic(N)[ratio]",
-            format = format)
     if (charname == "NactNfounderratio")
         tmp <- AUEformat("NactNfounder-ratio", "NactNfounder-ratio",
             "italic(N)[act]/italic(N)[founder]-ratio", format = format)
@@ -73,6 +70,20 @@ function (charname, format = "expression", Nbstyle = T)
     if (charname == "M2" || charname == "twoNm2")
         tmp <- AUEformat("M2", "", "2*italic(N)[2]*italic(m)[21]",
             format = format)
+    if (charname == "NMratio")
+      tmp <- AUEformat("NMratio", "NMratio", "italic(Nm)-ratio",
+                       format = format)
+    if (charname == "mratio")
+      tmp <- AUEformat("mratio", "mratio", "italic(m)-ratio",
+                       format = format)
+    if (charname == "m1overmu") {
+      tmp <- AUEformat("m1/mu", "m1/mu", "italic(m)[12]/mu",
+                       format = format)
+    }
+    if (charname == "m2overmu") {
+      tmp <- AUEformat("m2/mu", "m2/mu", "italic(m)[21]/mu",
+                       format = format)
+    }
     if (charname == "Q1")
         tmp <- AUEformat("Q1", "", "italic(Q)[1]", format = format)
     if (charname == "latt2Ns2")

@@ -15,11 +15,12 @@ importFrom("utils", "alarm", "read.table", "write.table", "memory.size", "object
            "read.csv","dump.frames","capture.output","sessionInfo")
 importFrom("geometry", "convhulln", "delaunayn")
 importFrom(rcdd,d2q,q2d,scdd,lpcdd,qneg,qmatmult,qdq,qmq,addHeq,redundant)
-importFrom(spaMM, "spaMM.colors", "fixef", "spaMM.getOption", "MaternCorr", "spaMM.options", "HLCor", "fitme", "get_predVar")  ## doc'ed fns
+importFrom(spaMM, "spaMM.colors", "fixef", "spaMM.getOption", "MaternCorr", "spaMM.options", "HLCor", "fitme", 
+           "get_predVar")  ## doc'ed fns
 importFrom(spaMM, "niceLabels") ## undoc'ed fns
 # importFrom(igraph, "clusters", "graph_from_adjacency_matrix") ## not imported package : cf 'private' prune_by_dist() function F I X M E
 importFrom(MASS, "ginv")
-# importFrom("ff", "ff") ## as igraph + may be useless anyway
+importFrom("pbapply", "pbapply", "pboptions")
 importFrom(proxy,dist)
 importFrom(numDeriv,grad,hessian,jacobian)
 importFrom(lattice,wireframe)

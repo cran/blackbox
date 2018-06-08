@@ -59,6 +59,10 @@ calcProfileLR <- function(varNames=blackbox.getOption("fittedNames"),
     ## ad hoc fix for Nb bound/Nm profile
     if ("twoNm" %in% paire && "latt2Ns2" %in% varNames) {testvars <- (testvars %w/o% "twoNm")}
     ## ad hoc fix...
+    if ("NMratio" %in% paire && "M1" %in% varNames) {testvars <- (testvars %w/o% "NMratio")}
+    if ("mratio" %in% paire && "M1" %in% varNames) {testvars <- (testvars %w/o% "mratio")}
+    if ("m1overmu" %in% paire && "M1" %in% varNames) {testvars <- (testvars %w/o% "m1overmu")}
+    if ("m2overmu" %in% paire && "M2" %in% varNames) {testvars <- (testvars %w/o% "m2overmu")}
     if ("Nratio" %in% paire && "twoNmu" %in% varNames) {testvars <- (testvars %w/o% "Nratio")}
     if ("Nancratio" %in% paire && "twoNmu" %in% varNames) {testvars <- (testvars %w/o% "Nancratio")}
     if ("NactNfounderratio" %in% paire && "twoNmu" %in% varNames) {testvars <- (testvars %w/o% "NactNfounderratio")}

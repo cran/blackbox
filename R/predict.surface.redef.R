@@ -24,7 +24,8 @@ predict_surface <- function (object, grid.list = NA,
     if (!is.null(redundantpts)) {  ## then uses local redundantpts else global testspace
       ## it's just the set of parameter points in some adequate format
       message.redef("(!) local hull used in predictSurface. Consider redundant.mode argument there")
-      constraints <- resetCHull(redundantpts, formats="constraints")[c("a", "b")] ## here local
+      blob <- resetCHull(redundantpts, formats="constraints")
+      constraints <- blob[c("a", "b")] ## here local
     } else {
       constraints <- blackbox.getOption("hulls")$Kgtotal[c("a", "b")]
     }

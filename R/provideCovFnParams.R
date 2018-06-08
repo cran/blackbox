@@ -12,6 +12,7 @@ provideCovFnParams <- function(gcvKgpointls,
   hglmLambdaEst <- hglmPhiEst <- lambdaEst <- NA
   if ("optimizeKriging" %innc% miscOptions) {
     Cfit <- CKrigcoefs(gcvKgpointls[, c(fittedNames, ycolname)], initCovFnParam=initCovFnParam,
+                       covfnparamA=blackbox.getOption("CovFnParam"),
                        nuniquerows=gcvnuniquerows,optimizers=optimizers,verbosity=verbosity)
     CovFnParam <- Cfit$covfnparam ##includes smoothness (FR->FR 09/2015: !! c'est le comportement de CKrigcoefs seulement quand option(minSmoothness) n'est pas nul...!!)
     if("HGLM" %innc% miscOptions) {

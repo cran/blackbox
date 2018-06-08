@@ -87,13 +87,20 @@ LRTfn <- function(LRTfixedvals, cleanResu) { ## LRTfixedvals is already in logsc
           } else {
           if( ("OnePopVarSize" %in% DemographicModel) || ("IM" %in% DemographicModel) ) {
             ros <- c(ros, list(Nratio=canonized$Nratio))
-          } else 
-              if ("OnePopFounderFlush" %in% DemographicModel) {ros <- c(ros, list(Nratio=canonized$Nratio), list(NactNfounderratio=canonized$NactNfounderratio), list(NfounderNancratio=canonized$NfounderNancratio))}
+          } else if ("OnePopFounderFlush" %in% DemographicModel) {
+            ros <- c(ros, list(Nratio=canonized$Nratio), list(NactNfounderratio=canonized$NactNfounderratio), list(NfounderNancratio=canonized$NfounderNancratio))}
+          } 
+          if ( length(intersect(DemographicModel, c("OnePopVarSize", "OnePopFounderFlush", "IM")))>0) { ## RL 022017
+            if ( "DgmuProf" %innc% plotOptions) ros <- c(ros, list(Dgmu=canonized$Dgmu)) 
+            if ( "TgmuProf" %innc% plotOptions) ros <- c(ros, list(Tgmu=canonized$Tgmu))
+          } 
+          if ( length(intersect(DemographicModel, c("Npop", "IM")))>0) { ## RL 112017
+            ros <- c(ros, list(NMratio=canonized$NMratio), list(mratio=canonized$mratio))
+            if ( "movermuProf" %innc% plotOptions ) {
+              ros <- c(ros, list(m1overmu=canonized$m1overmu)) 
+              ros <- c(ros, list(m2overmu=canonized$m2overmu))
+            } 
           }
-          # if ( length(intersect(DemographicModel, c("OnePopVarSize", "OnePopFounderFlush", "IM")))>0) {
-          #   ros <- c(ros, list(Dgmu=canonized$Dgmu)) ## RL 022017 unnecessary at this step because no LRT are asked for Dgmu or Tgmu with timescale=popsize
-          #   ros <- c(ros, list(Tgmu=canonized$Tgmu))
-          # }      
           ros <- c(ros, canonVP=list(canonized$canonVP)) ## !!comme dans findGlobalMLE !!
           blackbox.options(rosglobal=ros)
         }

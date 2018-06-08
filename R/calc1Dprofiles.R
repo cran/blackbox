@@ -17,6 +17,10 @@ calc1Dprofiles <- function(varNames=blackbox.getOption("spec1DProfiles")) {
     if("all1DProfiles" %innc% INFO$plotOptions) {
       varNames <- INFO$ParameterNames ## original conception, does not use fittedNames
       if ("IBD" %in% INFO$DemographicModel) varNames <- c(varNames, "latt2Ns2")
+      if( length(intersect(INFO$DemographicModel, c("Npop", "IM"))) ) {
+        if("MRatioProf" %innc% INFO$plotOptions) varNames <- c(varNames, "NMratio", "mratio")
+        if("movermuProf" %innc% INFO$plotOptions) varNames <- c(varNames, "m1overmu", "m2overmu")
+      } 
       if((length(intersect(INFO$DemographicModel, c("OnePopVarSize", "IM")))) && ("PopSizeRatioProf" %innc% INFO$plotOptions)) varNames <- c(varNames, "Nratio")
       else if("OnePopFounderFlush" %in% INFO$DemographicModel && ("PopSizeRatioProf" %innc% INFO$plotOptions)) varNames <- c(varNames, "Nratio", "NactNfounderratio", "NfounderNancratio")
       if((length(intersect(INFO$DemographicModel, c("OnePopFounderFlush", "OnePopVarSize")))) && ("DgmuProf" %innc% INFO$plotOptions)) varNames <- c(varNames, "Dgmu")
@@ -24,6 +28,18 @@ calc1Dprofiles <- function(varNames=blackbox.getOption("spec1DProfiles")) {
     } else varNames <- c()
   }
   varNames <- varNames %w/o% INFO$constantNames
+  if(length(intersect(INFO$DemographicModel, c("Npop", "IM")))) {
+    if("twoNmu" %in% INFO$constantNames) varNames <- varNames %w/o% c("m1overmu","m2overmu")
+    if("M1" %in% INFO$constantNames) varNames <- varNames %w/o% c("m1overmu","NMratio")
+    if("M2" %in% INFO$constantNames) varNames <- varNames %w/o% c("m2overmu","NMratio")
+    if("M1" %in% INFO$constantNames && "Q1" %in% INFO$constantNames) varNames <- varNames %w/o% c("mratio")
+    if("M2" %in% INFO$constantNames && "Q1" %in% INFO$constantNames) varNames <- varNames %w/o% c("mratio")
+  }
+  if(length(intersect(INFO$DemographicModel, c("OnePopFounderFlush", "OnePopVarSize", "IM")))) {
+    if("twoNmu" %in% INFO$constantNames) varNames <- varNames %w/o% c("Nratio","NactNfounderratio")
+    if("twoNfoundermu" %in% INFO$constantNames) varNames <- varNames %w/o% c("NactNfounderratio","NfounderNancratio")
+    if("twoNancmu" %in% INFO$constantNames) varNames <- varNames %w/o% c("Nratio","NfounderNancratio")
+  }
   varNames <- unique(varNames)
   nprofs <- length(varNames)
   It <- 0
@@ -48,6 +64,14 @@ calc1Dprofiles <- function(varNames=blackbox.getOption("spec1DProfiles")) {
       rosglobal <- blackbox.getOption("rosglobal") ## get the very latest value
       if (st %in% names(rosglobal$canonVP)) {
         xMLcoord <- rosglobal$canonVP[st]
+      } else if (st=="NMratio") {
+        xMLcoord <- rosglobal$NMratio
+      } else if (st=="mratio") {
+        xMLcoord <- rosglobal$mratio
+      } else if (st=="m1overmu") {
+        xMLcoord <- rosglobal$m1overmu
+      } else if (st=="m2overmu") {
+        xMLcoord <- rosglobal$m2overmu
       } else if (st=="Nratio") {
         xMLcoord <- rosglobal$Nratio
       } else if (st=="Nancratio") {
@@ -109,6 +133,10 @@ plot1DprofFrom2D <- function(varNames=blackbox.getOption("spec1DProfiles")) {
     if("all1DProfiles" %innc% INFO$plotOptions) {
       varNames <- INFO$ParameterNames ## original conception, does not use fittedNames
       if ("IBD" %in% INFO$DemographicModel) varNames <- c(varNames, "latt2Ns2")
+      if(length(intersect(INFO$DemographicModel, c("Npop", "IM")))) {
+        if("MRatioProf" %innc% INFO$plotOptions) varNames <- c(varNames, "NMratio", "mratio")
+        if("movermuProf" %innc% INFO$plotOptions) varNames <- c(varNames, "m1overmu", "m2overmu")
+      } 
       if((length(intersect(INFO$DemographicModel, c("OnePopVarSize", "IM")))) && ("PopSizeRatioProf" %innc% INFO$plotOptions)) varNames <- c(varNames, "Nratio")
       if("OnePopFounderFlush" %in% INFO$DemographicModel && ("PopSizeRatioProf" %innc% INFO$plotOptions)) varNames <- c(varNames, "Nratio", "NactNfounderratio", "NfounderNancratio")
       if((length(intersect(INFO$DemographicModel, c("OnePopFounderFlush", "OnePopVarSize")))) && ("DgmuProf" %innc% INFO$plotOptions)) varNames <- c(varNames, "Dgmu")
@@ -116,6 +144,18 @@ plot1DprofFrom2D <- function(varNames=blackbox.getOption("spec1DProfiles")) {
     } #else varNames <- c()
   }
   varNames <- varNames %w/o% INFO$constantNames
+  if(length(intersect(INFO$DemographicModel, c("Npop", "IM")))) {
+    if("twoNmu" %in% INFO$constantNames) varNames <- varNames %w/o% c("m1overmu","m2overmu")
+    if("M1" %in% INFO$constantNames) varNames <- varNames %w/o% c("m1overmu","NMratio")
+    if("M2" %in% INFO$constantNames) varNames <- varNames %w/o% c("m2overmu","NMratio")
+    if("M1" %in% INFO$constantNames && "Q1" %in% INFO$constantNames) varNames <- varNames %w/o% c("mratio")
+    if("M2" %in% INFO$constantNames && "Q1" %in% INFO$constantNames) varNames <- varNames %w/o% c("mratio")
+  }
+  if(length(intersect(INFO$DemographicModel, c("OnePopFounderFlush", "OnePopVarSize", "IM")))) {
+    if("twoNmu" %in% INFO$constantNames) varNames <- varNames %w/o% c("Nratio","NactNfounderratio")
+    if("twoNfoundermu" %in% INFO$constantNames) varNames <- varNames %w/o% c("NactNfounderratio","NfounderNancratio")
+    if("twoNancmu" %in% INFO$constantNames) varNames <- varNames %w/o% c("Nratio","NfounderNancratio")
+  }
   varNames <- unique(varNames)
   if (length(varNames)>0L) margProfsInfo <- margProfsInfo[intersect(names(margProfsInfo),varNames)]
   nprofs <- length(margProfsInfo)
@@ -143,6 +183,14 @@ plot1DprofFrom2D <- function(varNames=blackbox.getOption("spec1DProfiles")) {
       xy <- cbind(xGrid, RelLik)
       if (st %in% names(INFO$rosglobal$canonVP)) {
         xMLcoord <- INFO$rosglobal$canonVP[st]
+      } else if (st=="NMratio") {
+        xMLcoord <- INFO$rosglobal$NMratio
+      } else if (st=="mratio") {
+        xMLcoord <- INFO$rosglobal$mratio
+      } else if (st=="m1overmu") {
+        xMLcoord <- INFO$rosglobal$m1overmu
+      } else if (st=="m2overmu") {
+        xMLcoord <- INFO$rosglobal$m2overmu
       } else if (st=="Nratio") {
         xMLcoord <- INFO$rosglobal$Nratio
       } else if (st=="Nancratio") {

@@ -1,0 +1,29 @@
+Migraine 0.4.1.7 (Built on Apr 11 2016 at 18:44:00)
+blackbox, version 1.1.24 loaded
+R code run on  Fri Jun 08 11:56:38 2018
+
+Data file: LRT_1pop_0.1_4_ISM+SMM
+Settings file: migraine.txt
+
+Demographic model: OnePop
+Canonical parameters: 2NmuSEQ 2Nmu
+* N stands for number of gene copies, 
+    i.e. 2N = 4 x [the number of diploid individuals] *
+
+(!) Few points in upper 11.21 [ln(L) units] range:
+	   only 128 points in this range. 
+LRT for [ 2NmuSEQ = 0.1 ]: 0.0231, and Pvalue: 0.879 (at [ 0.1, 4.44 ]_c )
+LRT for [ 2Nmu = 4 ]: 0.19, and Pvalue: 0.663 (at [ 0.0909, 4 ]_c )
+LRT for [ (2NmuSEQ, 2Nmu) = (0.1, 4) ]: 0.208, and Pvalue: 0.901 (at [ 0.1, 4 ]_c )
+
+*** Confidence intervals *** 
+
+95%-coverage confidence interval for 2NmuSEQ : [ 0.0126 -- 0.265 ]
+95%-coverage confidence interval for 2Nmu : [ 2.721 -- 7.028 ]
+
+*** Point estimates *** 
+
+  2NmuSEQ     2Nmu
+   0.0893    4.339
+
+Normal ending.

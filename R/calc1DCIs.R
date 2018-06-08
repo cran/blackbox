@@ -44,6 +44,16 @@ calc1DCIs <- function(oneDimCIvars,
     if( ! (intlCIvar %in% fittedNames)) {
       if(intlCIvar=="latt2Ns2") {
         MLval <- NA ## should be recomputed using composite hull within bounds1D
+      } else if(intlCIvar=="twoNm") {
+        MLval <- NA ## should be recomputed using composite hull within bounds1D
+      } else if(intlCIvar=="NMratio") {
+        MLval <- NA ## should be recomputed using composite hull within bounds1D
+      } else if(intlCIvar=="mratio") {
+        MLval <- NA ## should be recomputed using composite hull within bounds1D
+      } else if(intlCIvar=="m1overmu") {
+        MLval <- NA ## should be recomputed using composite hull within bounds1D
+      } else if(intlCIvar=="m2overmu") {
+        MLval <- NA ## should be recomputed using composite hull within bounds1D
       } else if(intlCIvar=="Nratio") {
         MLval <- NA ## should be recomputed using composite hull within bounds1D
       } else if(intlCIvar=="Nancratio") {
@@ -51,8 +61,6 @@ calc1DCIs <- function(oneDimCIvars,
       } else if(intlCIvar=="NactNfounderratio") {
         MLval <- NA ## should be recomputed using composite hull within bounds1D
       } else if(intlCIvar=="NfounderNancratio") {
-        MLval <- NA ## should be recomputed using composite hull within bounds1D
-      } else if(intlCIvar=="twoNm") {
         MLval <- NA ## should be recomputed using composite hull within bounds1D
       } else if(intlCIvar=="Dgmu") {
         MLval <- NA ## should be recomputed using composite hull within bounds1D
@@ -71,18 +79,26 @@ calc1DCIs <- function(oneDimCIvars,
       ## first composite kriging var
       if (intlCIvar=="latt2Ns2") {
         MLval <- rosglobal$latt2Ns2
+      } else if (intlCIvar=="NMratio") {
+        MLval <- rosglobal$NMratio ## RL: written by analogy
+      } else if (intlCIvar=="mratio") {
+        MLval <- rosglobal$mratio ## RL: written by analogy
+      } else if (intlCIvar=="m1overmu") {
+        MLval <- rosglobal$m1overmu ## RL: written by analogy
+      } else if (intlCIvar=="m2overmu") {
+        MLval <- rosglobal$m2overmu ## FR: written by analogy, maybe not meaningful
       } else if (intlCIvar=="Nratio") {
         MLval <- rosglobal$Nratio ## FR: written by analogy, maybe not meaningful
       } else if (intlCIvar=="Nancratio") {
-        MLval <- rosglobal$Nratio ## RL: written by analogy, maybe not meaningful
+        MLval <- rosglobal$Nratio ## RL: written by analogy
       } else if (intlCIvar=="NactNfounderratio") {
-        MLval <- rosglobal$NactNfounderratio ## RL: written by analogy, maybe not meaningful
+        MLval <- rosglobal$NactNfounderratio ## RL: written by analogy
       } else if (intlCIvar=="NfounderNancratio") {
-        MLval <- rosglobal$NfounderNancratio ## RL: written by analogy, maybe not meaningful
+        MLval <- rosglobal$NfounderNancratio ## RL: written by analogy
       } else if (intlCIvar=="Dgmu") {
-        MLval <- rosglobal$Dgmu ## RL: written by analogy, maybe not meaningful
+        MLval <- rosglobal$Dgmu ## RL: written by analogy
       } else if (intlCIvar=="Tgmu") {
-        MLval <- rosglobal$Tgmu ## RL: written by analogy, maybe not meaningful
+        MLval <- rosglobal$Tgmu ## RL: written by analogy
       } else { ## canonical kriging var
         MLval <- (rosglobal$canonVP)[intlCIvar]
       }
@@ -90,7 +106,14 @@ calc1DCIs <- function(oneDimCIvars,
     }
     locchull.pts <- providefullhull(intlCIvar)[[1]]$vertices
     if (! intlCIvar %in% colnames(locchull.pts)) {
-      if ( (intlCIvar=="Tgmu" && ! "T" %in% fittedNames) || (intlCIvar=="Dgmu"  && ! "D" %in% fittedNames) ) {
+      if ( (intlCIvar=="Tgmu" && ! "T" %in% fittedNames) || (intlCIvar=="Dgmu"  && ! "D" %in% fittedNames)
+           || (intlCIvar=="Nratio"  && ( (! "twoNmu" %in% fittedNames) || (! "TwoNancmu" %in% fittedNames) ) )
+           || (intlCIvar=="NactNfounderratio"  && ( (! "twoNmu" %in% fittedNames) || (! "TwoNfoundermu" %in% fittedNames) ) )
+           || (intlCIvar=="NfounderNancratio"  && ( (! "twoNfoundermu" %in% fittedNames) || (! "TwoNancmu" %in% fittedNames) ) ) 
+           || (intlCIvar=="NMratio"  && ( (! "M1" %in% fittedNames) || (! "M2" %in% fittedNames) ) )
+           || (intlCIvar=="mratio"  && ( (! "M1" %in% fittedNames) || (! "M2" %in% fittedNames) ) )
+           || (intlCIvar=="m1overmu"  && ( (! "twoNmu" %in% fittedNames) || (! "M1" %in% fittedNames) ) )
+           || (intlCIvar=="m2overmu"  && ( (! "twoNmu" %in% fittedNames) || (! "M2" %in% fittedNames) ) ) ) {
         immedst <- paste("(!) 1D CI computation on a composite parameter for which one of the variables is not fitted : ", CIvar)
         message.redef(immedst)
         write(immedst, file=cleanResu)

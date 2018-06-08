@@ -51,6 +51,26 @@ setHullPrecMode <- function(notinKgspace,outputnames) {
     namebit <- paste(namebit, "Tgmu", sep="_")
     if (optRedmode=="defaultPrecision") redmode <- "rational"
   }
+  if ("NMratio" %in% notinKgspace) {
+    outputnames[which(outputnames=="M1")] <- "NMratio"
+    namebit <- paste(namebit, "NMratio", sep="_")
+    if (optRedmode=="defaultPrecision") redmode <- "rational"
+  }
+  if ("mratio" %in% notinKgspace) {
+    outputnames[which(outputnames=="M1")] <- "mratio"
+    namebit <- paste(namebit, "mratio", sep="_")
+    if (optRedmode=="defaultPrecision") redmode <- "rational"
+  }
+  if ("m1overmu" %in% notinKgspace) {
+    outputnames[which(outputnames=="M1")] <- "m1overmu"
+    namebit <- paste(namebit, "m1overmu", sep="_")
+    if (optRedmode=="defaultPrecision") redmode <- "rational"
+  }
+  if ("m2overmu" %in% notinKgspace) {
+    outputnames[which(outputnames=="M2")] <- "m2overmu"
+    namebit <- paste(namebit, "m2overmu", sep="_")
+    if (optRedmode=="defaultPrecision") redmode <- "rational"
+  }
   if(nchar(namebit)==0L) {stop.redef("composite variable not handled in hull computation")}
   return(list(redmode=redmode,outputnames=outputnames,namebit=namebit))
 }
@@ -133,7 +153,8 @@ provideVertices <- function(varnames, pointsinKgSpace) {
   ##Note that FONKgLow/Up will be recomputed one the points have been selected for Kriging
   fixBools <- ((colmaxs-colmins)<1e-06) ##FR->FR test pas compar a range de FONKg ?
   if (any(fixBools)) inoutspace <- inoutspace[, ( ! fixBools), drop=FALSE] ## do not provide constant cols to resetCHull->convhulln...
-  locvertices <- resetCHull(inoutspace, formats=c("vertices"), redundant.mode=redmode)$vertices
+  blob <- resetCHull(inoutspace, formats=c("vertices"), redundant.mode=redmode)
+  locvertices <- blob$vertices
   resu <- matrix(NA,ncol=length(outputnames),nrow=nrow(locvertices))
   colnames(resu) <- outputnames
   resu[,colnames(inoutspace)] <- locvertices

@@ -1,7 +1,26 @@
 \name{NEWS}
 \title{blackbox News}
 \encoding{UTF-8}
-\section{CHANGES UP TO VERSION 1.1.3}{
+\section{CHANGES UP TO VERSION 1.1.24}{
+\subsection{USER-LEVEL CHANGES}{
+\itemize{
+\item (Migraine-specific) New composite parameters and profile computations for migration parameters.
+\item Dependency on 'ff' package removed, assuming a recent version of spaMM (here >= 2.4.8).
+\item Dependencies changed for parallel computations. See help("blackbox.options") for details.
+}
+}
+\subsection{CORRECTED BUGS}{
+\itemize{
+\item (Migraine-specific) writeFinalInfo() now correctly writes the results when sampleByResp() has not been run.
+\item (Migraine-specific) CKrigcoefs() could fail when minSmoothness=maxSmoothness.
+\item (Migraine-specific) user-given 'CovFnParam' were ignored.
+\item (Migraine-specific) now computes Dgmu parameter only when Dg/2N is a parameter of the model (e.g. not a for a discrete change in pop size).
+\item (Migraine-specific) resetCHull() handles input points in linear space of lower dimension than the number of fitted parameters, now avoiding a bug in the rare case where there are many profile points, all of them in such a space. 
+
+}
+}
+} 
+\section{CHANGES UP TO VERSION 1.1.7}{
 \subsection{USER-LEVEL CHANGES}{
 \itemize{
 \item No user-level changes.
