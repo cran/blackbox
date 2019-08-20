@@ -1,4 +1,4 @@
-bboptim <-function(data, ParameterNames=NULL, respName=NULL, control=list(), force=FALSE,
+bboptim <- function(data, ParameterNames=NULL, respName=NULL, control=list(), force=FALSE,
                    optimizers=blackbox.getOption("optimizers"), precision=1e-3) {
   np <- ncol(data)-1L
   if (is.null(ParameterNames)) ParameterNames <- colnames(data)[seq(np)]
@@ -33,7 +33,7 @@ bboptim <-function(data, ParameterNames=NULL, respName=NULL, control=list(), for
     ranfix <- c(ranfix,list(lambda=phi/gcvres$lambdaEst)) ## lambdaGCV := phiHGLM/lambdaHGLM !
     etafix <- list()
   }
-  thisfit <- fitme(form,data=sorted_etc,fixed=c(ranfix,etafix),method="REML") ## full data smoothed with lambda and phi estimated from cleaned data
+  thisfit <- fitme(form,data=sorted_etc,fixed=ranfix,etaFix=etafix, method="REML") ## full data smoothed with lambda and phi estimated from cleaned data
   #
   lower <- apply(sorted_etc[,ParameterNames,drop=FALSE],2,min)
   upper <- apply(sorted_etc[,ParameterNames,drop=FALSE],2,max)

@@ -1,7 +1,14 @@
 \name{NEWS}
 \title{blackbox News}
 \encoding{UTF-8}
-\section{CHANGES UP TO VERSION 1.1.24}{
+\section{CHANGES UP TO VERSION 1.1.26}{
+\subsection{CORRECTED BUGS}{
+\itemize{
+\item Long-standing glitch that substantially slowed blackbox down (though with correct results).
+}
+}
+}
+\section{CHANGES UP TO VERSION 1.1.25}{
 \subsection{USER-LEVEL CHANGES}{
 \itemize{
 \item (Migraine-specific) New composite parameters and profile computations for migration parameters.
@@ -16,7 +23,6 @@
 \item (Migraine-specific) user-given 'CovFnParam' were ignored.
 \item (Migraine-specific) now computes Dgmu parameter only when Dg/2N is a parameter of the model (e.g. not a for a discrete change in pop size).
 \item (Migraine-specific) resetCHull() handles input points in linear space of lower dimension than the number of fitted parameters, now avoiding a bug in the rare case where there are many profile points, all of them in such a space. 
-
 }
 }
 } 

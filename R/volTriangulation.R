@@ -83,24 +83,7 @@ rvolTriangulation <- function(n=1,volTriangulationObj,replace=TRUE,expand=NULL) 
 #   rvolTriangulation(n,vT,replace=replace)
 # }
 
-## FR->FR same as in blackbox
-locatePointinvT <- function(point, ## numeric (not matrix or data frame: see use of 'point' below)
-                            vT,fallback=TRUE) { ## in which simplex ? with fall back if 'numerically outside' vT (but quite distinct from minimal distance)
-  pmul <- cbind(-1,diag(ncol(vT$vertices)))
-  minw <- apply(vT$simplicesTable[vT$vol>0,,drop=FALSE],1,function(v) {
-    simplex <- vT$vertices[v,,drop=FALSE]
-    vM <- pmul %*% simplex # is simplex[-1,]-simplex[1,] for each simplex
-    vWeights <- try(solve(t(vM),point-simplex[1,]),silent=TRUE) ## as.numeric(point) would be required if point were a (1-row) matrix
-    # problem may occur if volume of simplex is nearly zero
-    if (inherits(vWeights,"try-error")) {vWeights <- ginv(t(vM)) %*% (point-simplex[1,])}
-    vWeights <- c(1-sum(vWeights),vWeights) ## weights for all vertices
-    min(vWeights) ## if the point is within/marginally outside/clearly outside the vT, this will return a positive/small negative/large negative value
-  })
-  resu <- which(minw>0)
-  if (length(resu)==0L && fallback) resu <- which.max(minw) ## if numerically outside...
-  return(resu)
-}
-## FR->FR same as in blackbox
+## FR->FR same as in blackbox,; (F I X M E ?) see spaMM:::.locate_in_tv() for an optimized version for 2D only but several points
 locatePointinvT <- function(point, ## numeric (not matrix or data frame: see use of 'point' below)
                             vT,fallback=TRUE) { ## in which simplex ? with fall back if 'numerically outside' vT (but quite distinct from minimal distance)
   pmul <- cbind(-1,diag(ncol(vT$vertices)))
