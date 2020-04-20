@@ -1,7 +1,7 @@
 formatName <-
 function (charname, format = "expression", Nbstyle = T)
 {
-    if (class(charname) == "expression")
+    if (inherits(charname,"expression"))
         stop.redef("(!) from formatName: invalid call with argument of class 'expression'.")
     tmp <- charname
     if (charname == "twoNmu")

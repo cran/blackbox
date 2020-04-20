@@ -31,7 +31,8 @@ generateNextpointsfromCI <- function(n, ## number of points generated PER CI poi
     for (it in seq_len(nrow(stcipoints <- CIpointsList[[fixedPar]]))) {
       CIpoint <- stcipoints[it,]
       if (length(CIpoint)==1L) names(CIpoint) <- colnames(stcipoints)
-      obspred <- predict(fitforEI, newdata=CIpoint, variances=list(linPred=TRUE))
+      obspred <- predict(fitforEI, newdata=CIpoint, variances=list(linPred=TRUE), 
+                         control=.blackbox.data$options$control_spaMM) 
       obsSE <- attr(obspred, "predVar")
       obsSE[obsSE<0] <- 0
       ## attention le signe de la prediction est inversé...

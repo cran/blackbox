@@ -1,7 +1,7 @@
 Hreprrational <- function(pts) { ## input numeric or rational, output rational
   #print(nrow)
   colNames <- colnames(pts)
-  if(class(pts[1])=="character") {
+  if(inherits(pts[1],"character")) {
     foo <- cbind("0", "1", pts)
   } else {
     # it's important to use rationals in scdd.

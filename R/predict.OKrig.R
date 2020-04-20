@@ -2,7 +2,7 @@ predict.OKrig <- function (object, x = NULL,...)  # ... for consistency with gen
 {
   if (is.null(x)) { ## call 'predict(fitobject)'
     x <- object$x
-  } else if ( class(x)=="numeric" ) {
+  } else if ( is.vector(x) ) {
     x <- t(x) ## row vector in matrix class
   } else if ( ! is.matrix(x) ) { ## 2D object of the wrong class
     x <- t(t(x))

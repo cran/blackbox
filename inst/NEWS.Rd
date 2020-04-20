@@ -1,7 +1,20 @@
 \name{NEWS}
 \title{blackbox News}
 \encoding{UTF-8}
-\section{CHANGES UP TO VERSION 1.1.26}{
+\section{CHANGES UP TO VERSION 1.1.29}{
+\subsection{USER-LEVEL CHANGES}{
+\itemize{
+\item Checks of invalid input (and resulting screen output) adapted to non-Migraine usage.
+}
+}
+\subsection{DEPENDENCIES}{
+\itemize{
+\item 'lbfgsb3' is replaced by 'lbfgsb3c' as a suggested package.
+\item Requests a more recent (>= 3.1.0) version of 'spaMM'.
+}
+}
+}
+\section{CHANGES UP TO VERSION 1.1.27}{
 \subsection{CORRECTED BUGS}{
 \itemize{
 \item Long-standing glitch that substantially slowed blackbox down (though with correct results).

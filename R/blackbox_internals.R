@@ -20,3 +20,8 @@
   names(uniqueIdx) <- uniqueFac
   return(uniqueIdx[redondFac])
 }
+
+projpath <- function() {
+  fn <- get("getActiveProject",envir = asNamespace("rstudioapi"))
+  fn()
+}

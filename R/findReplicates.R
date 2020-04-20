@@ -39,9 +39,15 @@ findReplicates <- function(ptls) {
   ## no automatedCleaning below...
   if (length(errorcheck)>0) { ## check on x coordinates only
     message.redef("(!) Some parameter point(s) occur more than twice.")
-    message.redef("    This typically results from appending twice or more a single likelihood estimate to the pointls file.")
-    message.redef("    Look in particular for replicates of the following cordinates in the pointls file:")
-    apply(ptlsx[errorcheck, , drop=FALSE], 1, function(v) {message.redef(canonizeFromKrig(v)$canonVP)})
+    if ("Migraine" %in% blackbox.getOption("usedBy")) {
+      message.redef("    This typically results from appending twice or more likelihood estimates to the pointls file.")
+      message.redef("    Look in particular for replicates of the following cordinates in the pointls file:")
+      apply(ptlsx[errorcheck, , drop=FALSE], 1, function(v) {message.redef(canonizeFromKrig(v)$canonVP)})
+    } else {
+      message.redef("    (beware of cbind()ing values of a function that returns more than a single scalar).")
+      message.redef("    Look in particular for replicates of the following cordinates in the pointls file:")
+      apply(ptlsx[errorcheck, , drop=FALSE], 1, function(v) {message.redef(v)})
+    }
     stop.redef("Exiting as a result of some parameter point(s) occurring more than twice.")
   }
   sorteddoublonsnames <- as.character(sort(as.numeric(c(pifreplnames, pafreplnames)))) ## length is twice the nbr of repls

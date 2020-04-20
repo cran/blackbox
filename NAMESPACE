@@ -27,7 +27,7 @@ importFrom(lattice,wireframe)
 importFrom(Rcpp,evalCpp)
 #importFrom(minqa,bobyqa)
 importFrom(nloptr,nloptr)
-#importFrom(lbfgsb3,lbfgsb3)
+#importFrom(lbfgsb3c,lbfgsb3c)
 importFrom(utils,setTxtProgressBar,txtProgressBar)
 export(spaMM.colors) # bc currently in migraine_ .R scripts written by Migraine
 S3method(print, bboptim)

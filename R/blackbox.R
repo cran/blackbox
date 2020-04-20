@@ -54,19 +54,19 @@ bboptim <- function(data, ParameterNames=NULL, respName=NULL, control=list(), fo
                   ## as numeric because otherwise in 1D, optim -> minimize -> returns a max
                   ##   of same type as predict(thisfit,newdata=v), i.e. matrix.
                   lower=lower,upper=upper,control=control,method="L-BFGS-B")
-  } else if ("lbfgsb3" %in% optimizers){
+  } else if ("lbfgsb3c" %in% optimizers){
     if ( maximizeBool ) {
       ufn <- function (v) { - as.numeric(predict(thisfit,newdata=v)) }
     } else {
       ufn <- function (v) { as.numeric(predict(thisfit,newdata=v)) }
     }
-    if ( ! requireNamespace("lbfgsb3",quietly=TRUE) ) {
-      stop("Package lbfgsb3 not installed.")
+    if ( ! requireNamespace("lbfgsb3c",quietly=TRUE) ) {
+      stop("Package lbfgsb3c not installed.")
     }
-    optr <- lbfgsb3::lbfgsb3(prm=unlist(init),fn=ufn,lower=lower,upper=upper)
-    if ( maximizeBool ) {optr$value <- - optr$f} else {optr$value <- optr$f}
-    optr$f <- NULL
-    optr$par <- optr$prm; optr$prm <- NULL
+    optr <- lbfgsb3c::lbfgsb3c(par=unlist(init),fn=ufn,lower=lower,upper=upper)
+    if ( maximizeBool ) {optr$value <- - optr$value}
+#    optr$f <- NULL # note changes for lbfgsb3c
+#    optr$par <- optr$prm; optr$prm <- NULL
     #optr$counts <- optr$info$isave[34]
   } else if ("bobyqa"  %in% optimizers) {
     if ( maximizeBool ) {

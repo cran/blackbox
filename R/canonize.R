@@ -31,7 +31,7 @@ canonizeFromKrig <- function(input) { ## from vector in complete Kriging space A
   INFO <- blackbox.options()[c("FONKgLow","ParameterNames","DemographicModel","plotOptions", "oneDimCIvars", "FONKgNames","FONKgScale")]
   FONKinput <- INFO$FONKgLow ## initial value
   if (length(setdiff(names(input),names(FONKinput)))>0L) {
-    stop("debugging 29/04/2106: input argument of canonizeFromKrig() is invalid (should be within kriging space).")
+    stop("input argument of canonizeFromKrig() is invalid (should be within kriging space).")
   }
   FONKinput[names(input)] <- input
   FONKinput <- unlist(FONKinput) ## previous line sometimes creates a list although no argument is ??

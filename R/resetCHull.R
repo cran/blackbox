@@ -17,12 +17,12 @@ resetCHull <- function(object,
     }
     return(resu)
   } ## ELSE
-  if("OKriglistplus" %in% class(object)) stop.redef("(!) no 'purefn' method for object of class 'Kriglistplus'")
-  if("OKriglist" %in% class(object)) { ## if Kriging by blocs
+  if(inherits(object,"OKriglistplus")) stop.redef("(!) no 'purefn' method for object of class 'Kriglistplus'")
+  if(inherits(object,"OKriglist")) { ## if Kriging by blocs
     fullrange <- object[[1]]$x
     for (jj in 2:(length(object$Kriglist))) {fullrange <- rbind(fullrange, object[[jj]]$x)}
     redundantpts <- unique.matrix(fullrange) ## FR->FR a potential faster code is Unique(as.matrix(fullrange)) using geometry::Unique
-  } else if("OKrig" %in% class(object)) {
+  } else if(inherits(object,"OKrig")) {
     redundantpts <- unique.matrix(object$x) ## or Unique(as.matrix(object$x))
   } else redundantpts <- as.matrix(unique(object)) ## or Unique(as.matrix(object)) ## possible SLOW !
   onr <- nrow(redundantpts) ## points, but with redundant rows

@@ -38,7 +38,7 @@ selectFn <- function(ptls,
     cat("topmode argument overrides maxPtNbr argument", "\n")
     maxPtNbr <- topmode
   }
-  if(!("replicatesInfoClass" %in% class(replicatesInfo))) {
+  if ( ! inherits(replicatesInfo,"replicatesInfoClass")) {
     replicatesInfo <- findReplicates(ptls)
     if (verbose) cat("replicatesInfo recomputed within selectFn", "\n")
   }

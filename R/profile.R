@@ -43,9 +43,11 @@
                                GCVdesignRetain=1, ## default in and outside Migraine
                                ##### also used internally:
                                redundant.mode=NULL, ## OK for clean code
-                               example_maxtime=2
+                               example_maxtime=2,
                                # plotFiles
                                # hulls
+                               # spaMM controls
+                               control_spaMM=list(fix_predVar=NA) ## =TRUE would call gmp on large matrix... hmmm
 )
 
 blackbox.options <- function(...) {

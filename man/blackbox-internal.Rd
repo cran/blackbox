@@ -1,5 +1,7 @@
 \name{ordinary-internal}
 
+\alias{projpath}
+
 \alias{shrink_knots}
 
 \alias{\%==nc\%}

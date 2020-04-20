@@ -6,7 +6,7 @@ if (Sys.getenv("_LOCAL_TESTS_")=="TRUE") { ## not on CRAN
     if (interactive()) {
       if (FALSE) { ## tests not included in package (using unpublished data, etc.)
         oldpath <- getwd() 
-        ptpath <- "C:/home/francois/travail/stats/blackbox/package/tests/tests_private/" 
+        ptpath <- paste0(projpath(),"/package/tests_private/")
         subpaths <- dir(ptpath,full.names = TRUE)
         virgin_opts <- blackbox.options()
         priv_timings <- list()

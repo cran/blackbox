@@ -27,7 +27,7 @@ purefn <- function(z, fitobj=blackbox.getOption("fitobject"), testhull=T, locus=
     ## returning NA is OK for plots; minimisation algos require numeric values, not even 'Inf'
     if (!isPointInCHull(z, constraints=constraints)) return(NA)
   }
-  if ("OKrig" %in% class(fitobj)) {
+  if (inherits(fitobj,"OKrig")) {
     return(predict(fitobj, rbind(z), locus=locus, ...))
   } else { ## should be a fitobject of class Kriglistplus
     dessous <- which(fitobj$blocmin<z[1]);dessus <- which(fitobj$blocmax>z[1]);blocs <- intersect(dessous, dessus)

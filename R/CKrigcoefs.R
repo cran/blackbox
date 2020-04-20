@@ -26,7 +26,7 @@ CKrigcoefs <- function(xy,
   varCorrpars <- (length(covfnparamA)< ncolxy ## shorter than scale params+smoothness
                   || any(is.na(covfnparamA))) 
   optimise <- (varCorrpars || is.na(lambdaA))
-  method <- intersect(optimizers,c("bobyqa","L-BFGS-B","lbfgsb3")) ## non-default methods
+  method <- intersect(optimizers,c("bobyqa","L-BFGS-B","lbfgsb3c")) ## non-default methods
   if(length(method)==0L) method <- "NLOPT_LN_BOBYQA" ## default for this part of code.
   if(length(method)!=1L) stop("length(method)!=1L in CKrigcoefs") ## incompatible with switch below
   verbosityFromObjective <- as.integer((optimise && "L-BFGS-B" %in% method))*verbosity ## FR->FR should control in the C++ code using the eval counter
@@ -87,15 +87,15 @@ CKrigcoefs <- function(xy,
                       lower=lower,upper=upper,control=control,
                       fixedSmoothness=fixedSmoothness,returnFnvalue=TRUE)
         solution <- optr$par
-      } else if ("lbfgsb3" %in% method){ ## very slow
+      } else if ("lbfgsb3c" %in% method){ ## very slow
         control <- list(trace=verbosityFromoptimizer)
-        if ( ! requireNamespace("lbfgsb3",quietly=TRUE) ) {
-          stop("Package lbfgsb3 not installed.")
+        if ( ! requireNamespace("lbfgsb3c",quietly=TRUE) ) {
+          stop("Package lbfgsb3c not installed.")
         }
-        optr <- lbfgsb3::lbfgsb3(prm=initCovFnParam,fn=GCV_lamVar_covFix_Wrapper,lower=lower,upper=upper,
+        optr <- lbfgsb3c::lbfgsb3c(par=initCovFnParam,fn=GCV_lamVar_covFix_Wrapper,lower=lower,upper=upper,
                         control=control,
                         fixedSmoothness=fixedSmoothness,returnFnvalue=TRUE)
-        solution <- optr$prm
+        solution <- optr$par # change for lbfgsb3c
       } else if ("bobyqa" %in% method){ ## marginally better than optim ?
         if ( ! requireNamespace("minqa",quietly=TRUE) ) {
           stop("Package minqa not installed.")
