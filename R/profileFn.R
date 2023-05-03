@@ -72,8 +72,8 @@ profileBySubHull <- function(fixedlist=NA, otherlist=NULL, extrap=F, locchull=NU
     )
   } ## null subvertices exit
   ## else
-  subverticesmax <- apply(subvertices, 2, max)
-  subverticesmin <- apply(subvertices, 2, min)
+  subverticesmin <- matrixStats::colMins(subvertices) # apply(subvertices, 2, min)
+  subverticesmax <- matrixStats::colMaxs(subvertices) # apply(subvertices, 2, max)
   localmaxrange <- subverticesmax-subverticesmin
   if (nrow(subvertices)==1 ##point unique: 'profile' is easily computed
       || max(localmaxrange)<0.000001 ## several rows but very close to each over

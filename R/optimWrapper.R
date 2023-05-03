@@ -20,8 +20,8 @@ optimWrapper <- function(objectivefn=function(x) {tofKpredict.nohull(x, fixedlis
     stop.redef("(!) is.null(chull.pts) at call to constrOptimM() in optimWrapper()")
   } ##ELSE
   ####    objectivefn <- function(x) {tofKpredict.nohull(x, fixedlist=fixedlist)} ## the simple way to pass fixedlist to the inner computations...
-  lower <- apply(chull.pts, 2, min)
-  upper <- apply(chull.pts, 2, max)
+  lower <- matrixStats::colMins(chull.pts, useNames=TRUE) # apply(chull.pts, 2, min)
+  upper <- matrixStats::colMaxs(chull.pts, useNames=TRUE) # apply(chull.pts, 2, max)
   parscale <- upper-lower
   control <- c(control, list(parscale=parscale/blackbox.getOption("scalefactor")))
   initinkg <- tofullKrigingspace(initval, fixedlist)

@@ -8,7 +8,7 @@ blackbox allows prediction and optimization of a response function from simulate
 }
 \details{
 Beyond the usage illustrated below, this package is used in particular for smoothing the output of the \code{Migraine} software for likelihood analysis of population genetic data
-(\url{http://kimura.univ-montp2.fr/~rousset/Migraine.htm}). In the latter application  the response function is a simulated log-likelihood surface and the procedures generate plots of the (profile) log-likelihood, compute (profile) likelihood ratio confidence intervals, and design new parameter points where the likelihood should be simulated. This package provides documentation for all user-level functions in the R script written by Migraine. Control from Migraine uses many variables stored globally in the list of options accessible through \code{blackbox.options().}
+(\url{https://kimura.univ-montp2.fr/~rousset/Migraine.htm}). In the latter application  the response function is a simulated log-likelihood surface and the procedures generate plots of the (profile) log-likelihood, compute (profile) likelihood ratio confidence intervals, and design new parameter points where the likelihood should be simulated. This package provides documentation for all user-level functions in the R script written by Migraine. Control from Migraine uses many variables stored globally in the list of options accessible through \code{blackbox.options().}
 
 The C++ DLL was originally a c++ reimplementation of some of the internal functions of the fields package, circa 2005-2006. To estimate smoothing parameters, it requires pairs of responses values for some values of the predictor variables, but will not allow more than pairs.
 }
@@ -16,7 +16,7 @@ The C++ DLL was originally a c++ reimplementation of some of the internal functi
 \references{
 Chambers J.M. (2008) Software for data analysis: Programming with R. Springer-Verlag.
 
-Fields Development Team (2006). fields: Tools for Spatial Data. National Center for Atmospheric Research, Boulder, CO. \url{http://www.image.ucar.edu/GSP/Software/Fields/}.
+Fields Development Team (2006). fields: Tools for Spatial Data. National Center for Atmospheric Research, Boulder, CO. \url{https://www.image.ucar.edu/GSP/Software/Fields/}.
 }
 \examples{
 fr <- function(v) { ## Rosenbrock Banana function with noise

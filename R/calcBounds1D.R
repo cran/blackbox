@@ -68,8 +68,8 @@ calcBounds1D <- function(CIdlr,## <0
     locOptimizer <- "NLOPT_LN_COBYLA"
     xtol_rel <- 1.0e-12
   }
-  lb <- apply(locchull$vertices,2,min)
-  ub <- apply(locchull$vertices,2,max)
+  lb <- matrixStats::colMins(locchull$vertices, useNames=TRUE) # apply(locchull$vertices,2,min)
+  ub <- matrixStats::colMaxs(locchull$vertices, useNames=TRUE) # apply(locchull$vertices,2,max)
   CIpoints <- matrix(nrow=0, ncol=INFO$fittedparamnbr)
   CIlo <- NA
   if (abs(lowval-maxparval)<abs(maxparval*1e-08)) { ## not an error ## lowval==maxparval if relative diff is <1e-16 in absolute value

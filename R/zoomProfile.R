@@ -6,8 +6,8 @@ zoomProfile <- function(fixedlist=NA, extrap=F, locchull=NULL,
   namesfixed <- names(fixedlist)
   fixedvec <- unlist(fixedlist)[namesfixed]
   ## fixedlist argument was already logscale, if relevant
-  locchullmax <- apply(locchull$vertices, 2, max)
-  locchullmin <- apply(locchull$vertices, 2, min)
+  locchullmax <- matrixStats::colMaxs(locchull$vertices, useNames=TRUE) # apply(locchull$vertices, 2, max)
+  locchullmin <- matrixStats::colMins(locchull$vertices, useNames=TRUE) # apply(locchull$vertices, 2, min)
   localmaxrange <- locchullmax-locchullmin
   rangefixed <- localmaxrange[namesfixed] ## in scale of hull.... which must have been determined by islogscale()
   cost <- 1

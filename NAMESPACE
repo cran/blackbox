@@ -1,9 +1,9 @@
 exportPattern("^[[:alpha:]]+")
 export("%w/o%","%innc%","%==nc%")
-##### export documented functions
-export(calc1DCIs,preprocessbboptions,buildPointls,buildFONKgpointls,islogscale,blackbox.options,blackbox.getOption,prepareData)
-export(calcGCV,calcPredictorOK,maximizeOK,calc1Dprofiles,calcProfileLR,calc2D3Dplots,sampleByResp,calcLRTs,writeFinalInfo,bboptim,rbb)
-export(init_grid) ## user-level in Infusion...
+##### export documented functions # Presumably  obsolete given exportPattern 
+# export(calc1DCIs,preprocessbboptions,buildPointls,buildFONKgpointls,islogscale,blackbox.options,blackbox.getOption,prepareData)
+# export(calcGCV,calcPredictorOK,maximizeOK,calc1Dprofiles,calcProfileLR,calc2D3Dplots,sampleByResp,calcLRTs,writeFinalInfo,bboptim,rbb)
+# export(init_grid) ## user-level in Infusion...
 #####
 importFrom("graphics", "abline", "axis", "contour", "filled.contour", "lines", 
            "par", "plot", "points", "text", "title", "mtext", "strwidth")
@@ -11,7 +11,7 @@ importFrom("grDevices", "dev.cur", "dev.list", "dev.new", "dev.off", "dev.set", 
 importFrom("stats", "as.formula", "constrOptim", "cov", "dnorm", "median", "na.omit", "nlminb", 
            "optim", "optimize", "pchisq", "pnorm", "predict", "qchisq", "qnorm", "runif", 
            "uniroot", "quantile")
-importFrom("utils", "alarm", "read.table", "write.table", "memory.size", "object.size",
+importFrom("utils", "alarm", "read.table", "write.table", "object.size",
            "read.csv","dump.frames","capture.output","sessionInfo")
 importFrom("geometry", "convhulln", "delaunayn")
 importFrom(rcdd,d2q,q2d,scdd,lpcdd,qneg,qmatmult,qdq,qmq,addHeq,redundant)

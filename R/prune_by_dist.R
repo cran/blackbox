@@ -1,4 +1,4 @@
-## potential arternative to greedyMAXMINwithFixed()
+## potential alternative to greedyMAXMINwithFixed()
 # If distance threshold given, computes clusters separated by larger distances; 
 # If no threshold given, tries to adjust threshold to obtain (finalSize-length(fixedRows)) clusters to sample from;
 # Next, sample once from each cluster;
@@ -107,7 +107,7 @@ prune_by_dist <- function(rownamedarray,
       ### Will select point most distant to out-cluster fixed points: 
       # if ( ! is.null(fixedRows)) outrows <- (outrows | (! issampleRow) ) 
       subdistmat <- distContainer[inrows,outrows,drop=FALSE]
-      rowmins <- apply(subdistmat,1L,min) 
+      rowmins <- matrixStats::rowMins(subdistmat, useNames=TRUE) # apply(subdistmat,1L,min) 
       maxmin <- max(rowmins)
       mostdistantrow <- names(which(rowmins==maxmin))
       ##crude tie-breaking:

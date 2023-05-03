@@ -148,8 +148,8 @@ provideVertices <- function(varnames, pointsinKgSpace) {
     inoutspace <- t(inoutspace)
   } else inoutspace <- matrix(inoutspace, ncol=1)
   colnames(inoutspace) <- outputnames  ## the outputname are lost by apply which keeps the original names !!
-  colmins <- apply(inoutspace, 2, min)
-  colmaxs <- apply(inoutspace, 2, max)
+  colmins <- matrixStats::colMins(inoutspace, useNames=TRUE) # apply(inoutspace, 2, min)
+  colmaxs <- matrixStats::colMaxs(inoutspace, useNames=TRUE) # apply(inoutspace, 2, max)
   ##Note that FONKgLow/Up will be recomputed one the points have been selected for Kriging
   fixBools <- ((colmaxs-colmins)<1e-06) ##FR->FR test pas compar a range de FONKg ?
   if (any(fixBools)) inoutspace <- inoutspace[, ( ! fixBools), drop=FALSE] ## do not provide constant cols to resetCHull->convhulln...

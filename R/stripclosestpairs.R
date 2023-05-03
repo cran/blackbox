@@ -63,7 +63,7 @@ stripclosestpairs <- function(rownamedarray, finallength, scales, fixedNbr=0) { 
         trows <- table(rows) # its names are row indices, not rownames
         choix <- as.numeric(names(trows)[trows==max(trows)])
         if (length(choix)>1) {
-          rowmins <- apply(distmat[choix, ], 1, min) #names of this are row indices of distmat
+          rowmins <- matrixStats::rowMins(distmat[choix, ], useNames = TRUE) # apply(distmat[choix, ], 1, min) #names of this are row indices of distmat
           minrowmins <- min(rowmins)
           namedrowindices <- which(rowmins==minrowmins) ## may be a pair of nonfixed points
           if (length(namedrowindices)>1) { ## further  chose within this pair based on other values in their rows
@@ -118,7 +118,7 @@ stripclosestpairs <- function(rownamedarray, finallength, scales, fixedNbr=0) { 
         trows <- table(tmp) # its names are row indices, not rownames
         choix <- as.numeric(names(trows)[trows==max(trows)])  ## chosen for 'deletion'
         if (length(choix)>1) { ## if more than one is chosen, we have to choose on of them
-          rowmins <- apply(distmat[choix, ], 1, min) #names of this are row indices of distmat
+          rowmins <- matrixStats::rowMins(distmat[choix, ], useNames = TRUE) # apply(distmat[choix, ], 1, min) #names of this are row indices of distmat
           minrowmins <- min(rowmins)
           namedrowindices <- which(rowmins==minrowmins) ## may be a pair of nonfixed points
           if (length(namedrowindices)>1) { ## further  chose within this pair based on other values in their rows

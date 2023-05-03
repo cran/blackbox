@@ -196,7 +196,7 @@ plotParPoints <- function(parPoints="nextpoints_1.txt",names=blackbox.getOption(
     colnames(parPoints) <- names
   }
   if (! inherits(parPoints, "data.frame")) parPoints <- data.frame(parPoints)
-  ranges <- apply(parPoints,2,range)
+  ranges <- sapply(parPoints, range)
   parPoints <- parPoints[,range[2,]-range[1,]>minrange]
   plot(parPoints)
   invisible(NULL)

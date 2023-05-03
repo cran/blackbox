@@ -83,7 +83,11 @@ rvolTriangulation <- function(n=1,volTriangulationObj,replace=TRUE,expand=NULL) 
 #   rvolTriangulation(n,vT,replace=replace)
 # }
 
-## FR->FR same as in blackbox,; (F I X M E ?) see spaMM:::.locate_in_tv() for an optimized version for 2D only but several points
+## (___F I X M E___ ) 
+## This is ugly. A decent algo would move over simplices by testing on which side of halfplanes defined by a current simplex facets the focal point is.
+# In 2D this is what fmesher may do; geometry::tsearch() use "quadtrees" which seems different but also seems to use a recursive halfspaces approach.
+# (spaMM:::.locate_in_tv() uses tsearch() as IMRFs are in 2D)
+# No good implementation in arbitrary dimensions (geometry::tsearchn() is experimental and fails in 4D).
 locatePointinvT <- function(point, ## numeric (not matrix or data frame: see use of 'point' below)
                             vT,fallback=TRUE) { ## in which simplex ? with fall back if 'numerically outside' vT (but quite distinct from minimal distance)
   pmul <- cbind(-1,diag(ncol(vT$vertices)))

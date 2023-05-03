@@ -1,7 +1,20 @@
 \name{NEWS}
 \title{blackbox News}
 \encoding{UTF-8}
-\section{CHANGES UP TO VERSION 1.1.29}{
+\section{CHANGES UP TO VERSION 1.1.43}{  
+\subsection{NEW FEATURES}{
+\itemize{
+\item Much faster init_grid() (and likely more minor gains in other functions too).
+\item New init_grid(., maxmin) argument.
+}
+}
+\subsection{DEPENDENCIES}{
+\itemize{
+\item New dependency 'matrixStats'.
+}
+}
+}
+\section{CHANGES UP TO VERSION 1.1.32}{
 \subsection{USER-LEVEL CHANGES}{
 \itemize{
 \item Checks of invalid input (and resulting screen output) adapted to non-Migraine usage.

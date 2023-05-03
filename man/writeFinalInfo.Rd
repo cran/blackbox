@@ -4,7 +4,7 @@
 Pretty output, and management of output files
 }
 \description{
-Final code of the R script written by the Migraine software (\url{http://kimura.univ-montp2.fr/~rousset/Migraine.htm}; see main documentation page for the package, for the context). This prints some information, close output files, and beeps to warn that a possibly long computation is finished.
+Final code of the R script written by the Migraine software (\url{https://kimura.univ-montp2.fr/~rousset/Migraine.htm}; see main documentation page for the package, for the context). This prints some information, close output files, and beeps to warn that a possibly long computation is finished.
 }
 \usage{
 writeFinalInfo(cleanResu = "")

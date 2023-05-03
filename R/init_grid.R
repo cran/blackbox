@@ -1,4 +1,5 @@
-init_grid <- function(lower=c(par=0),upper=c(par=1),steps=NULL,nUnique=NULL,nRepl=min(10L,nUnique),jitterFac=0.5) {
+init_grid <- function(lower=c(par=0), upper=c(par=1), steps=NULL, nUnique=NULL,
+                      nRepl=min(10L,nUnique), maxmin=TRUE, jitterFac=0.5) {
   np <- length(lower)
   parnames <- names(lower)
   if ( length(parnames)!=np) {
@@ -13,6 +14,9 @@ init_grid <- function(lower=c(par=0),upper=c(par=1),steps=NULL,nUnique=NULL,nRep
   whichvar <- which(lower != upper)
   nvarp <- length(whichvar)
   if (is.null(nUnique)) nUnique <- floor(50^((nvarp/3)^(1/3)))
+  if (nUnique <= 1) {
+    stop("'nUnique' must be >1.")
+  }
   if (is.null(steps)) steps <- ceiling(nUnique^(1/nvarp)) ## -> 2 in large dim
   if (length(steps)==1L) {
     steps <- rep(steps,nvarp)
@@ -37,8 +41,13 @@ init_grid <- function(lower=c(par=0),upper=c(par=1),steps=NULL,nUnique=NULL,nRep
   ## reduce to nbUnique
   rownames(grille) <- as.character(seq(nrow(grille)))
   if (ng>nUnique) {
-    rownams <- greedyMAXMINwithFixed(as.matrix(grille[sample(nrow(grille)),whichvar,drop=FALSE]), nUnique, dx^2, fixedNbr=1) ## facon tordue de randomiser les fixed points...
-    grille <- grille[rownams,,drop=FALSE]
+    if (maxmin) {
+      rownams <- greedyMAXMINwithFixed(as.matrix(grille[, whichvar, drop = FALSE]), nUnique, dx^2, fixedNbr = 1)
+      # see private devel: prune_by_dist(as.matrix(grille[, whichvar, drop = FALSE]), nUnique, scales=dx^2, fixedRows = 1)
+      grille <- grille[rownams, , drop = FALSE]
+    } else {  # fast shortcut bc greedyMAXMINwithFixed WAS too slow
+      grille <- grille[sample(ng,nUnique), , drop = FALSE]
+    }
   }
   ## add replicates
   ng <- nrow(grille)

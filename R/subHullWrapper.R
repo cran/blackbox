@@ -18,7 +18,8 @@ subHullWrapper <- function(vertices, equality, include.Hrepr=FALSE,precision="ra
         Hrepr <- NULL
       } else {
         verif <- apply(Hrepr[,-c(1,2)] %*% t(tmp) + Hrepr[,2],2L,range) ## matrix elements must be >= 0
-        verif <- apply(verif,2L,range) ## first row must be ~0 if points are vertices 
+        verif <- t(matrixStats::colRanges(verif, useNames=TRUE)) #colRanges() is transposed wrt apply():
+        #        apply(verif,2L,range) ## first row must be ~0 if points are vertices 
         ##                                (second row must be positive but first test is sufficient) 
         if (max(abs(verif[1,]))>1e-8) Hrepr <- NULL ## and then next tests -> use rational 
       }

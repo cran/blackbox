@@ -12,7 +12,7 @@ findReplicates <- function(ptls) {
   if("automatedCleaning" %innc% blackbox.getOption("miscOptions")) {
     ## then we should not have suspicious replicates here
     ## we can check that automated cleaning worked:
-    absD <- (apply(abs(diff(t(t(ptls)), lag=1)), 1, max)) ## SSD no longer has rownames; t(t(.)) : conversion of data.frame to matrix...
+    absD <- matrixStats::rowMaxs(abs(diff(t(t(ptls)), lag=1)), useNames=TRUE) # (apply(abs(diff(t(t(ptls)), lag=1)), 1, max)) ## absD no longer has rownames
     nullabsD <- (absD==0)
     if (length(which(nullabsD))>0) {
       message.redef("(!) Some likelihood estimates  from independent replicates appear identical. ")
@@ -28,7 +28,7 @@ findReplicates <- function(ptls) {
   #  pif <- ptlsx[-nrow(ptlsx), , drop=FALSE]
   #	paf <- ptlsx[-1, , drop=FALSE]
   #    absD <- (apply(abs(pif-paf), 1, max)) ## absD no longer has rownames
-  absD <- (apply(abs(diff(t(t(ptlsx)), lag=1)), 1, max)) ## SSD no longer has rownames; t(t(.)) : conversion of data.frame to matrix...
+  absD <- matrixStats::rowMaxs(abs(diff(t(t(ptlsx)), lag=1)), useNames=TRUE) # (apply(abs(diff(t(t(ptlsx)), lag=1)), 1, max)) ## SSD no longer has rownames; t(t(.)) : conversion of data.frame to matrix...
   nullabsD <- (absD==0)
   ptlnames <- rownames(ptlsx)
   pifnames <- ptlnames[-nrow(ptlsx)]

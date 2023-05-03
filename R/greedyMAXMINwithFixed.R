@@ -24,23 +24,26 @@ greedyMAXMINwithFixed <- function(rownamedarray, finallength, scales,
   }
   localarray <- sweep(rownamedarray,2L,sqrt(scales),FUN=`/`) # t(t(rownamedarray)/sqrt(scales))
   nnr <- nrow(localarray)
-  nnc <- ncol(localarray)
   nnf <- nnr-fixedNbr
-  fixed <- (nnf+1):nnr
-  subset <- localarray[fixed, , drop=FALSE] ## the fixed points
-  candidates <- localarray[1:nnf, , drop=FALSE]
+  subsetids <- (nnf+1):nnr # indices of rows to be returned, initialized by indices of fixed points (which are last rows of the array).
+  fixedpts <- localarray[subsetids, , drop=FALSE]
+  candidates <- localarray[ - subsetids, , drop=FALSE]
   ##now we compute the distance of all subset points with all nonsubset points
   ##(but not non-subset with non-subset)
-  distCS <- as.matrix(proxy::dist(candidates,subset))
-  while (nrow(subset)<finallength) {
-    farthestidx <- which.max(apply(distCS, 1, min))
-    farthestv <- candidates[farthestidx, , drop=FALSE]
-    subset <- rbind(farthestv, subset) ## fixed points remain in last rows
-    newcandidates <- candidates[-farthestidx, , drop=FALSE]
-    distCS <- distCS[-farthestidx, , drop=FALSE]
-    newdist <- as.matrix(proxy::dist(newcandidates,farthestv)) ## dists of remaining candidates to newly selected point
-    distCS <- cbind(distCS, newdist) ## order of cols doesn't matter
-    candidates <- newcandidates
+  distCS <- proxy::dist(candidates,fixedpts) # crossdist object, similar to matrix, [ncandidates, nfixed]
+  rowmins <- matrixStats::rowMins(distCS) # vector [ncandidates]
+  needed <- finallength-fixedNbr
+  subsetids <- c(rep(NA_integer_,needed),subsetids) # will store indices of rows to be returned
+  for (it in seq_len(needed)) {
+    # Find best point in terms of maxmin distance:
+    farthestidx <- which.max(rowmins) 
+    subsetids[it] <- farthestidx 
+    # Generate new 'rowmins':
+    farthest_candidate <- candidates[farthestidx, , drop=FALSE]
+    newdist <- proxy::dist(candidates, farthest_candidate) ## 1col crossdist object, includes compar of farthest_candidate with itself => O element
+    rowmins <- pmin(rowmins,newdist) # => element 0 for candidates now included in the retained set
+    # We might removes the rows of retained points from 'candidates' (very costly) and vectors that refer to it, such as 'rowmins'
+    # It's faster to let the zero values in 'rowmins'.  
   }
-  return(rownames(subset))  ##includes fixed points
+  return(rownames(localarray)[subsetids])  ##includes fixed points
 }

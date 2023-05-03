@@ -16,7 +16,7 @@ prepareData <- function(data, ParameterNames=NULL, respName=NULL, verbose=TRUE) 
 
   pointls <- pointls[ do.call(order, pointls) , ] ## do not change this order later !
   rownames(pointls) <- seq(nrow(pointls))
-  absD <- (apply(abs(diff(t(t(pointls)), lag=1)), 1, max)) ## absD no longer has rownames
+  absD <- matrixStats::rowMaxs(abs(diff(t(t(pointls)), lag=1)), useNames=TRUE) # (apply(abs(diff(t(t(pointls)), lag=1)), 1, max)) ## absD no longer has rownames
   nullabsD <- (absD==0)
   if (length(which(nullabsD))>0 && verbose) {
     if ("Migraine" %in% blackbox.getOption("usedBy")) {

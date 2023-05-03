@@ -1,0 +1,36 @@
+citHeader("To cite the 'blackbox' package or the 'Migraine' software in publications use:")
+
+citation(auto = meta)
+
+bibentry(bibtype = "Article",
+  author = as.person("François Rousset [aut], Raphaël Leblois [aut]"),
+  title = "Likelihood and approximate likelihood analyses of genetic structure in a linear habitat: performance and robustness to model mis-specification",
+  journal = "Molecular Biology and Evolution",
+  year = "2007",
+  volume = "24",
+  pages = "2730-2745",
+  url="https://doi.org/10.1093/molbev/msm206"
+  )
+
+bibentry(bibtype = "Article",
+  author = as.person("François Rousset [aut], Raphaël Leblois [aut]"),
+  title = "Likelihood-based inferences under isolation by distance: two-dimensional habitats and confidence intervals",
+  journal = "Molecular Biology and Evolution",
+  year = "2012",
+  volume = "29",
+  pages = "957-973",
+  url="https://doi.org/10.1093/molbev/msr262"
+  )
+
+bibentry(bibtype = "Article",
+  author = as.person(" Raphaël Leblois [aut], Pierre Pudlo [aut], Joseph Néron [aut], François Bertaux [aut], Champak Reddy Beeravolu [aut], Renaud Vitalis [aut], François Rousset [aut]"),
+  title = "Maximum likelihood inference of population size contractions from microsatellite data",
+  journal = "Molecular Biology and Evolution",
+  year = "2014",
+  volume = "31",
+  pages = "2805-2823",
+  url="https://doi.org/10.1093/molbev/msu212"
+  )
+
+
+

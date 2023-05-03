@@ -30,8 +30,8 @@ profileByFullHull <- function(fixedlist=NA, otherlist=NULL,
   if(is.null(locchull)) locchull <- providefullhull(names(fixedlist))[[1]] ## this works also without any composite variable
   hull_a <- locchull$a
   hull_b <- locchull$b    ##  within-hullness occurs for ui %*% x -ci => 0 ie a %*% x -b <= 0
-  lb <- apply(locchull$vertices,2,min)
-  ub <- apply(locchull$vertices,2,max)
+  lb <- matrixStats::colMins(locchull$vertices, useNames=TRUE) # apply(locchull$vertices,2,min)
+  ub <- matrixStats::colMaxs(locchull$vertices, useNames=TRUE) # apply(locchull$vertices,2,max)
   #
   xnames <- names(lb)
   subnames <-  setdiff(xnames,names(fixedlist))

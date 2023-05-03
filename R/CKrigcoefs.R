@@ -55,8 +55,8 @@ CKrigcoefs <- function(xy,
     if (varCorrpars) { ## need to estim scale params and/or smoohtness (not sure that it can estimate only some of them)
       if ( is.null(initCovFnParam) ) initCovFnParam <- rep(0, ncolxy)
       xx <- xy[,-ncolxy,drop=FALSE]
-      KgLow <- apply(xx,2,min)
-      KgUp <- apply(xx,2,max)
+      KgLow <- sapply(xx, min)
+      KgUp <- sapply(xx, max)
       maxrange <- KgUp-KgLow
       GCVlowerFactor <- 20 # or 20 ? cf comments on Migraine default in Migraine code
       GCVupperFactor <- 5

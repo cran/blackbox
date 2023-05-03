@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // newCSmooth
 SEXP newCSmooth(SEXP xy, SEXP nrowxy, SEXP ncolxy, SEXP nuniquerows, SEXP GCV, SEXP optimiseBool, SEXP verbosity);
 RcppExport SEXP _blackbox_newCSmooth(SEXP xySEXP, SEXP nrowxySEXP, SEXP ncolxySEXP, SEXP nuniquerowsSEXP, SEXP GCVSEXP, SEXP optimiseBoolSEXP, SEXP verbositySEXP) {

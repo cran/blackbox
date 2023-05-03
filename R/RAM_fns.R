@@ -15,7 +15,7 @@ RAMavail <- function() {
   ## windows case must be incorrect
   os <- get_os()
   if (os=="Windows") { 
-    avail <- memory.size() ## FR->FR RAMused rather than available ?
+    avail <- Inf # quick patch #  memory.size() ## FR->FR RAMused rather than available ?
   } else if (os=="OSX") { 
     bla <- system2("vm_stat",stdout=TRUE)[2] ## [1] => Free (but not Inactive)
     allpos <- gregexpr(" [0-9]",bla)[[1]] ## positions of blanks before numbers

@@ -35,8 +35,8 @@ bboptim <- function(data, ParameterNames=NULL, respName=NULL, control=list(), fo
   }
   thisfit <- fitme(form,data=sorted_etc,fixed=ranfix,etaFix=etafix, method="REML") ## full data smoothed with lambda and phi estimated from cleaned data
   #
-  lower <- apply(sorted_etc[,ParameterNames,drop=FALSE],2,min)
-  upper <- apply(sorted_etc[,ParameterNames,drop=FALSE],2,max)
+  lower <- sapply(sorted_etc[,ParameterNames,drop=FALSE],min)
+  upper <- sapply(sorted_etc[,ParameterNames,drop=FALSE],max)
   if ( ! maximizeBool ) {
     init <- thisfit$data[which.min(predict(thisfit)),ParameterNames]
     optr_fitted <- list(par=init,value=min(predict(thisfit,newdata=thisfit$data))) ## need newdata bc of numerical errors
@@ -101,7 +101,7 @@ bboptim <- function(data, ParameterNames=NULL, respName=NULL, control=list(), fo
   if (maximizeBool) {
     convergence <- (optr_fitted$value > optr$value-reltol)
   } else convergence <- (optr_fitted$value < optr$value+reltol)
-  conv_crits <- c(objective=convergence,precision=(get_predVar(thisfit,optr$par)<precision))
+  conv_crits <- c(objective=convergence,precision=(get_predVar(thisfit,optr$par)<precision)) ## ___F I X M E___: use EI as convergence criterion?
   resu <- list(fit=thisfit,optr_fitted=optr_fitted,optr=optr,callArgs = as.list(match.call())[-1],colTypes=colTypes,
                GCVmethod=gcvres$GCVmethod,RMSE=RMSE,conv_crits=conv_crits)
   class(resu) <- c("list","bboptim")

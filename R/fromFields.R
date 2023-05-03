@@ -42,7 +42,7 @@ parse.grid.list <- function (grid.list, order.variables = "xy")
 }
 
 calcGridFromxy <- function (xyz, nx = 80, ny = 80, xycols = c(1, 2)) {
-  grid.list <- as.list(apply(xyz,2,median))
+  grid.list <- as.list(matrixStats::colMedians(xyz)) # as.list(apply(xyz,2,median))
   xrange <- range(xyz[, xycols[1]])
   yrange <- range(xyz[, xycols[2]])
   grid.list[[xycols[1]]] <- seq(xrange[1], xrange[2], , nx)

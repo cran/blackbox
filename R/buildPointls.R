@@ -31,7 +31,7 @@ buildPointls <- function(dataFile=blackbox.getOption("dataFile"),
   if (! is.null(subsetRows)) pointls <- pointls[subsetRows, ]
   #
   pointls <- pointls[ do.call(order, pointls) , ] ## do not change this order later !
-  absD <- (apply(abs(diff(t(t(pointls)), lag=1)), 1, max)) ## absD no longer has rownames
+  absD <- matrixStats::rowMaxs(abs(diff(t(t(pointls)), lag=1)), useNames=TRUE) # (apply(abs(diff(t(t(pointls)), lag=1)), 1, max)) ## absD no longer has rownames
   nullabsD <- (absD==0)
   if (("Migraine" %in% blackbox.getOption("usedBy")) && length(which(nullabsD))>0) {
     message.redef("(!) Some likelihood estimates  from independent replicates appear identical. ")
