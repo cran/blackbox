@@ -1,0 +1,3 @@
+# I temporarily set this to better see the more relevant warnings
+# while installing out of my usual config (where the flag is more globally set).
+#PKG_CXXFLAGS += -Wno-ignored-attributes

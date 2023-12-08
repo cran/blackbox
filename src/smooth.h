@@ -130,7 +130,7 @@ const TypeforBrent ZEPS=(100.*EPSILON);
         u=(std::abs(d) >= tol1 ? x+d : x+SIGN(tol1,d));
         fu=covTypedef((*f)(u)); //This is the one function evaluation per iteration.
 //DEBUG
-//{ std::stringstream stst;stst<<"      "<<u<<" "<<fu<<std::endl;REprintf(stst.str().c_str());}
+//{ std::stringstream stst;stst<<"      "<<u<<" "<<fu<<std::endl;REprintf("%s", stst.str().c_str());}
         if (fu <= fx) { //Now decide what to do with our function evaluation.
             if (u >= x) a=x; else b=x;
             SHFT(v,w,x,u) //Housekeeping follows:

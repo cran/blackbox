@@ -68,13 +68,13 @@ bool intern_newCSmooth( // ici la def
 #ifdef NO_R_CONSOLE
       std::cout<<"Estimating missing parameters via generalized cross-validation...";
 #else
-      if (*verbosity) REprintf("Estimating missing parameters via generalized cross-validation...\n");
+      if (*verbosity) REprintf("%s", "Estimating missing parameters via generalized cross-validation...\n");
 #endif
     } else {
 #ifdef NO_R_CONSOLE
       std::cout<<"Estimating missing parameters via match of MSE estimates...";
 #else
-      REprintf("Estimating missing parameters via match of MSE estimates...\n");
+      REprintf("%s", "Estimating missing parameters via match of MSE estimates...\n");
 #endif
     }
   }
@@ -89,9 +89,9 @@ bool intern_newCSmooth( // ici la def
     std::stringstream stst;
     stst<<"(!) From intern_newCSmooth() in DLL: C code counted "<<Cuniquerows<<" unique coordinates while R declared "<<*nuniquerows<<" ones ('nuniquerows' argument)\n";
     //Rf_error(stst.str().c_str());
-    REprintf(stst.str().c_str());
-    REprintf("This has occurred in normal usage (as R and C algorithms for counting unique values differ)\n");
-    REprintf(" but might also indicate wrong input from R (although this has never occurred).\n");
+    REprintf("%s", stst.str().c_str());
+    REprintf("%s", "This has occurred in normal usage (as R and C algorithms for counting unique values differ)\n");
+    REprintf("%s", " but might also indicate wrong input from R (although this has never occurred).\n");
 #endif
   }
   return(success);
@@ -170,7 +170,7 @@ SEXP CcovFocal( // ici la def
 #ifdef NO_R_CONSOLE
       std::cout<<stst.str();
 #else
-      REprintf(stst.str().c_str());
+      REprintf("%s", stst.str().c_str());
 #endif
       throw Rcpp::exception("Ccovfocal called with index out of allowed range");
       //Rf_error("Ccovfocal called with index out of allowed range");

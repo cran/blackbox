@@ -78,19 +78,19 @@ Typeforcov Krig_fgcv(Typeforcov lambda) {
 {
         std::stringstream stst;
         stst<<"lambda: "<<double(lambda)<<" MSE: "<<double(MSE)<<" dfOver_n: "<<double(dfOver_n)<<std::endl;
-        REprintf(stst.str().c_str());
-        REprintf("D_invEigVals");
+        REprintf("%s", stst.str().c_str());
+        REprintf("%s", "D_invEigVals");
         stst.str("");
         for (typename std::vector<internalTypeEigen>::iterator ii=test->D_invEigVals.begin();ii!=test->D_invEigVals.end();ii++) {
             stst<<double(*ii)<<" ";
         }
-        REprintf(stst.str().c_str());
+        REprintf("%s", stst.str().c_str());
         stst.str("");
-        REprintf("summands of dfOver_n:");
+        REprintf("%s", "summands of dfOver_n:");
         for (typename std::vector<internalTypeEigen>::iterator ii=lD.begin();ii!=lD.end();ii++) {
             stst<<double(*ii)<<" "<<double(1./(1.+(*ii)))<<"; ";
         }
-        REprintf(stst.str().c_str());
+        REprintf("%s", stst.str().c_str());
         stst.str("");
 
 }
@@ -107,7 +107,7 @@ Typeforcov match_fs2hat_pure_error(Typeforcov lambda) {
     //first, obvious, estimate of MSE
     //second, heuristic, estimate computed as RSS/res_df_with_replicates
     long double RSS=0.,tmp;
-    Typeforcov res_df_with_replicates=0.,fs2hat;
+    Typeforcov res_df_with_replicates=0.,fs2hat=std::numeric_limits<Typeforcov>::quiet_NaN();
     std::vector<internalTypeEigen> lD(0);
     for (typename std::vector<internalTypeEigen>::iterator ii=test->D_invEigVals.begin();ii!=test->D_invEigVals.end();ii++)
        lD.push_back((*ii)*lambda);
@@ -145,7 +145,7 @@ Typeforcov match_fs2hat_pure_error(Typeforcov lambda) {
         if (batchDebug) std::cin.get();
         exit(-1);
 #else
-        REprintf("(!) (!) From match_fs2hat_pure_error() in DLL: !res_df_with_replicates>0.\n");
+        REprintf("%s", "(!) (!) From match_fs2hat_pure_error() in DLL: !res_df_with_replicates>0.\n");
         std::stringstream stst;
         std::string st="";
         st+="RSS: ";
@@ -161,7 +161,6 @@ Typeforcov match_fs2hat_pure_error(Typeforcov lambda) {
         st+=stst.str()+" ";
         stst.str("");
         Rprintf("%s\n",st.c_str());
-        Rf_error("");
 #endif
     }
     fnevalcounter++;
@@ -246,7 +245,7 @@ int CSmooth::fillcovMat(const Typeforcov& locsmoothness) {
 #endif
         }
         covMat[ii][jj]=covMat[jj][ii]=tmp; //iint<=jint semi matrix
-        //if (covMat[ii][jj]<0) {std::stringstream stst;stst<<"ii, jj, covMat[ii][jj]<0 !: "<<ii<<" "<<jj<<" "<<covMat[ii][jj]<<std::endl;REprintf(stst.str().c_str());}
+        //if (covMat[ii][jj]<0) {std::stringstream stst;stst<<"ii, jj, covMat[ii][jj]<0 !: "<<ii<<" "<<jj<<" "<<covMat[ii][jj]<<std::endl;REprintf("%s", stst.str().c_str());}
       }
     }
 
@@ -283,8 +282,8 @@ int CSmooth::Krig_coef(Typeforcov lambda) { //constructs predictor in compact fo
    if (D_invEigVals.back()/D_invEigVals[1]>100000000000.) std::cout<<stst1.str();
    if (verbosity) std::cout<<stst2.str();
 #else
-   if (D_invEigVals.back()/D_invEigVals[1]>1e11) REprintf(stst1.str().c_str());
-   if(verbosity) REprintf(stst2.str().c_str());
+   if (D_invEigVals.back()/D_invEigVals[1]>1e11) REprintf("%s", stst1.str().c_str());
+   if(verbosity) REprintf("%s", stst2.str().c_str());
 #endif
 }
 
@@ -304,7 +303,7 @@ int CSmooth::Krig_coef(Typeforcov lambda) { //constructs predictor in compact fo
 #ifdef NO_R_CONSOLE
         std::cerr<<std::endl<<"(!) From Krig_coef: low lambda value likely to lead to numerical artefacts"<<std::endl;
 #else
-        REprintf("(!) From Krig_coef: low lambda value likely to lead to numerical artefacts\n");
+        REprintf("%s", "(!) From Krig_coef: low lambda value likely to lead to numerical artefacts\n");
 #endif
     }
     int idx;
@@ -446,9 +445,9 @@ std::vector<TypeforES> temp(0);
     stringstream stst;
     stst<<"temp.size(): "<<temp.size()<<std::endl;
 #ifdef NO_R_CONSOLE
-    if (true) Rprintf(stst.str().c_str());
+    if (true) Rprintf("%s", stst.str().c_str());
 #else
-    if (true) REprintf(stst.str().c_str());
+    if (true) REprintf("%s", stst.str().c_str());
 #endif
 }*/
      D_invEigVals.resize(ncolT,0);  // ncolT=1, puts initial 0.
@@ -466,7 +465,7 @@ std::vector<TypeforES> temp(0);
 #ifdef NO_R_CONSOLE
     if (true) Rprintf(stst.str().c_str());
 #else
-    if (true) REprintf(stst.str().c_str());
+    if (true) REprintf("%s", stst.str().c_str());
 #endif
 } */
      } /// end loop on ii
@@ -587,7 +586,7 @@ Typeforcov CSmooth::ocv_Krig() {//estimates lambda by OCV, returns OCV criterion
 #ifdef NO_R_CONSOLE
         std::cout<<"(!) From CSmooth::ocv_Krig(): CV search gives a minimum at the lower endpoint of the search.";
 #else
-        REprintf("(!) From CSmooth::ocv_Krig(): CV search gives a minimum at the lower endpoint of the search.\n");
+        REprintf("%s", "(!) From CSmooth::ocv_Krig(): CV search gives a minimum at the lower endpoint of the search.\n");
 #endif
         lambdaEst=lo;
         objective=(*fgcvPtr)(lo);
@@ -601,7 +600,7 @@ Typeforcov CSmooth::ocv_Krig() {//estimates lambda by OCV, returns OCV criterion
 #ifdef NO_R_CONSOLE
         std::cout<<"(!) From CSmooth::ocv_Krig(): CV search gives a minimum at the upper endpoint of the search.";
 #else
-        REprintf("(!) From CSmooth::ocv_Krig(): CV search gives a minimum at the upper endpoint of the search.\n");
+        REprintf("%s", "(!) From CSmooth::ocv_Krig(): CV search gives a minimum at the upper endpoint of the search.\n");
 #endif
         lambdaEst=hi;
         objective=(*fgcvPtr)(hi);
@@ -609,7 +608,7 @@ Typeforcov CSmooth::ocv_Krig() {//estimates lambda by OCV, returns OCV criterion
     }
 //ELSE
 //DEBUG
-//{ std::stringstream stst;stst<<lo<<" "<<hi<<std::endl;REprintf(stst.str().c_str());}
+//{ std::stringstream stst;stst<<lo<<" "<<hi<<std::endl;REprintf("%s", stst.str().c_str());}
     objective=brent<brentTypedef>(fgcvPtr,lo,hi/10.,hi,&lambdaEst); //fills lambdaEst
 return objective;
 }
@@ -643,7 +642,7 @@ Typeforcov CSmooth::gcv_Krig() {//estimates lambda by GCV, returns GCV criterion
     The aim of the first loop is to find a df value low enough that the matching lambda is
     small enough according to the (retrospectively dubious) loop test criterion
     The aim of the second loop is to find a df value high enough that the matching lambda is small enough... */
-    //{ std::stringstream stst;stst<<lo<<" "<<hi<<std::endl;REprintf(stst.str().c_str());}
+    //{ std::stringstream stst;stst<<lo<<" "<<hi<<std::endl;REprintf("%s", stst.str().c_str());}
     Typeforcov step=(hi-lo)/30.;
     df=lo;
     for (int jj=0;jj<8;jj++,df+=step*pow(double(2),double(std::min(jj,7-jj)))) { //adds steps* 1 2 4 8 8 4 2 1 (sum=30)
@@ -663,7 +662,7 @@ Typeforcov CSmooth::gcv_Krig() {//estimates lambda by GCV, returns GCV criterion
 #ifdef NO_R_CONSOLE
       if (verbosity>1) std::cout<<"(*) From CSmooth::gcv_Krig(): GCV search gives a minimum at the endpoints of the grid search.";
 #else
-     if (verbosity>1) REprintf("(*) From CSmooth::gcv_Krig(): GCV search gives a minimum at the endpoints of the grid search.\n");
+     if (verbosity>1) REprintf("%s", "(*) From CSmooth::gcv_Krig(): GCV search gives a minimum at the endpoints of the grid search.\n");
 #endif
         lambdaEst=lambda_grid[minidx]; //!! lambda_GCV <=> phi_HGLM/lambda_HGLM
         objective=(*fgcvPtr)(*min_ptr);

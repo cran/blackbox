@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{blackbox News}
 \encoding{UTF-8}
+\section{CHANGES UP TO VERSION 1.1.46}{  
+\itemize{
+\item Resolve -Wsometimes-uninitialized, -Wformat-zero-length and -Wformat-security compiler warnings.
+\item Resolve "lost braces" issue in a documentation page.
+}
+}
 \section{CHANGES UP TO VERSION 1.1.43}{  
 \subsection{NEW FEATURES}{
 \itemize{

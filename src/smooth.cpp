@@ -19,7 +19,7 @@ int safeprint(std::string somestring) {
 #ifdef NO_R_CONSOLE
    std::cout<<somestring;
 #else
-   REprintf(somestring.c_str());
+   REprintf("%s", somestring.c_str());
 #endif
 return(0);
 }
@@ -30,7 +30,7 @@ int safeprint(long double somelongdouble) {
 #else
    std::stringstream stst;
    stst<<double(somelongdouble)<<" ";  // problems if not cast to souble
-   REprintf(stst.str().c_str());
+   REprintf("%s", stst.str().c_str());
 #endif
 return(0);
 }
@@ -42,7 +42,7 @@ int safeprint(someType somenum) {
 #else
    std::stringstream stst;
    stst<<somenum<<" ";
-   REprintf(stst.str().c_str());
+   REprintf("%s", stst.str().c_str());
 #endif
 return(0);
 }
@@ -78,7 +78,7 @@ covTypedef bisection_search(covTypedef (*func)(covTypedef),covTypedef x1,covType
     if (batchDebug) cin.get();
      exit(-1);
 #else
-     REprintf("(!) From CSmooth::bisection_search() : Root must be bracketed for bisection. \n");
+     REprintf("%s", "(!) From CSmooth::bisection_search() : Root must be bracketed for bisection. \n");
 #endif
         }
     rtb = f < 0.0 ? (dx=x2-x1,x1) : (dx=x1-x2,x2); //Orient the search so that f>0
@@ -125,7 +125,7 @@ CSmooth::CSmooth(Cpointls & ptls,double GCV, int verbosity) {
 #ifdef NO_R_CONSOLE
   std::cout<<"Covariance family = Matern"<<std::endl;
 #else
-  if (verbosity>1) REprintf("Covariance family = Matern\n");
+  if (verbosity>1) REprintf("%s", "Covariance family = Matern\n");
 #endif
   xyFileName=ptls.getname();
   xy=ptls.getxy();
@@ -258,7 +258,7 @@ int CSmooth::sort_compress() {
   		std::cerr << "  Estimation of correlation parameters will fail. " << std::endl;
 #else
       // Rf_error("(!) CSmooth::sort_compress() detected no replicate y values for any X values. I exit");
-       REprintf("CSmooth::sort_compress() detected no replicate y values for any X values.\n");
+       REprintf("%s", "CSmooth::sort_compress() detected no replicate y values for any X values.\n");
 #endif
    }
    pure_error=pureSS/(KgPtNbr_with_repl-KgPtNbr);

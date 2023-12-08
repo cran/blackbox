@@ -1,8 +1,8 @@
 Package: blackbox
 Title: Black Box Optimization and Exploration of Parameter Space
 Encoding: UTF-8
-Version: 1.1.43
-Date: 2023-05-01
+Version: 1.1.46
+Date: 2023-12-08
 Authors@R: c(person("François", "Rousset", role = c("aut", "cre", "cph"),
                        email = "francois.rousset@umontpellier.fr",
                        comment = c(ORCID = "0000-0003-4670-0371")),
@@ -20,9 +20,9 @@ License: CeCILL-2
 ByteCompile: true
 URL: https://kimura.univ-montp2.fr/~rousset/Migraine.htm
 NeedsCompilation: yes
-Packaged: 2023-05-01 19:12:22 UTC; francois.rousset
+Packaged: 2023-12-08 00:45:16 UTC; francois.rousset
 Author: François Rousset [aut, cre, cph]
     (<https://orcid.org/0000-0003-4670-0371>),
   Raphaël Leblois [ctb] (<https://orcid.org/0000-0002-3051-4497>)
 Repository: CRAN
-Date/Publication: 2023-05-03 07:30:06 UTC
+Date/Publication: 2023-12-08 03:20:11 UTC

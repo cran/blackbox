@@ -63,7 +63,7 @@ Typeforcov Matern(Typeforcov dist,const Typeforcov& smoothness) {
 #ifdef NO_R_CONSOLE
             std::cout<<stst.str();
 #else
-            REprintf(stst.str().c_str());
+            REprintf("%s", stst.str().c_str());
 #endif
         }*/
         return cov;
