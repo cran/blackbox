@@ -19,7 +19,7 @@ calcGCV(sorted_data=data, data, CovFnParam = NULL, GCVptnbr = Inf,
   \item{sorted_data}{
   A data frame with both predictor and response variance, sorted and with attributes, as produced by \code{\link{prepareData}}
 }
-  \item{data}{Obsolete, for Migraine back-compatibility, should not be used.}
+  \item{data}{Obsolete, for \sQuote{Migraine} back-compatibility, should not be used.}
   \item{CovFnParam}{
   Optional fixed values of scale factors for each predictor variable. Smoothness should not be included in this argument.
 }

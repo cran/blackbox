@@ -1,8 +1,10 @@
-#include "Krigtypes.h"
+#include "R.h" // fn error() pour message erreur
+#ifndef R_NO_REMAP
 #define R_NO_REMAP
+#endif
+#include "Krigtypes.h"
 #include "smooth.h" // (includes qr.h which includes R.h)
 #include "smoothFriends.h"
-#include "R.h" // fn error() pour message erreur
 using namespace Rcpp;
 
 
@@ -88,7 +90,7 @@ bool intern_newCSmooth( // ici la def
 #else
     std::stringstream stst;
     stst<<"(!) From intern_newCSmooth() in DLL: C code counted "<<Cuniquerows<<" unique coordinates while R declared "<<*nuniquerows<<" ones ('nuniquerows' argument)\n";
-    //Rf_error(stst.str().c_str());
+    //Rcpp::stop(stst.str().c_str());
     REprintf("%s", stst.str().c_str());
     REprintf("%s", "This has occurred in normal usage (as R and C algorithms for counting unique values differ)\n");
     REprintf("%s", " but might also indicate wrong input from R (although this has never occurred).\n");
@@ -173,7 +175,7 @@ SEXP CcovFocal( // ici la def
       REprintf("%s", stst.str().c_str());
 #endif
       throw Rcpp::exception("Ccovfocal called with index out of allowed range");
-      //Rf_error("Ccovfocal called with index out of allowed range");
+      //Rcpp::stop("Ccovfocal called with index out of allowed range");
     }
   } else {
     NumericVector xfocal(focal);

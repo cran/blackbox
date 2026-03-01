@@ -1,10 +1,12 @@
+#ifndef R_NO_REMAP
+#define R_NO_REMAP
+#endif
 #include <fstream> // problem under Mac (!) : fstream must be included before R.h...
 #include <numeric> //for inner_product
 #include <limits>
 #include <ctime>
 #include <algorithm> // stable_sort
 #include "Krigtypes.h"
-#define R_NO_REMAP
 #include "smooth.h" // (includes qr.h which includes R.h)
 #include "smoothFriends.h"  // // FRIENDs de la class CSmooth
 
@@ -97,7 +99,7 @@ std::cout<<rtb;getchar();*/
            if (batchDebug) cin.get();
            exit(-1);
 #else
-           Rf_error("(!) From CSmooth::bisection_search() : Too many bisections. \n");
+           Rcpp::stop("(!) From CSmooth::bisection_search() : Too many bisections. \n");
 #endif
         }
 return(numeric_limits<covTypedef>::signaling_NaN());
@@ -174,7 +176,7 @@ int CSmooth::sort_compress() {
   		if (batchDebug) std::cin.get();
   		exit(-1);
 #else
-  		Rf_error("(!) CSmooth::sort_compress() called on data with suspicious number of columns");
+  		Rcpp::stop("(!) CSmooth::sort_compress() called on data with suspicious number of columns");
 #endif
    }
 //std::cout<<xy[0][0]<<" "<<xy[0][1]<<" "<<xy[0][2];getchar();
@@ -257,7 +259,7 @@ int CSmooth::sort_compress() {
   		std::cerr << "CSmooth::sort_compress() detected no replicate y values for any X values" << std::endl;
   		std::cerr << "  Estimation of correlation parameters will fail. " << std::endl;
 #else
-      // Rf_error("(!) CSmooth::sort_compress() detected no replicate y values for any X values. I exit");
+      // Rcpp::stop("(!) CSmooth::sort_compress() detected no replicate y values for any X values. I exit");
        REprintf("%s", "CSmooth::sort_compress() detected no replicate y values for any X values.\n");
 #endif
    }
@@ -351,7 +353,7 @@ int CSmooth::filleuclArray() { // this function call only in Krig_engine_default
               stst.str("");
             }
             REprintf("%s\n",st.c_str());
-            Rf_error("(!) From CSmooth::filleuclArray(): Inf/NaN euclidian distance");
+            Rcpp::stop("(!) From CSmooth::filleuclArray(): Inf/NaN euclidian distance");
 #endif
         }
      }

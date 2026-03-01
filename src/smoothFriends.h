@@ -75,7 +75,6 @@ Typeforcov Krig_fgcv(Typeforcov lambda) {
         if (batchDebug) std::cin.get();
         exit(-1);
 #else
-{
         std::stringstream stst;
         stst<<"lambda: "<<double(lambda)<<" MSE: "<<double(MSE)<<" dfOver_n: "<<double(dfOver_n)<<std::endl;
         REprintf("%s", stst.str().c_str());
@@ -92,9 +91,7 @@ Typeforcov Krig_fgcv(Typeforcov lambda) {
         }
         REprintf("%s", stst.str().c_str());
         stst.str("");
-
-}
-Rf_error("(!) (!) From Krig_fgcv() in DLL: !dfOver_n>0.");
+        Rcpp::stop("(!) (!) From Krig_fgcv() in DLL: !dfOver_n>0.");
 #endif
     }
 
@@ -241,7 +238,7 @@ int CSmooth::fillcovMat(const Typeforcov& locsmoothness) {
           if (batchDebug) std::cin.get();
           exit(-1);
 #else
-          Rf_error("(!) From CSmooth::fillcovMat(): something wrong with Matern covariance evaluation");
+          Rcpp::stop("(!) From CSmooth::fillcovMat(): something wrong with Matern covariance evaluation");
 #endif
         }
         covMat[ii][jj]=covMat[jj][ii]=tmp; //iint<=jint semi matrix
@@ -295,7 +292,7 @@ int CSmooth::Krig_coef(Typeforcov lambda) { //constructs predictor in compact fo
            if (batchDebug) std::cin.get();
            exit(-1);
 #else
-           Rf_error("(!) From Krig_coef(): lambda neither explicitly given nor previously computed by GCV\n");
+           Rcpp::stop("(!) From Krig_coef(): lambda neither explicitly given nor previously computed by GCV\n");
 #endif
         }
     }
@@ -508,7 +505,7 @@ std::vector<TypeforES> temp(0);
     QR_T->Qy<TypeforES,TypeforES>(temp,temp);  // <..> = the types of temp; note that the second argument is the (address of) the result.
 
      //for (typename std::vector<TypeforES>::iterator ii=temp.begin();ii!=temp.end();ii++) Rprintf("ici %f ",(*ii));
-     //Rf_error("FR stop debug");
+     //Rcpp::stop("FR stop debug");
 
      temp.erase(temp.begin(),temp.begin()+1); //cf def qr.q2ty:  qr.qty(qr, y)[(rank + 1):dy[1], ]
 //    ostream_vector(temp,std::cout);
@@ -633,7 +630,7 @@ Typeforcov CSmooth::gcv_Krig() {//estimates lambda by GCV, returns GCV criterion
        if (batchDebug) std::cin.get();
        exit(-1);
 #else
-       Rf_error("(!) From CSmooth::gcv_Krig(): problem with bounds. Seek this message in source and compare to Migraine code\n");
+       Rcpp::stop("(!) From CSmooth::gcv_Krig(): problem with bounds. Seek this message in source and compare to Migraine code\n");
 #endif
     }
     lo+=(hi-lo)/80000.;

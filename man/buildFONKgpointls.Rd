@@ -16,7 +16,7 @@ buildFONKgpointls(pointls)
 }
 }
 \details{
- With controls set by the Migraine software, this can operate transformations of parameter space as well as transformations in logarithmic scale (see \code{\link{islogscale}}). The output frame will then contain values of transformed parameters. 
+ With controls set by the \sQuote{Migraine} software, this can operate transformations of parameter space as well as transformations in logarithmic scale (see \code{\link{islogscale}}). The output frame will then contain values of transformed parameters. 
  }
 \value{
 A data frame.

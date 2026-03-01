@@ -1,10 +1,12 @@
+#include "R.h" // pour Rprintf
+#ifndef R_NO_REMAP
+#define R_NO_REMAP
+#endif
 #include <fstream>
 #ifdef NO_R_CONSOLE
 #include <iostream>
 #endif
 #include "pointls.h"
-#define R_NO_REMAP
-#include "R.h" // pour Rprintf
 
 Cpointls::Cpointls(Cpointls& ptls) {
     this->xy.resize(0);
@@ -52,7 +54,7 @@ int Cpointls::read_pointls(std::string filename) {
   		exit(-1);
 #else
   		throw Rcpp::exception("Unable to open file.");
-  		//Rf_error("Unable to open file... I exit");
+  		//Rcpp::stop("Unable to open file... I exit");
 #endif
   	}
   	while (!inFile.eof()) {

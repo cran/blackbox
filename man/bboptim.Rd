@@ -46,14 +46,14 @@ and some other elements.
 }
 \details{ \code{rbb} selects a proportion \code{1-focus} of the returned points according to expected improvement, from points sampled uniformly in a space defined by a tesselation of the fitted \code{object}'s parameter points. They are completed to n-1 points, by points similarly selected but within a space defined by a selection of fitted points with the best predicted response values. Finally, two replicates of the predicted optimum (the \code{optim} \code{$par} result contained in the \code{object}) are included. A total of n+1 points (n distinct) is thus returned.
 
-Global optimization cannot be proven, but it is tested by the following criteria: (1) the predicted optimum is close enough to the optimum among assessed parameter points (i.e. either the optimum parameters are well approached or the function is flat in some way), and (2) the prediction variance at the inferred optimum is low enough (so that the predictions used in the first criterion can be trusted). Accordingly, \code{conv_crits} has elements (1) \code{objective} that indicates whether \code{optr$value} betters \code{optr_fitted$value} by more than \code{control$reltol}, if given, or else by more than \code{sqrt(.Machine$double.eps)}; and (2) \code{precision} that indicates whether variance of prediction error at the inferred optimum is lower than the target \code{precision}. This variance is computed as described for \code{\link[spaMM]{predict.HLfit}}, with \code{variances=list(linPred=TRUE,dispVar=TRUE)}. 
+Global optimization cannot be proven, but it is tested by the following criteria: (1) the predicted optimum is close enough to the optimum among assessed parameter points (i.e. either the optimum parameters are well approached or the function is flat in some way), and (2) the prediction variance at the inferred optimum is low enough (so that the predictions used in the first criterion can be trusted). Accordingly, \code{conv_crits} has elements (1) \code{objective} that indicates whether \code{optr$value} betters \code{optr_fitted$value} by more than \code{control$reltol}, if given, or else by more than \code{sqrt(.Machine$double.eps)}; and (2) \code{precision} that indicates whether variance of prediction error at the inferred optimum is lower than the target \code{precision}. This variance is computed as described for \code{\link[spaMM]{predict.HLfit}}, with \code{variances=list(predVar=TRUE)}.
 }
 \references{
 D. Bingham, P. Ranjan, and W.J. Welch (2014) Design of Computer Experiments for Optimization, Estimation of Function Contours, and Related Objectives, pp. 109-124 in Statistics in Action: A Canadian Outlook (J.F. Lawless, ed.). Chapman and Hall/CRC.
 }
 \examples{
 # Classical toy example with optional noise
-fr <- function(v,sd) {   ## Rosenbrock Banana function 
+fr <- function(v,sd) {   ## Rosenbrock Banana function
   10 * (v["y"] - v["x"]^2)^2 + (1 - v["x"])^2 + rnorm(1,sd=sd)
 }
 set.seed(123)
@@ -87,7 +87,7 @@ if (blackbox.getOption("example_maxtime")>78) {
  simuls <- cbind(parsp,bb=apply(parsp,1,"fr",sd=0.1))
 
  bbresu <- bboptim(simuls, precision=0.02)
- 
+
  while ( any( ! bbresu$conv_crits) ) {
   print(unlist(bbresu$optr[c("par","value")]))
   candidates <- rbb(bbresu)

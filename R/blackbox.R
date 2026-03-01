@@ -24,7 +24,7 @@ bboptim <- function(data, ParameterNames=NULL, respName=NULL, control=list(), fo
                                       # this is confusing as clik is then not stable to translation...
   ranfix <- c(ranfix,list(phi=phi))
   if (TRUE) {
-    oldopt <- spaMM.options(spaMM_glm_conv_silent=TRUE)
+    oldopt <- spaMM.options(spaMM_glm_conv_silent=TRUE, warn=FALSE)
     thisfit <- HLCor(form,data=data,ranPars=ranfix,REMLformula=form) ## (thisfit recomputed soon)
     spaMM.options(oldopt)
     ranfix <- c(ranfix,list(lambda=thisfit$lambda))
@@ -44,7 +44,7 @@ bboptim <- function(data, ParameterNames=NULL, respName=NULL, control=list(), fo
     init <- thisfit$data[which.max(predict(thisfit)),ParameterNames]
     optr_fitted <- list(par=init,value=max(predict(thisfit,newdata=thisfit$data)))
   }
-  mse <- attr(predict(thisfit,init,variances=list(linPred=TRUE,dispVar=TRUE)),"predVar")[1]
+  mse <- attr(predict(thisfit,init,variances=list(predVar=TRUE)),"predVar")[1]
   mse <- max(0,mse)
   optr_fitted$RMSE <- sqrt(mse)
   ## in all cases, try to keep the structure of the return object for each method, but add easily accessible members
@@ -93,7 +93,7 @@ bboptim <- function(data, ParameterNames=NULL, respName=NULL, control=list(), fo
     optr$par <- optr$solution
   }
   colTypes <- list(ParameterNames=ParameterNames,respName=respName)
-  eta <- predict(thisfit,newdata=optr$par,variances=list(linPred=TRUE,dispVar=TRUE))
+  eta <- predict(thisfit,newdata=optr$par,variances=list(predVar=TRUE))
   RMSE <- sqrt(max(0,attr(eta,"predVar")))
   # assessment of convergence
   reltol <- control$reltol
@@ -181,7 +181,7 @@ rbb <- function(object,n=NULL,from=NULL,focus=0.75) {
   }
   if (from<=2*n) stop("from < 2*n: please increase 'from' relative to 'n'")
   ycolname <- object$colTypes$respName
-  obspred <- predict(object$fit,variances=list(linPred=TRUE,dispVar=TRUE),binding=ycolname)
+  obspred <- predict(object$fit,variances=list(predVar=TRUE),binding=ycolname)
   obsSE <- attr(obspred,"predVar")
   obsSE[obsSE<0] <- 0 ## anticipating numerical problems
   fnscale <- object$callArgs$control$fnscale

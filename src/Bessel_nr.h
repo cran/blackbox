@@ -40,23 +40,11 @@ knowledge of the CeCILL license and that you accept its terms.
 #ifdef NO_R_CONSOLE
 #include <iostream>
 #endif
-#define MATHLIB_STANDALONE  // pour ignorer tt code interactif avec R
-#define ML_ERROR(x)	/* nothing */
-//#define MATHLIB_ERROR(fmt,x)	{ printf(fmt,x); exit(1); }
-//#define MATHLIB_WARNING(fmt,x)		printf(fmt,x)
-//#define MATHLIB_WARNING2(fmt,x,x2)	printf(fmt,x,x2)
-//#define MATHLIB_WARNING3(fmt,x,x2,x3)	printf(fmt,x,x2,x3)
-//#define MATHLIB_WARNING4(fmt,x,x2,x3,x4) printf(fmt,x,x2,x3,x4)
 #ifndef M_SQRT_2dPI
 #define M_SQRT_2dPI	0.797884560802865355879892119869	/* sqrt(2/pi) */
 #endif
 #include "Bessel.h"
 #include "R.h" // must be included last
-/*#ifdef R_R_H
- // ie if we have loaded R.h
-#undef DBL_MIN
-#undef DBL_MAX
-#endif*/
  
 int imin2(int x, int y);
 int imax2(int x, int y);
@@ -211,7 +199,7 @@ static void K_bessel(Type *x, Type *alpha, long *nb,
     if (*nb > 0 && (0. <= nu && nu < 1.) && (1 <= *ize && *ize <= 2)) {
 	if(ex <= 0 || (*ize == 1 && ex > xmax_BESS_K)) {
 	    if(ex <= 0) {
-		ML_ERROR(ME_RANGE);
+		// ML_ERROR(ME_RANGE);
 		for(i=0; i < *nb; i++)
 		    bk[i] = std::numeric_limits<Type>::infinity();
 	    } else /* would only have underflow */ /*FER: that's what they say. "only"=>NaN*/

@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{blackbox News}
 \encoding{UTF-8}
+\section{CHANGES UP TO VERSION 1.1.54}{  
+\itemize{
+\item Replace (direct) calls to Rf_error() with Rcpp:stop() (cf https://github.com/RcppCore/Rcpp/issues/1247).
+\item Trivial code and doc tidying, and updated links to now public gitlab repository.
+}
+}
 \section{CHANGES UP TO VERSION 1.1.46}{  
 \itemize{
 \item Resolve -Wsometimes-uninitialized, -Wformat-zero-length and -Wformat-security compiler warnings.

@@ -4,7 +4,7 @@ if (Sys.getenv("_LOCAL_TESTS_")=="TRUE") { ## not on CRAN
     require(pkg, character.only=TRUE, quietly=TRUE)
     ## test_package(pkg) ## for an installed package
     if (interactive()) {
-      if (FALSE) { ## tests not included in package (using unpublished data, etc.)
+      if (FALSE) { ## for manual testing, including tests not included in package (using unpublished data, etc.)
         oldpath <- getwd() 
         ptpath <- paste0(blackbox::projpath(),"/package/tests_private/")
         subpaths <- dir(ptpath,full.names = TRUE)

@@ -4,7 +4,7 @@
 Define starting points in parameter space.
 }
 \description{
-This function samples the space of estimated parameters. It also handles other fixed arguments that need to be passed to the function simulating the summary statistics (sample size is likely to be one such argument). The current sampling strategy is crude but achieves three desirable effects: it samples the points uniformly but not independently from each other, avoiding large gaps more than independent ampling would allow; it is not exactly a regular grid; and it can include replicates of some parameter points, required for good inference of a response surface when this inference includes a smoothing step of response values evaluated with some error (as is typical in applications of the Migraine software, for which this function was first conceived).
+This function samples the space of estimated parameters. It also handles other fixed arguments that need to be passed to the function simulating the summary statistics (sample size is likely to be one such argument). The current sampling strategy is crude but achieves three desirable effects: it samples the points uniformly but not independently from each other, avoiding large gaps more than independent ampling would allow; it is not exactly a regular grid; and it can include replicates of some parameter points, required for good inference of a response surface when this inference includes a smoothing step of response values evaluated with some error (as is typical in applications of the \sQuote{Migraine} software, for which this function was first conceived).
 }
 \usage{
 init_grid(lower=c(par=0), upper=c(par=1), steps=NULL, nUnique=NULL, 

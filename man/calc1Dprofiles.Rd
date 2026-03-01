@@ -22,8 +22,8 @@ calc2D3Dplots(plotFile=NULL,pairlist=list())
 }
 \arguments{
   \item{plotFile}{If a character string, the name of the file where plots are written. Otherwise, plots are output to the screen.}
-  \item{varNames}{A character vector specifying the names of predictor variables to be considered. For \code{calc1Dprofiles} (used in conjunction with the \code{Migraine} software), if the default argument is \code{NULL}, all variable canonical parameters plus some composite ones may be considered (see the source code for details).}
-  \item{pairlist}{A list of character vectors. Each vector describes a pair of predictor variables. With the default value \code{list()}, a default non-empty list may be constructed when \code{calc2D3Dplots} or \code{calcProfileLR} is typically used in conjunction with the \code{Migraine} software (see the source code for details).}
+  \item{varNames}{A character vector specifying the names of predictor variables to be considered. For \code{calc1Dprofiles} (used in conjunction with the \sQuote{Migraine} software), if the default argument is \code{NULL}, all variable canonical parameters plus some composite ones may be considered (see the source code for details).}
+  \item{pairlist}{A list of character vectors. Each vector describes a pair of predictor variables. With the default value \code{list()}, a default non-empty list may be constructed when \code{calc2D3Dplots} or \code{calcProfileLR} is typically used in conjunction with the \sQuote{Migraine} software (see the source code for details).}
   \item{cleanResu}{
   A connection, or a character string naming a file for some nicely formated output. If it is \code{""} (the default), print to the standard output connection.
 }

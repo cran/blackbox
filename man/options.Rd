@@ -32,11 +32,11 @@ blackbox.getOption(x)
  }
 }
 \details{
-  blackbox.options() provides an interface for changing options, many of which are undocumented has they are intended to by used only in conjunction with the Migraine software, in which case the Migraine documentation should be consulted.
+  blackbox.options() provides an interface for changing options, many of which are undocumented has they are intended to by used only in conjunction with the \sQuote{Migraine} software, in which case the \sQuote{Migraine} documentation should be consulted.
 
   The package has been designed first to infer likelihood surfaces by smoothing estimated likelihood points in a model with some canonical parameters (\bold{ParameterNames}). A transformed parameter space may be considered for smoothing, wherein some parameters are variable (\bold{fittedNames}) and others may be constant. The transformed parameter space including constant parameters has names \bold{FONKgNames} (FON for Fitted Or Not).
   
-  \code{blackbox} can perform in parallel manner the Migraine-specific computations of grids of profile log-likelihood values. See the Migraine documentation for user control of the requested number of cores; direct control through R code is possible by \code{blackbox.options(coreNbr=.)}. If the \code{doSNOW} back-end is attached (by explicit request from the user), it will be used; otherwise, \code{pbapply} will be used. Both provide progress bars, but \code{doSNOW} may provide more efficient load-balancing. 
+  \code{blackbox} can perform in parallel manner the \sQuote{Migraine}-specific computations of grids of profile log-likelihood values. See the \sQuote{Migraine} documentation for user control of the requested number of cores; direct control through R code is possible by \code{blackbox.options(coreNbr=.)}. If the \code{doSNOW} back-end is attached (by explicit request from the user), it will be used; otherwise, \code{pbapply} will be used. Both provide progress bars, but \code{doSNOW} may provide more efficient load-balancing. 
 
 }
 \value{
